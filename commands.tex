@@ -1,0 +1,98 @@
+% ACG added
+\usepackage{tabulary}
+%\usepackage{tabularx}
+
+% ACG added for equation support
+\usepackage{amsmath}
+
+% Comment out chunks of text
+\usepackage{comment}
+
+% Sub figures
+\usepackage{caption}
+\usepackage{subcaption}
+
+% ACG
+%\usepackage[breaklinks]{hyperref}
+
+% ACG added fmtcount for superscript support, e.g., \ordinalnum{18} = 18^th
+\usepackage{fmtcount}
+
+% ACG added hhline for double line support
+\usepackage{hhline}
+
+% ACG added for sweet tildes
+\newcommand{\mytilde}{\raise.17ex\hbox{$\scriptstyle\mathtt{\sim}$}}
+
+% ACG added for special chars in verbatim
+\usepackage{alltt}
+
+% ACG added for float figures
+\usepackage{fixltx2e}
+
+% ACG added for float barrier
+\usepackage{placeins}
+
+% ACG added for strikeout
+\usepackage[normalem]{ulem}
+
+%ACG added for color comments
+\usepackage{xcolor}
+%\newcommand{\comment}[1]
+%{\par {\bfseries \color{blue} #1 \par}} %comment showed
+
+%ACG revised for rebutal
+\newcommand{\revise}[1]
+{{\color{blue} #1}}
+
+%ACG added for RED
+\newcommand{\RED}[1]
+{{\bfseries \color{red} #1}}
+
+% ACG copied from ACM
+\newcommand{\quotes}[1]{``#1''}
+% \newcommand{\note}[1]{{\textcolor{red}{*** NOTE: #1 ***}}}
+
+% ACG added for verbatim that breaks lines and supports color
+\usepackage{listings}
+%\lstset{basicstyle=\ttfamily,
+%  breaklines=true}
+\lstnewenvironment{telAPI}[1][]
+   {\lstset{basicstyle=\ttfamily\small,
+       breaklines=true,
+       escapeinside={<@}{@>},
+       linewidth=\linewidth, #1}}
+   {}
+
+% ACG added for sidewaystable
+%\usepackage{rotating}
+
+\usepackage{url}
+
+%SJL added:
+\usepackage{flushend}
+
+% remember to use as \metricset{} if you want the space afterward
+% definitions
+\newcommand{\metricset}{\emph{metric set}}
+\newcommand{\streams}{\emph{LDMS Streams}}
+\newcommand{\aggregator}{\emph{aggregator}}
+\newcommand{\sampler}{\emph{sampler}}
+\newcommand{\store}{\emph{store}}
+\newcommand{\plugin}{\emph{plugin}}
+\newcommand{\plugins}{\emph{plugins}}
+\newcommand{\connector}{\emph{Darshan-LDMS Connector}}
+\newcommand{\dsampler}{\emph{Darshan Sampler}}
+\newcommand{\kernel}{\emph{kernel}}
+\newcommand{\kernels}{\emph{kernels}}
+\newcommand{\DSOS}{\emph{DSOS}}
+\newcommand{\SOS}{\emph{SOS}}
+\newcommand{\Darshan}{\emph{Darshan LDMS Integration}}
+\newcommand{\appdat}{\emph{application data}}
+\newcommand{\AOPP}{\emph{AOPP}}
+% Global counter to ID notes/todo macros easily
+% Named notes, per person, in color, with a global counter to ID them esily
+\newcount\notenum
+\notenum=0
+\newcommand{\fslnote}[3]        {\global\advance\notenum by 1\textsl{\bf\color{#2}[#1\the\notenum: #3]}}
+\newcommand{\todo}[1]{\fslnote{TODO}{red}{#1}}
