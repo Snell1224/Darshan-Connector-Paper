@@ -81,7 +81,7 @@ Generally, the I/O performance is analyzed post-run by application developers, r
 \section{Problem and Approach}
 
 \RED{\begin{itemize}
-    \item Address current I/O performance analysis and implications (i.e. refer to Emily's SC21 presentation)
+    \item Address current I/O performance analysis and implications (i.e. refer to SC21 presentation)
     \subitem Lesson Learned: Different applications experience high and low performance variations at separate and disjoint time periods.These times periods are shared across different applications and clusters. 
     \subitem How LDMS will help: It is suggested that a simple I/O monitoring data collection from Darshan will be useful in identifying these time periods. LDMS will be able to provide the run time I/O monitoring data collection which will help them in identifying these time periods. 
     \subitem Lesson Learned: Clusters running on weekends observe some of the highest performance variations. It is assumed that this could be from I/O intensive application runs during the weekends. 
@@ -123,7 +123,7 @@ In this section, we discuss the correlation of I/O performance variation with ne
     \item Applications: SWFFT, sw4, sw4lite. Standard baseline: mpi-test. 
     \item Explain what each application does, why it's being tested and how the test was performed (i.e. number of nodes, etc.)
     \item Explain the analysis used to analyze the I/O data and how they address the correlation between I/O performance variation and network congestion/file system contention.
-    \subitem Figure out what type of analyses address this correlation. Reach out to Emily and Ana (possibly) about this. 
+    \subitem Figure out what type of analyses address this correlation. 
     \item show Grafana graphs, Darshan output (maybe) JSON and any tables (if applicable).
 \end{itemize}
 }
