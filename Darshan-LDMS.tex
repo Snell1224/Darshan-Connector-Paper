@@ -1,57 +1,57 @@
 \documentclass[conference]{IEEEtran}
 \IEEEoverridecommandlockouts
-% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please omment it out.
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
-\include{commands.tex}
+\include{commands}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
 \title{LDMS Darshan Connector: Integrating LDMS Streams for Execution-Time Diagnosis of HPC Application I/O Performance}
 
-\author{\IEEEauthorblockN{1\textsuperscript{st} Sara Walton}
-\IEEEauthorblockA{\textit{Sandia National Laboratories (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
-}
-\begin{comment}
-\and
-\IEEEauthorblockN{2\textsuperscript{nd} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
-\and
-\IEEEauthorblockN{3\textsuperscript{rd} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
-\and
-\IEEEauthorblockN{4\textsuperscript{th} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
-\and
-\IEEEauthorblockN{5\textsuperscript{th} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
-\and
-\IEEEauthorblockN{6\textsuperscript{th} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
-\end{comment}
+%\author{\IEEEauthorblockN{1\textsuperscript{st} Sara Walton}
+%\IEEEauthorblockA{\textit{Sandia National Laboratories (of Aff.)} \\
+%\textit{name of organization (of Aff.)}\\
+%City, Country \\
+%email address or ORCID}
+%}
+%\begin{comment}
+%\and
+%\IEEEauthorblockN{2\textsuperscript{nd} Given Name Surname}
+%\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+%\textit{name of organization (of Aff.)}\\
+%City, Country \\
+%email address or ORCID}
+%\and
+%\IEEEauthorblockN{3\textsuperscript{rd} Given Name Surname}
+%\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+%\textit{name of organization (of Aff.)}\\
+%City, Country \\
+%email address or ORCID}
+%\and
+%\IEEEauthorblockN{4\textsuperscript{th} Given Name Surname}
+%\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+%\textit{name of organization (of Aff.)}\\
+%City, Country \\
+%email address or ORCID}
+%\and
+%\IEEEauthorblockN{5\textsuperscript{th} Given Name Surname}
+%\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+%\textit{name of organization (of Aff.)}\\
+%City, Country \\
+%email address or ORCID}
+%\and
+%\IEEEauthorblockN{6\textsuperscript{th} Given Name Surname}
+%\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+%\textit{name of organization (of Aff.)}\\
+%City, Country \\
+%email address or ORCID}
+%\end{comment}
 
 \maketitle
 
@@ -153,8 +153,7 @@ In this section, we discuss the correlation of I/O performance variation with ne
 bottom of columns. Avoid placing them in the middle of columns. Large 
 figures and tables may span across both columns. Figure captions should be 
 below the figures; table heads should appear above the tables. Insert 
-figures and tables after they are cited in the text. Use the abbreviation 
-``Fig.~\ref{fig}'', even at the beginning of a sentence.
+figures and tables after they are cited in the text.
 
 \begin{table}[htbp]
 \caption{Table Type Styles}
@@ -179,55 +178,20 @@ copy& More table copy$^{\mathrm{a}}$& &  \\
 \label{fig}
 \end{figure}
 
-Figure Labels: Use 8 point Times New Roman for Figure labels. Use words 
-rather than symbols or abbreviations when writing Figure axis labels to 
-avoid confusing the reader. As an example, write the quantity 
-``Magnetization'', or ``Magnetization, M'', not just ``M''. If including 
-units in the label, present them within parentheses. Do not label axes only 
-with units. In the example, write ``Magnetization (A/m)'' or ``Magnetization 
-\{A[m(1)]\}'', not just ``A/m''. Do not label axes with a ratio of 
-quantities and units. For example, write ``Temperature (K)'', not 
-``Temperature/K''.
+%Figure Labels: Use 8 point Times New Roman for Figure labels. Use words 
+%rather than symbols or abbreviations when writing Figure axis labels to 
+%avoid confusing the reader. As an example, write the quantity 
+%``Magnetization'', or ``Magnetization, M'', not just ``M''. If including 
+%units in the label, present them within parentheses. Do not label axes only 
+%with units. In the example, write ``Magnetization (A/m)'' or ``Magnetization 
+%\{A[m(1)]\}'', not just ``A/m''. Do not label axes with a ratio of 
+%quantities and units. For example, write ``Temperature (K)'', not 
+%``Temperature/K''.
 
 \section*{References}
 
 \RED{FIX REFERENCES}
-\bibliographystyle{IEEEtran}
-\bibliography{IEEEabrv,./SNL}
-
-%\begin{thebibliography}{00}
-@Misc{		  ovisweb,
-  title		= "{O}vis",
-  online	= "yes",
-  howpublished	= {\url{http://ovis.ca.sandia.gov}}
-}
-
-@Misc{		  ldmsgithub,
-  title		= "{O}vis/{LDMS}",
-  online	= "yes",
-  howpublished	= {\url{http://github.com/ovis-hpc/ovis}}
-}
-
-@Misc{		  sosgithub,
-  title		= "{O}vis/{SOS}",
-  online	= "yes",
-  howpublished	= {\url{http://github.com/ovis-hpc/sos}}
-}
-
-@Misc{		  ldmsgithubwiki,
-  title		= "{O}vis-wiki",
-  online	= "yes",
-  howpublished	= {\url{https://github.com/ovis-hpc/ovis-wiki/wiki}},
-  month = "March",
-  year = 2021
-}
-
-@INPROCEEDINGS{Darshan,
-author={Carns, P. and Latham, R. and Ross, R. and Iskra, K. and Lang, S. and Riley, K.},
-booktitle={Proc. 2009 Workshop on Interfaces and Architectures for Scientific Data Storage},
-title = "{24/7} characterization of petascale {I/O} workloads",
-year={2009}
-}
-
+%\bibliographystyle{IEEEtran}
+%\bibliography{IEEEabrv,./SNL}
 
 \end{document}
