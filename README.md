@@ -23,5 +23,7 @@ The following application is a writing environemnt for creating and compiling La
 1. https://www.texstudio.org/
 
 # Paper.lock
-This is for claiming any sections you are working on so there is no overlap.
+This is for claiming any sections you are working on so there is no overlap. 
+
+Please use paper.lock to indicate if you are checking out a section of the paper to write on.
 
