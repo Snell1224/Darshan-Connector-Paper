@@ -1,113 +1,127 @@
 \documentclass[conference]{IEEEtran}
 \IEEEoverridecommandlockouts
-% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please omment it out.
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
-\include{commands}
+\include{commands.tex}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
 \title{LDMS Darshan Connector: Integrating LDMS Streams for Execution-Time Diagnosis of HPC Application I/O Performance}
 
-%\author{\IEEEauthorblockN{1\textsuperscript{st} Sara Walton}
-%\IEEEauthorblockA{\textit{Sandia National Laboratories (of Aff.)} \\
-%\textit{name of organization (of Aff.)}\\
-%City, Country \\
-%email address or ORCID}
-%}
-%\begin{comment}
-%\and
-%\IEEEauthorblockN{2\textsuperscript{nd} Given Name Surname}
-%\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-%\textit{name of organization (of Aff.)}\\
-%City, Country \\
-%email address or ORCID}
-%\and
-%\IEEEauthorblockN{3\textsuperscript{rd} Given Name Surname}
-%\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-%\textit{name of organization (of Aff.)}\\
-%City, Country \\
-%email address or ORCID}
-%\and
-%\IEEEauthorblockN{4\textsuperscript{th} Given Name Surname}
-%\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-%\textit{name of organization (of Aff.)}\\
-%City, Country \\
-%email address or ORCID}
-%\and
-%\IEEEauthorblockN{5\textsuperscript{th} Given Name Surname}
-%\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-%\textit{name of organization (of Aff.)}\\
-%City, Country \\
-%email address or ORCID}
-%\and
-%\IEEEauthorblockN{6\textsuperscript{th} Given Name Surname}
-%\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-%\textit{name of organization (of Aff.)}\\
-%City, Country \\
-%email address or ORCID}
-%\end{comment}
+\author{\IEEEauthorblockN{1\textsuperscript{st} Sara Walton}
+\IEEEauthorblockA{\textit{Sandia National Laboratories (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+City, Country \\
+email address or ORCID}
+}
+\begin{comment}
+\and
+\IEEEauthorblockN{2\textsuperscript{nd} Given Name Surname}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+City, Country \\
+email address or ORCID}
+\and
+\IEEEauthorblockN{3\textsuperscript{rd} Given Name Surname}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+City, Country \\
+email address or ORCID}
+\and
+\IEEEauthorblockN{4\textsuperscript{th} Given Name Surname}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+City, Country \\
+email address or ORCID}
+\and
+\IEEEauthorblockN{5\textsuperscript{th} Given Name Surname}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+City, Country \\
+email address or ORCID}
+\and
+\IEEEauthorblockN{6\textsuperscript{th} Given Name Surname}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+City, Country \\
+email address or ORCID}
+\end{comment}
 
 \maketitle
 
 \begin{abstract}
 \RED{ Might need to redo this later}
-Improving I/O performance usually depends on a large number of components such as the applications access pattern, the computing system architecture, I/O libaries, file system, mode of access, data size, and the storage configuration and layout. Changes in these components can create high variations in I/O performance which could lead to many negative effects such as network congestion, poor scheduling and wasted resources on the system. Having this many variables makes it difficult to detect the root cause of variations in I/O performance and most of the time strong correlations of I/O analyses across different applications are required to identify a possible solution. This paper introduces a unique methodology that provides the opportunity for low latency monitoring of I/O performance variations during execution-time. This is done through the implementation of a system-level infrastructure that continuously collects I/O application data from an existing I/O characterization tool. This allows insights into the I/O application performance and the components affecting it through the analyses and visualizations.
+Improving I/O performance usually depends on a large number of components such as the applications access pattern, the computing system architecture, I/O libraries, file system, mode of access, data size, and the storage configuration and layout. Changes in these components can create high variations in I/O performance which could lead to many negative effects such as network congestion, poor scheduling and indicates a lack of understanding I/O variability. Having this many variables makes it difficult to detect the root cause of variations in I/O performance and most of the time strong correlations of I/O analyses across different applications are required to identify a possible solution. This paper introduces a unique methodology that provides low latency monitoring of I/O performance variations during execution-time. This is done through the implementation of a system-level infrastructure that continuously collects I/O application data from an existing I/O characterization tool. This allows insights into the I/O application performance and the components affecting it through the analyses and visualizations.
 This methodology addresses the challenge of poor understanding of throughput for system-specific behaviors and variations of I/O performance of similar applications across a system. This paper demonstrates the implementation and assessments of this method and how it can be used on various HPC applications.
 \end{abstract}
 
 \section{Introduction}
-As more scientific applications are developed and used, the need for improved fidelity and throughput is more pressing than ever and much design effort and investments are being put into improving not only the application but also the system components. Being able to identify, predict and analyze I/O behaviors are critical to ensuring parallel storage systems are utilized efficiently. 
-However, I/O performance continues to show high variations on large-scale production conditions in many cases \RED{Cite NE}. This variation makes it difficult to determine the root cause of I/O related problems and have a thorough understanding of throughput for system-specific behaviors and I/O performance in similar applications across a system. Further, not knowing what the cause is will directly affect the user and developer as unwanted time, effort and investment will need to be put into solving the issue.
+As more scientific applications are developed and used, the need for improved fidelity and throughput is more pressing than ever and much design effort and investments are being put into improving not only the application but also the system components. Being able to identify, predict and analyze I/O behaviors are critical to ensuring parallel storage systems are utilized efficiently. However, I/O performance continues to show high variations on large-scale production conditions in many cases \RED{Cite NE}. Some of these cases include running applications on clusters during the weekend, separate and disjoint time zones and read I/O's of runs within the same cluster. 
+This variation makes it difficult to determine the root cause of I/O related problems and have a thorough understanding of throughput for system-specific behaviors and I/O performance in similar applications across a system. Further, not knowing what the cause is will directly affect the user and developer as unwanted time, effort and investment will need to be put into solving the issue.
 
-Variations in I/O can could be caused by the file system (e.g. buffering, file transfer, interrupt handling), network congestion, system resource contentions, or the access patterns of the application itself.
+Variations in I/O can could be caused by the system behavior such as the file system (e.g. buffering, file transfer, interrupt handling), network congestion, system resource contentions, or the access patterns of the application itself.
 
-Generally, the I/O performance is analyzed post-run by application developers, researchers and users in the form of regression testing or other I/O characterization tools that capture the applications I/O behavior. An example of one of these tools is \emph{Darshan} which captures I/O information on access patterns from HPC applications. Detailed information will be covered in the \emph{Approach} section. In the case where an I/O performance problems are observed, efforts to identify this usually come from any identified correlation between analyses of various applications. However, this analysis approach does not take into account the file system, network congestion, system resource contentions and other component's affect on the I/O performance. In order to make these associations, the \emph{absolute timestamps} is required  which the post-run approach and I/O characterization tools usually lack.
+Generally, the I/O performance is analyzed post-run by application developers, researchers and users in the form of regression testing or other I/O characterization tools that capture the applications I/O behavior. An example of one of these tools is \emph{Darshan} which captures I/O information on access patterns from HPC applications. Detailed information will be covered in the \emph{Approach} section. In the case where an I/O performance problems are observed, efforts to identify this usually come from any identified correlation between analyses of various applications or the time in which these applications were tested. However, this approach does provide the ability to know \emph{when} an I/O performance variability occurs during an application run and, if the developer or user wishes to, identify any correlations between the file system, network congestion or resource contentions and the I/O performance.
+
+%However, this analysis approach does not take into account the file system, network congestion, system resource contentions and other component's affect on the I/O performance. In order to make these associations, the \emph{absolute timestamps} is required  which the post-run approach and I/O characterization tools usually lack.
 
 The \emph{absolute timestamps} provides execution time (e.g. timeseries) data that users and developers could use to better understand how these changing components affect the I/O performance variation as well as provide further insight into the application I/O pattern.This paper will be structured in the following format with the main key factors being:
 \begin{itemize}
     \item Describe the approach used to expose absolute timestamp data from an existing I/O characterization tool and utilizing this data to determine the root cause(s) of application I/O performance variation during execution-time.
     \item Provide a high level overview of the implementation process and other tools used to collect application I/O data during execution-time.
-    \item Demonstrate use cases of the integrated I/O characterization tool for various applications on a production HPC systems. 
+    \item Demonstrate use cases of the \connector for various applications on a production HPC system. 
     \item How this new approach provides the ability to collect and assist in the detection of application I/O performance variances across multiple applications. 
 \end{itemize}
-
 
 \section{Related Work}
 \RED{Look for papers that used a similar approach}
 
-\section{Problem and Approach}
+\section{Approach}
 
-\RED{\begin{itemize}
-    \item Address current I/O performance analysis and implications (i.e. refer to SC21 presentation)
-    \subitem Lesson Learned: Different applications experience high and low performance variations at separate and disjoint time periods.These times periods are shared across different applications and clusters. 
-    \subitem How LDMS will help: It is suggested that a simple I/O monitoring data collection from Darshan will be useful in identifying these time periods. LDMS will be able to provide the run time I/O monitoring data collection which will help them in identifying these time periods. 
-    \subitem Lesson Learned: Clusters running on weekends observe some of the highest performance variations. It is assumed that this could be from I/O intensive application runs during the weekends. 
-    \subitem How LDMS will help: The I/O timeseries data generated by LDMS will provide NERSC researchers with new data they can utilize to further their research.
-    \item Benefits of having time series data:
-    \subitem Better understand how application I/O variability correlates with overall system behavior
-    \subitem Understand how time of day affects the I/O performance
-    \subitem Understand how the I/O pattern within a run affects the I/O performance of read and write. E.g. perhaps an application that has nodes writing data at disjoint times have less I/O performance variation than one that has all nodes writing data at the same time.
-    \subitem Understand why read and write I/O performance patterns are different and independent of each other. E.g. read and write may exhibit different behavior during the run, which affects the performance of each in unique ways
+%Therefore, this paper provides an existing system level system
+This section provides a high-level overview of the design and implementation of the \Darshan and the components used to create this infrastructure. This approach will provide execution-time insights about application I/O by using the following components:
+\begin{enumerate}
+    \item The I/O characterization tool, Darshan \RED{cite} to collect application I/O behavior and patterns. However, this tool does not report the \emph{absolute timestamp} so modifications to the code were made to expose this data.
+    \item The Lightweight Distributed Metric Service (LDMS) \RED{cite} to provide and transport live execution-time data feed about application I/O events.
+    \item A storage database, Distributed Scalable Object Store (DSOS) \RED{cite} to store and query large amounts of data generated on a production HPC system.
+    \item An analysis and visualization tool, Grafana \RED{cite}, to present execution-time I/O which enables the user to identify when a variability occurs as well as create new analyses of the I/O data.
+\end{enumerate}
 
-\end{itemize}
-}
+Darshan is used to tune applications for increased scientific productivity or performance and is suitable for full time deployment for workload characterization of large systems. It provides detailed statistics about various level file accesses made by MPI and non-MPI applications which can be enabled or disabled as desired. These levels include POSIX, STDIO, LUSTRE and MDHIM for non-MPI applications and MPI-IO, HDF5 and some PnetCDF for MPI applications. This functionality provides users with a summary of I/O behavior and patterns from an application run but it does so post-run. Therefore, it does not allow insights into \emph{execution-time} I/O behavior and patterns which makes it difficult to determine when an I/O performance variability occurs and prevents any new analyses of the I/O data. 
 
-\RED{Discuss the issues with not knowing the IO application data. How are the users and developers affected?}
+LDMS is used to efficiently collect and transport scalable \emph{synchronous} and \emph{event-based} data with low-overhead. Two key functionalities it has that will be leveraged in the \Darshan and create the \connector are the \emph{LDMS Streams} and transport. In the \Darshan, the LDMS was enhanced to support application I/O data injection and store to DSOS while Darshan was modified to exppose the \emph{absolute timestamp} and publish run time I/O events for each rank to the \emph{LDMS Streams}. This integration will be described in detail later on.   
 
-\subsection{Darshan and LDMS Overview}
-\RED{ \begin{itemize}
-    \item Explain how Darshan works. What is it, who created it, what does it do exactly? What areas does it lack? (i.e. no timestamps)
-    \item Explain how LDMS works (high level overview -- same as Darshan). What capabilities does it have that we will be applying to Darshan to transport the data.
-    \item Explain how SOS works and why we are using it.
-    \item Explain how Grafana works with SOS and why we are using it. 
-\end{itemize}
-}
+\emph{DSOS} will enable the ability to query the timestamped application I/O data through a variety of APIs while Grafana will provide a front-end interface for visualizing the stored data that has been queried and analyzed using Python based modules on the back-end. With these tools, users can view, edit and share analyses of the data as well as create new meaningful analyses. It will also provide a better understanding on how application I/O variability correlates with overall system behavior, how the time of day affects the I/O performance, how the I/O pattern within a run affects the I/O performance of read and write and why the read and write I/O performance patterns are different and independent of each other.
+
+%\RED{\begin{itemize}
+%    \item Address current I/O performance analysis and implications.
+%    \subitem Lesson Learned: Different applications experience high and low performance variations at separate and disjoint time periods.These times periods are shared across different applications and clusters. 
+%    \subitem How LDMS will help: It is suggested that a simple I/O monitoring data collection from Darshan will be useful in identifying these time periods. LDMS will be able to provide the run time I/O monitoring data collection which will help them in identifying these time periods. 
+%    \subitem Lesson Learned: Clusters running on weekends observe some of the highest performance variations. It is assumed that this could be from I/O intensive application runs during the weekends. 
+%    \subitem How LDMS will help: The I/O timeseries data generated by LDMS will provide NERSC researchers with new data they can utilize to further their research.
+%    \item Benefits of having time series data:
+%    \subitem Better understand how application I/O variability correlates with overall system behavior
+%    \subitem Understand how time of day affects the I/O performance
+%    \subitem Understand how the I/O pattern within a run affects the I/O performance of read and write. E.g. perhaps an application that has nodes writing data at disjoint times have less I/O performance variation than one that has all nodes writing data at the same time.
+%    \subitem Understand why read and write I/O performance patterns are different and independent of each other. E.g. read and write may exhibit different behavior during the run, which affects the performance of each in unique ways
+
+%\end{itemize}
+%}
+
+%\subsection{Darshan and LDMS Overview}
+%\RED{ \begin{itemize}
+%    \item Explain how Darshan works. What is it, who created it, what does it do %exactly? What areas does it lack? (i.e. no timestamps)
+%    \item Explain how LDMS works (high level overview -- same as Darshan). What capabilities does it have that we will be applying to Darshan to transport the data.
+%    \item Explain how SOS works and why we are using it.
+%    \item Explain how Grafana works with SOS and why we are using it. 
+%\end{itemize}
+%}
 
 \subsection{Integration}
 
@@ -119,14 +133,14 @@ The \emph{absolute timestamps} provides execution time (e.g. timeseries) data th
 }
 
 \section{Use Cases}\label{AA}
-In this section, we discuss the correlation of I/O performance variation with network congestion and file system contention and describe our design and implementation of \Darshan{} at a high level.
+In this section, we discuss the correlation of I/O performance variation with network congestion and file system contention.
 
 \RED{Explain the different scenarios we will be testing:
 \begin{itemize}
     \item Applications: SWFFT, sw4, sw4lite. Standard baseline: mpi-test. 
     \item Explain what each application does, why it's being tested and how the test was performed (i.e. number of nodes, etc.)
     \item Explain the analysis used to analyze the I/O data and how they address the correlation between I/O performance variation and network congestion/file system contention.
-    \subitem Figure out what type of analyses address this correlation. 
+    \subitem Figure out what type of analyses address this correlation.
     \item show Grafana graphs, Darshan output (maybe) JSON and any tables (if applicable).
 \end{itemize}
 }
@@ -156,7 +170,8 @@ In this section, we discuss the correlation of I/O performance variation with ne
 bottom of columns. Avoid placing them in the middle of columns. Large 
 figures and tables may span across both columns. Figure captions should be 
 below the figures; table heads should appear above the tables. Insert 
-figures and tables after they are cited in the text.
+figures and tables after they are cited in the text. Use the abbreviation 
+``Fig.~\ref{fig}'', even at the beginning of a sentence.
 
 \begin{table}[htbp]
 \caption{Table Type Styles}
@@ -181,15 +196,15 @@ copy& More table copy$^{\mathrm{a}}$& &  \\
 \label{fig}
 \end{figure}
 
-%Figure Labels: Use 8 point Times New Roman for Figure labels. Use words 
-%rather than symbols or abbreviations when writing Figure axis labels to 
-%avoid confusing the reader. As an example, write the quantity 
-%``Magnetization'', or ``Magnetization, M'', not just ``M''. If including 
-%units in the label, present them within parentheses. Do not label axes only 
-%with units. In the example, write ``Magnetization (A/m)'' or ``Magnetization 
-%\{A[m(1)]\}'', not just ``A/m''. Do not label axes with a ratio of 
-%quantities and units. For example, write ``Temperature (K)'', not 
-%``Temperature/K''.
+Figure Labels: Use 8 point Times New Roman for Figure labels. Use words 
+rather than symbols or abbreviations when writing Figure axis labels to 
+avoid confusing the reader. As an example, write the quantity 
+``Magnetization'', or ``Magnetization, M'', not just ``M''. If including 
+units in the label, present them within parentheses. Do not label axes only 
+with units. In the example, write ``Magnetization (A/m)'' or ``Magnetization 
+\{A[m(1)]\}'', not just ``A/m''. Do not label axes with a ratio of 
+quantities and units. For example, write ``Temperature (K)'', not 
+``Temperature/K''.
 
 \section*{References}
 
@@ -198,3 +213,4 @@ copy& More table copy$^{\mathrm{a}}$& &  \\
 %\bibliography{IEEEabrv,./SNL}
 
 \end{document}
+
