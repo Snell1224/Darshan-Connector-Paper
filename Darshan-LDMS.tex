@@ -12,7 +12,7 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{LDMS Darshan Connector: Integrating LDMS Streams for Execution-Time Diagnosis of HPC Application I/O Performance}
+\title{LDMS Darshan Connector: Integrating LDMS Streams for run Time Diagnosis of HPC Application I/O Performance}
 
 \author{\IEEEauthorblockN{1\textsuperscript{st} Sara Walton}
 \IEEEauthorblockA{\textit{Sandia National Laboratories (of Aff.)} \\
@@ -57,7 +57,9 @@ email address or ORCID}
 
 \begin{abstract}
 \RED{ Might need to redo this later}
-Improving I/O performance usually depends on a large number of components such as the applications access pattern, the computing system architecture, I/O libraries, file system, mode of access, data size, and the storage configuration and layout. Changes in these components can create high variations in I/O performance which could lead to many negative effects such as network congestion, poor scheduling and indicates a lack of understanding I/O variability. Having this many variables makes it difficult to detect the root cause of variations in I/O performance and most of the time strong correlations of I/O analyses across different applications are required to identify a possible solution. This paper introduces a unique methodology that provides low latency monitoring of I/O performance variations during execution-time. This is done through the implementation of a system-level infrastructure that continuously collects I/O application data from an existing I/O characterization tool. This allows insights into the I/O application performance and the components affecting it through the analyses and visualizations.
+Improving I/O performance usually depends on a large number of components such as the applications access pattern, the computing system architecture, I/O libraries, file system, mode of access, data size, and the storage configuration and layout. Changes in these components can create high variations in I/O performance which could lead to many negative effects such as network congestion, poor scheduling and indicates a lack of understanding I/O variability. It also makes it difficult to detect the root cause of variations in I/O performance 
+%and most of the time strong correlations of I/O analyses across different applications are required to identify a possible solution. 
+This paper introduces a unique methodology that provides low latency monitoring of I/O performance variations during run time. This is done through the implementation of a system-level infrastructure that continuously collects I/O application data from an existing I/O characterization tool. This allows insights into the I/O application performance and the components affecting it through the analyses and visualizations.
 This methodology addresses the challenge of poor understanding of throughput for system-specific behaviors and variations of I/O performance of similar applications across a system. This paper demonstrates the implementation and assessments of this method and how it can be used on various HPC applications.
 \end{abstract}
 
@@ -71,10 +73,10 @@ Generally, the I/O performance is analyzed post-run by application developers, r
 
 %However, this analysis approach does not take into account the file system, network congestion, system resource contentions and other component's affect on the I/O performance. In order to make these associations, the \emph{absolute timestamps} is required  which the post-run approach and I/O characterization tools usually lack.
 
-The \emph{absolute timestamps} provides execution time (e.g. timeseries) data that users and developers could use to better understand how these changing components affect the I/O performance variation as well as provide further insight into the application I/O pattern.This paper will be structured in the following format with the main key factors being:
+The \emph{absolute timestamps} provides run time (e.g. timeseries) data that users and developers could use to better understand how these changing components affect the I/O performance variation as well as provide further insight into the application I/O pattern.This paper will be structured in the following format with the main key factors being:
 \begin{itemize}
-    \item Describe the approach used to expose absolute timestamp data from an existing I/O characterization tool and utilizing this data to determine the root cause(s) of application I/O performance variation during execution-time.
-    \item Provide a high level overview of the implementation process and other tools used to collect application I/O data during execution-time.
+    \item Describe the approach used to expose absolute timestamp data from an existing I/O characterization tool and utilizing this data to help identify and better understand any root cause(s) of application I/O performance variation run time.
+    \item Provide a high level overview of the implementation process and other tools used to collect application I/O data during run time.
     \item Demonstrate use cases of the \connector for various applications on a production HPC system. 
     \item How this new approach provides the ability to collect and assist in the detection of application I/O performance variances across multiple applications. 
 \end{itemize}
@@ -85,17 +87,19 @@ The \emph{absolute timestamps} provides execution time (e.g. timeseries) data th
 \section{Approach}
 
 %Therefore, this paper provides an existing system level system
-This section provides a high-level overview of the design and implementation of the \Darshan and the components used to create this infrastructure. This approach will provide execution-time insights about application I/O by using the following components:
+This section provides a high-level overview of the design and implementation of the \Darshan and the components used to create this infrastructure. This approach will provide run time insights about application I/O by using the following components:
 \begin{enumerate}
     \item The I/O characterization tool, Darshan \RED{cite} to collect application I/O behavior and patterns. However, this tool does not report the \emph{absolute timestamp} so modifications to the code were made to expose this data.
-    \item The Lightweight Distributed Metric Service (LDMS) \RED{cite} to provide and transport live execution-time data feed about application I/O events.
+    \item The Lightweight Distributed Metric Service (LDMS) \RED{cite} to provide and transport live run time data feed about application I/O events.
     \item A storage database, Distributed Scalable Object Store (DSOS) \RED{cite} to store and query large amounts of data generated on a production HPC system.
-    \item An analysis and visualization tool, Grafana \RED{cite}, to present execution-time I/O which enables the user to identify when a variability occurs as well as create new analyses of the I/O data.
+    \item An analysis and visualization tool, Grafana \RED{cite}, to present run time I/O which enables the user to identify when a variability occurs as well as create new analyses of the I/O data.
 \end{enumerate}
 
-Darshan is used to tune applications for increased scientific productivity or performance and is suitable for full time deployment for workload characterization of large systems. It provides detailed statistics about various level file accesses made by MPI and non-MPI applications which can be enabled or disabled as desired. These levels include POSIX, STDIO, LUSTRE and MDHIM for non-MPI applications and MPI-IO, HDF5 and some PnetCDF for MPI applications. This functionality provides users with a summary of I/O behavior and patterns from an application run but it does so post-run. Therefore, it does not allow insights into \emph{execution-time} I/O behavior and patterns which makes it difficult to determine when an I/O performance variability occurs and prevents any new analyses of the I/O data. 
+Darshan is used to tune applications for increased scientific productivity or performance and is suitable for full time deployment for workload characterization of large systems. It provides detailed statistics about various level file accesses made by MPI and non-MPI applications which can be enabled or disabled as desired. These levels include POSIX, STDIO, LUSTRE and MDHIM for non-MPI applications and MPI-IO, HDF5 and some PnetCDF for MPI applications. This functionality provides users with a summary of I/O behavior and patterns from an application run but it does so post-run. Therefore, it does not allow insights into \emph{run time} I/O behavior and patterns which makes it nearly impossible to identify the root cause(s) of I/O variability and when this occurs. 
 
-LDMS is used to efficiently collect and transport scalable \emph{synchronous} and \emph{event-based} data with low-overhead. Two key functionalities it has that will be leveraged in the \Darshan and create the \connector are the \emph{LDMS Streams} and transport. In the \Darshan, the LDMS was enhanced to support application I/O data injection and store to DSOS while Darshan was modified to exppose the \emph{absolute timestamp} and publish run time I/O events for each rank to the \emph{LDMS Streams}. This integration will be described in detail later on.   
+LDMS is used to efficiently collect and transport scalable \emph{synchronous} and \emph{event-based} data with low-overhead. Two key functionalities it has that will be leveraged in the \Darshan and create the \connector are the \emph{LDMS Streams} and transport. In the \Darshan, the LDMS was enhanced to support application I/O data injection and store to DSOS while Darshan was modified to expose the \emph{absolute timestamp} and publish run time I/O events for each rank to the \emph{LDMS Streams}. This integration will be described in detail later on.   
+
+Implementing LDMS into Darshan will provide timestamped I/O event data during an application run. This data will provide any users, application developers or researchers to further their analyses, better understand when an I/O variability occurs and can identify any correlations between the I/O performance and file system, network congestion or system contention.  
 
 \emph{DSOS} will enable the ability to query the timestamped application I/O data through a variety of APIs while Grafana will provide a front-end interface for visualizing the stored data that has been queried and analyzed using Python based modules on the back-end. With these tools, users can view, edit and share analyses of the data as well as create new meaningful analyses. It will also provide a better understanding on how application I/O variability correlates with overall system behavior, how the time of day affects the I/O performance, how the I/O pattern within a run affects the I/O performance of read and write and why the read and write I/O performance patterns are different and independent of each other.
 
@@ -122,18 +126,36 @@ LDMS is used to efficiently collect and transport scalable \emph{synchronous} an
 %    \item Explain how Grafana works with SOS and why we are using it. 
 %\end{itemize}
 %}
+\section{Integration}
+\subsection{Darshan}
+Darshan is divided into two main parts: 1) \emph{darshan-runtime} which contains the instrumentation of the characterization tool. It also produces a single log file a the end of each execution summarizing the I/O access patterns used by the application. 2) \emph{darshan-util} which is intended for analyzing log files produced by darshan-runtime. The \Darshan focuses on the \emph{darshan-runtime} as this is where the source code of I/O event data is recorded by Darshan.
 
-\subsection{Integration}
+Darshan tracks the start, duration and end time of an application run via the C function \emph{clock\_gettime()} and converts the result into seconds and passes the result to a struct that is then used to report the summary log files. Therefore, in order to retrieve the \emph{absolute timestamp} and include it into the I/O event data during run time, a time struct pointer was added to the function call that used \emph{clock\_gettime()} in \emph{darshan-runtime}. This pointer was passed through all of Darshan's modules and the \emph{absolute timestamp} was collected. This was the preferred method as it required minimal changes to Darshan's source code and no additional overhead and latency between the function call and recording of the \emph{absolute timestamp}.  
 
-\RED{
-\begin{itemize}
-\item Explain how LDMS is integrated into Darshan. Give an overview on how we implement LDMS Streams into the Darshan DXT section to collect execution-time I/O data and push to a JSON file that then gets aggregated by LDMS and stored to SOS. Then explain how this stored data is then queried and displayed in a Grafana dashboard.
-\item Add a pic of current Darshan LDMS integration setup (.png) 
-\end{itemize}
-}
+\subsection{LDMS}
+The word, \emph{LDMSD}, refers to an LDMS daemon that provides the capability of data collection, transport and storage and their \emph{plugins} determine the functionality of these capabilities. Daemons on the compute nodes run sampler plugins and transport is achieved through multi-hop \emph{aggregation}. LDMS had two levels of aggregator daemons \RED{cite} which can utilize storage plugins to store any sets of data into various formats so long as it's specified beforehand. This can be seen in \RED{add LDMS fig}
+
+The \Darshan leverages the LDMS transport to support the injection and transport of application I/O data which requires a \emph{push-based} method to reduce the amount of memory consumed and data loss on the node as well as reduce the latency between the time in which the event occurs and when it is recorded. A \emph{pull-based} method would require a buffering to hold an unknown number of events between pulls. Also, the transported data format needs to support  \emph{variable-length} events because the I/O data may will most likely vary in size. 
+
+This leads to the LDMS \emph{publish-subscribe bus} capability , \emph{LDMS Streams}, which has been enhanced to support I/O event data. This capability is intended for publishing and subscribing to an \emph{LDMS streams tag}. The tag needs to be specified in LDMS daemons and \emph{plugins} in order to publish event data to \emph{LDMS Streams} and receive this published \emph{LDMS Streams} data that match the tag.This process and the \emph{push-based} method can be seen in \RED{figure of LDMS}. Event data can be specified as either \texttt{string} or \texttt{JSON} format. The \emph{LDMS Streams} API was modified to support long application connections and message injections. \emph{LDMS Streams} uses best effort without a reconnect or resend for delivry and does not cache it's data so the published data can only be received after subscription. The \emph{LDMS Streams} allows the ability for any data source to be injected into the LDMS transport.
+
+\subsection{Darshan and LDMS: Integration}
+
+The most recent version of Darshan allows for full tracing of application I/O workloads using their Darshan eXtended Tracing (DXT) instrumentation module which can be enabled and disabled as desired at runtime. This provides high-fidelity traces fo an application's I/O workload vs Darshan's traditional I/O summary data \RED{cite}. DXT currently traces POSIX and MPI-IO layers \RED{cite}. This design leverages the additional I/O tracing Darshan's DXT provides through the new \connector capability.
+
+
+The \connector functionality first collects both DXT data and Darshan's orginial I/O data and optionally publishes the message in JSON format to the \emph{LDMS Streams} interface. The \emph{absolute timestamp} is also included in this message with the given name "timestamp". The LDMS transport then transports the I/O event data to a \emph{DSOS} database where Grafana can access and query this data. the \connector currently uses a single unique \emph{LDMS Stream tag} for this data source. For the file level accesses that DXT does not trace or for file level access type that have different name-value pairs, a value of "N/A" or "-1" is given in the JSON message \RED{add fig of json message}.
+
+
+%\RED{
+%\begin{itemize}
+%\item Explain how LDMS is integrated into Darshan. Give an overview on how we implement LDMS Streams into the Darshan DXT section to collect run time I/O data and push to a JSON file that then gets aggregated by LDMS and stored to SOS. Then explain how this stored data is then queried and displayed in a Grafana dashboard.
+%\item Add a pic of current Darshan LDMS integration setup (.png) 
+%\end{itemize}
+%}
 
 \section{Use Cases}\label{AA}
-In this section, we discuss the correlation of I/O performance variation with network congestion and file system contention.
+This section provides various use cases of the \Darshan timeseries data that will be used to create new meaningful analyses and insights in the I/O performance variability during an application run.
 
 \RED{Explain the different scenarios we will be testing:
 \begin{itemize}
@@ -211,6 +233,7 @@ quantities and units. For example, write ``Temperature (K)'', not
 \RED{FIX REFERENCES}
 %\bibliographystyle{IEEEtran}
 %\bibliography{IEEEabrv,./SNL}
+
 
 \end{document}
 
