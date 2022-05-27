@@ -134,8 +134,15 @@ Darshan is divided into two main parts: 1) \emph{darshan-runtime} which contains
 
 Darshan tracks the start, duration and end time of an application run via the C function \emph{clock\_gettime()} and converts the result into seconds and passes the result to a struct that is then used to report the summary log files. Therefore, in order to retrieve the \emph{absolute timestamp} and include it into the I/O event data during run time, a time struct pointer was added to the function call that used \emph{clock\_gettime()} in \emph{darshan-runtime}. This pointer was passed through all of Darshan's modules and the \emph{absolute timestamp} was collected. This was the preferred method as it required minimal changes to Darshan's source code and no additional overhead and latency between the function call and recording of the \emph{absolute timestamp}.  
 
-\subsection{LDMS}
+\subsection{LDMS Streams}
 The word, \emph{LDMSD}, refers to an LDMS daemon that provides the capability of data collection, transport and storage and their \emph{plugins} determine the functionality of these capabilities. Daemons on the compute nodes run sampler plugins and transport is achieved through multi-hop \emph{aggregation}. LDMS had two levels of aggregator daemons \RED{cite} which can utilize storage plugins to store any sets of data into various formats so long as it's specified beforehand. This can be seen in \RED{add LDMS fig}
+\begin{figure}
+  \centering
+    %\includegraphics[trim=0.2cm 8.5cm 12cm 0cm ,clip,width=0.9\linewidth]{figs/fig_kokkos_ldms.pdf}
+    \includegraphics[width=1\linewidth]{figs/darshan-connector.PNG}
+\caption{\RED{ADD CAPTION}}.
+\label{f:Darshan Connector}
+\end{figure}
 
 The \Darshan leverages the LDMS transport to support the injection and transport of application I/O data which requires a \emph{push-based} method to reduce the amount of memory consumed and data loss on the node as well as reduce the latency between the time in which the event occurs and when it is recorded. A \emph{pull-based} method would require a buffering to hold an unknown number of events between pulls. Also, the transported data format needs to support  \emph{variable-length} events because the I/O data may will most likely vary in size. 
 
@@ -147,14 +154,21 @@ The most recent version of Darshan allows for full tracing of application I/O wo
 
 
 The \connector functionality collects both DXT data and Darshan's original I/O data and optionally publishes the message in JSON format to the \emph{LDMS Streams} interface. The \emph{absolute timestamp} is also included in this message with the given name "timestamp". The LDMS transport then transports the I/O event data to a \emph{DSOS} database where Grafana can access and query this data. the \connector currently uses a single unique \emph{LDMS Stream tag} for this data source. For the file level accesses that DXT does not trace or for file level access type that have different name-value pairs, a value of "N/A" or "-1" is given in the JSON message \RED{add fig of json message}.
+\begin{figure}
+  \centering
+    %\includegraphics[trim=0.2cm 8.5cm 12cm 0cm ,clip,width=0.9\linewidth]{figs/fig_kokkos_ldms.pdf}
+    \includegraphics[width=1.1\linewidth]{figs/darshan-csv-json.png}
+\caption{\RED{ADD CAPTION}}.
+\label{f:CSV Header and Output}
+\end{figure}
 
 \section{Additional Components}
 This section will provide a high level overview on how and why the \Darshan approach implemented the DSOS and Grafana tools for storage, analysis and visualization. 
-\subsection{Storage}
+\subsection{Storage: DSOS Database}
 DSOS is built on the Scalable Object Store (SOS) database \RED{cite} and was intended to address the domain-specific needs of large-scale HPC monitoring. It was chosen as the preferred database because it allows for interaction via a command line interface which allows for fast query testing and data examination. DSOS also provides scalable data ingest and the ability to query large volumes of data which is required for the large amounts of data to be ingested and stored. %However, a different storage that had similar capabilities could be used instead. 
 To sort though the published \emph{LDMS Streams} data, combinations of the job ID, rank and timestamp are used to create joint indices where each index provided a different query performance. An example of this is using \texttt{job\_rank\_time} which will order the data by job, rank then timestamp and then search the data by a specific rank within a specific job over time.
 
-\subsection{Analysis and Visualization}
+\subsection{Analysis and Visualization: HPC Web Services}
 The HPC Web Services \RED{cite} is an infrastructure that consists of the analysis and visualization components of this approach. Any data queries start from a front-end application and transferred to a back-end application that are running on an HPC cluster. In this case the front-end website is Grafana \RED{cite} and the back-end consists of Python analysis modules. The HPC Web Services also provide instant analysis where data can be analyzed and viewed in real time as opposed to the traditional method of querying the results of analyzed data from a separate database.
 
 Grafana is an open-source visualization application that provides various charts, graphs and alerts for supported data sources. It can support multiple data formats but is best suited for timeseries data. It has storage plugins for many database technologies in order to query and render data from multiple data sources. The \Darshan implemented a storage plugin for the DSOS database in order to query this data and visualize it on the Grafana web interface \RED{cite}. 
@@ -193,54 +207,16 @@ This section covers what significance of the approach to collecting runtime appl
 }  
 
 \section{Future Work}
+This paper covered the \Darshan design and implementation of the \connector which collected I/O data from an I/O characterization tool to create a new timeseries that allows for further insights into I/O behavior and patterns. Five key components were used to develop this design which were the I/O event data (Darshan), data collection (LDMS Streams), storage (DSOS), analysis (Python modules) and visualization (Grafana).
+These results of this design proved to enhance both LDMS and Darshan tools as well as create new insights and provide a better understanding to application I/O performance and behavior. 
 
-\RED{
-\begin{itemize}
-    \item Explain the purpose of the future work.
-    \item What are our plans for this connector? Will we be implementing \emph{LDMS Streams} across other I/O characterization tools, expanding the streams capabilities on Darshan, testing across other applications, etc.?
-\end{itemize}
-}  
-
-\subsection{Figures and Tables}
-\paragraph{Positioning Figures and Tables} Place figures and tables at the top and 
-bottom of columns. Avoid placing them in the middle of columns. Large 
-figures and tables may span across both columns. Figure captions should be 
-below the figures; table heads should appear above the tables. Insert 
-figures and tables after they are cited in the text. Use the abbreviation 
-``Fig.~\ref{fig}'', even at the beginning of a sentence.
-
-\begin{table}[htbp]
-\caption{Table Type Styles}
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-\textbf{Table}&\multicolumn{3}{|c|}{\textbf{Table Column Head}} \\
-\cline{2-4} 
-\textbf{Head} & \textbf{\textit{Table column subhead}}& \textbf{\textit{Subhead}}& \textbf{\textit{Subhead}} \\
-\hline
-copy& More table copy$^{\mathrm{a}}$& &  \\
-\hline
-\multicolumn{4}{l}{$^{\mathrm{a}}$Sample of a Table footnote.}
-\end{tabular}
-\label{tab1}
-\end{center}
-\end{table}
-
-\begin{figure}[htbp]
-\centerline{\includegraphics{fig1.png}}
-\caption{Example of a figure caption.}
-\label{fig}
-\end{figure}
-
-Figure Labels: Use 8 point Times New Roman for Figure labels. Use words 
-rather than symbols or abbreviations when writing Figure axis labels to 
-avoid confusing the reader. As an example, write the quantity 
-``Magnetization'', or ``Magnetization, M'', not just ``M''. If including 
-units in the label, present them within parentheses. Do not label axes only 
-with units. In the example, write ``Magnetization (A/m)'' or ``Magnetization 
-\{A[m(1)]\}'', not just ``A/m''. Do not label axes with a ratio of 
-quantities and units. For example, write ``Temperature (K)'', not 
-``Temperature/K''.
+The next steps are to further expand the \connector and it's capabilities by including more I/O event data and demonstrating advanced insights into correlations between I/O performance and system behavior. We hope the \Darshan will be available as an optional "module" plugin in Darshan so their users may use this tool to better understand their applications I/O performance across HPC systems and clusters. 
+%\RED{
+%\begin{itemize}
+%    \item Explain the purpose of the future work.
+%    \item What are our plans for this connector? Will we be implementing \emph{LDMS Streams} across other I/O characterization tools, expanding the streams capabilities on Darshan, testing across other applications, etc.?
+%\end{itemize}
+%}  
 
 \section*{References}
 
