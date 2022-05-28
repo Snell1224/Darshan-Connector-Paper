@@ -87,7 +87,7 @@ The \emph{absolute timestamps} provides run time (e.g. timeseries) data that use
 \section{Approach}
 
 %Therefore, this paper provides an existing system level system
-This section provides a high-level overview of the design and implementation of the \Darshan and the components used to create this infrastructure. This approach will provide run time insights about application I/O by using the following components:
+This section provides a high-level overview of the design and implementation of the \Darshan and the components used to create this infrastructure. This approach will provide run time insights about application I/O by using the following tools:
 \begin{enumerate}
     \item The I/O characterization tool, Darshan \RED{cite} to collect application I/O behavior and patterns. However, this tool does not report the \emph{absolute timestamp} so modifications to the code were made to expose this data.
     \item The Lightweight Distributed Metric Service (LDMS) \RED{cite} to provide and transport live run time data feed about application I/O events.
@@ -140,7 +140,7 @@ The word, \emph{LDMSD}, refers to an LDMS daemon that provides the capability of
   \centering
     %\includegraphics[trim=0.2cm 8.5cm 12cm 0cm ,clip,width=0.9\linewidth]{figs/fig_kokkos_ldms.pdf}
     \includegraphics[width=1\linewidth]{figs/darshan-connector.PNG}
-\caption{\RED{ADD CAPTION}}.
+\caption{Overview of the \connector design and how it collects I/O data for each read, write, open and close events per rank from Darshan with little-no interference. The LDMS library must be linked against the Darshan build in order to utilize the \emph{LDMS Streams} functionality and store plugins.}
 \label{f:Darshan Connector}
 \end{figure}
 
@@ -153,17 +153,20 @@ This leads to the LDMS \emph{publish-subscribe bus} capability , \emph{LDMS Stre
 The most recent version of Darshan allows for full tracing of application I/O workloads using their Darshan eXtended Tracing (DXT) instrumentation module which can be enabled and disabled as desired at runtime. This provides high-fidelity traces fo an application's I/O workload vs Darshan's traditional I/O summary data \RED{cite}. DXT currently traces POSIX and MPI-IO layers \RED{cite}. This design leverages the additional I/O tracing Darshan's DXT provides through the new \connector capability.
 
 
-The \connector functionality collects both DXT data and Darshan's original I/O data and optionally publishes the message in JSON format to the \emph{LDMS Streams} interface. The \emph{absolute timestamp} is also included in this message with the given name "timestamp". The LDMS transport then transports the I/O event data to a \emph{DSOS} database where Grafana can access and query this data. the \connector currently uses a single unique \emph{LDMS Stream tag} for this data source. For the file level accesses that DXT does not trace or for file level access type that have different name-value pairs, a value of "N/A" or "-1" is given in the JSON message \RED{add fig of json message}.
+The \connector functionality collects both DXT data and Darshan's original I/O data and optionally publishes the message in JSON format to the \emph{LDMS Streams} interface. The \emph{absolute timestamp} is also included in this message with the given name "timestamp". The LDMS transport then transports the I/O event data to a \emph{DSOS} database where Grafana can access and query this data. the \connector currently uses a single unique \emph{LDMS Stream tag} for this data source. For the file level accesses that DXT does not trace or for file level access type that have different name-value pairs, a value of "N/A" or "-1" is given in the JSON message in fig \RED{add fig of json message}. 
+
+Depending on the \texttt{"type"} name, the absolute directory of the Darshan file output and executable will be recorded and published to \emph{LDMS Streams}. This decision is based on the \texttt{"type"} name that is set to either \texttt{"MET"}(e.g. "meta") or \texttt{"MOD"}(e.g. "module"). This name is set to "MET" only for open I/O events as this is where Darshan records all I/O data that will not change until the application is complete (e.g. rank, file, node name, etc.). The "MOD" is set for all other I/O events to reduce the message size and latency when sending the data through an HPC production system pipeline.
+
 \begin{figure}
   \centering
     %\includegraphics[trim=0.2cm 8.5cm 12cm 0cm ,clip,width=0.9\linewidth]{figs/fig_kokkos_ldms.pdf}
     \includegraphics[width=1.1\linewidth]{figs/darshan-csv-json.png}
-\caption{\RED{ADD CAPTION}}.
+\caption{Output of a simple mpi-io test run. The JSON message is what is being published to the \emph{LDMS Streams} interface that then converts it to CSV and store to \emph{DSOS}. The \texttt{name:value} pairs in light blue indicate meta data stored. while the light purple indicates the data that does not apply to the POSIX file level access and are given the values of "N/A" or "-1".}
 \label{f:CSV Header and Output}
 \end{figure}
 
-\section{Additional Components}
-This section will provide a high level overview on how and why the \Darshan approach implemented the DSOS and Grafana tools for storage, analysis and visualization. 
+%\section{Additional Components}
+%This section will provide a high level overview on how and why the \Darshan approach implemented the DSOS and Grafana tools for storage, analysis and visualization. 
 \subsection{Storage: DSOS Database}
 DSOS is built on the Scalable Object Store (SOS) database \RED{cite} and was intended to address the domain-specific needs of large-scale HPC monitoring. It was chosen as the preferred database because it allows for interaction via a command line interface which allows for fast query testing and data examination. DSOS also provides scalable data ingest and the ability to query large volumes of data which is required for the large amounts of data to be ingested and stored. %However, a different storage that had similar capabilities could be used instead. 
 To sort though the published \emph{LDMS Streams} data, combinations of the job ID, rank and timestamp are used to create joint indices where each index provided a different query performance. An example of this is using \texttt{job\_rank\_time} which will order the data by job, rank then timestamp and then search the data by a specific rank within a specific job over time.
@@ -191,8 +194,7 @@ This section provides various use cases of the \Darshan timeseries data that wil
     \item Explain what each application does, why it's being tested and how the test was performed (i.e. number of nodes, etc.)
     \item Explain the analysis used to analyze the I/O data and how they provide further insight into the I/O behavior and can allow for correlations between I/O performance and system behavior.
     \item show Grafana graphs, Darshan output (maybe) JSON and any tables (if applicable).
-\end{itemize}
-}
+\end{itemize}}
 
 
 \subsection{Results}
@@ -211,6 +213,7 @@ This paper covered the \Darshan design and implementation of the \connector whic
 These results of this design proved to enhance both LDMS and Darshan tools as well as create new insights and provide a better understanding to application I/O performance and behavior. 
 
 The next steps are to further expand the \connector and it's capabilities by including more I/O event data and demonstrating advanced insights into correlations between I/O performance and system behavior. We hope the \Darshan will be available as an optional "module" plugin in Darshan so their users may use this tool to better understand their applications I/O performance across HPC systems and clusters. 
+
 %\RED{
 %\begin{itemize}
 %    \item Explain the purpose of the future work.
@@ -226,3 +229,4 @@ The next steps are to further expand the \connector and it's capabilities by inc
 
 
 \end{document}
+
