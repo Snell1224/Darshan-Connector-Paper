@@ -57,10 +57,11 @@ email address or ORCID}
 
 \begin{abstract}
 \RED{ Might need to redo this later}
-Improving I/O performance usually depends on a large number of components such as the applications access pattern, the computing system architecture, I/O libraries, file system, mode of access, data size, and the storage configuration and layout. Changes in these components can create high variations in I/O performance which could lead to many negative effects such as network congestion, poor scheduling and indicates a lack of understanding I/O variability. It also makes it difficult to detect the root cause of variations in I/O performance 
+Allowing for further insight into I/O behavior and patterns has become increasingly important. I/O performance depends on a large number of components such as the applications access pattern, the computing system architecture, I/O libraries, file system, mode of access, data size, and the storage configuration and layout. Changes in these components can create high variations in I/O performance which could lead to many negative effects such as network congestion, poor scheduling and indicates a lack of understanding I/O variability. Not having the further insight into the I/O behavior makes it difficult to identify which of these components are affecting I/O variability and behavior.  
 %and most of the time strong correlations of I/O analyses across different applications are required to identify a possible solution. 
-This paper introduces a unique methodology that provides low latency monitoring of I/O performance variations during run time. This is done through the implementation of a system-level infrastructure that continuously collects I/O application data from an existing I/O characterization tool. This allows insights into the I/O application performance and the components affecting it through the analyses and visualizations.
-This methodology addresses the challenge of poor understanding of throughput for system-specific behaviors and variations of I/O performance of similar applications across a system. This paper demonstrates the implementation and assessments of this method and how it can be used on various HPC applications.
+This paper introduces a unique framework that provides low latency monitoring of I/O event data during run time. This is done through the implementation of a system-level infrastructure that continuously collects I/O application data from an existing I/O characterization tool. This allows insights into the I/O application behavior and the components affecting it through analyses and visualizations.
+The framework allows users to better understand throughput for system-specific behaviors, variations of I/O performance of similar applications across a system and identify correlations between I/O and system behavior. 
+%This paper demonstrates the implementation and design of this framework and how it can be used on various HPC applications.
 \end{abstract}
 
 \section{Introduction}
@@ -75,13 +76,22 @@ Generally, the I/O performance is analyzed post-run by application developers, r
 
 The \emph{absolute timestamps} provides run time (e.g. timeseries) data that users and developers could use to better understand how these changing components affect the I/O performance variation as well as provide further insight into the application I/O pattern.
 
-Therefore, we introduce our \Darshan approach that incorporates the \emph{absolute timestamps} to provide a run time set of application I/O data for a deeper insight into the I/O behavior and performance. This is a work in progress paper and will be structured in the following format with the main key factors being:
+Therefore, we introduce our \Darshan approach that incorporates the \emph{absolute timestamps} to provide a run time set of application I/O data for a deeper insight into the I/O behavior and performance. This is a work in progress paper and will cover the following goals:
 \begin{itemize}
     \item Describe the approach used to expose absolute timestamp data from an existing I/O characterization tool and utilizing this data to help identify and better understand any root cause(s) of application I/O performance variation run time.
     \item Provide a high level overview of the implementation process and other tools used to collect application I/O data during run time.
     \item Demonstrate use cases of the \connector for various applications on a production HPC system. 
     \item How this new approach provides the ability to collect and assist in the detection of application I/O performance variances across multiple applications. 
 \end{itemize}
+
+\section{Background}
+Darshan is a lightweight I/O characterization tool that captures I/O access pattern information from HPC applications.~\cite{Darshan} This will be described in detail in Section III. This I/O characterization tool will be used for tracing and collecting detailed I/O event data.
+
+The Lightweight Distributed Metric Service (LDMS) is a system that collects and transports data.~\cite{ovisweb} OVIS which is a modular system for collecting, analyzing, storing, transporting and visualization HPC data. This framework will be utilizing LDMS to collect Darshan's I/O event data during execution time and store the \emph{timestamped} data to a database.
+
+The Distributed Scalable Object Store (DSOS) is a storage database designed to efficiently manage large volumes of HPC data~\cite{sosgithub}. It supports high data injection rates, has an enhanced query performance and flexible storage management. This database will be used for storing and querying the I/O event data. 
+
+The HPC Web Services is an analysis and visualization infrastructure ~\cite{ClusterAV}, that integrates an open-source web application, Grafana~\cite{grafana-website} with python modules for analysis and visualization of HPC data. Grafana provides dashboards that can contain charts, graphs of various data sources and allow a user to view their python module analyses and share their findings with others. This framework will leverage the HPC Web Services for runtime analyses and visualizations of the I/O event data.
 
 \section{Related Work}
 Extensive research has already been proposed in literature to provide further insights into I/O behavior. The PASSION Runtime Library for parallel I/O proposed by Syracuse University~\cite{RuntimeLibrary-ParallelI/O} that optimizes I/O intensive applications through Data Prefetching and Data Sieving, the IOPin: Runtime Profiling of Parallel I/O in HPC
@@ -98,10 +108,10 @@ This section provides a high-level overview of the design and implementation of 
 \RED{Might comment out to the end of the enumerate list to remove the "fluff"} 
 This approach will provide run time insights about application I/O by using the following tools:
 \begin{enumerate}
-    \item The I/O characterization tool, Darshan~\cite{Darshan} to collect application I/O behavior and patterns. However, this tool does not report the \emph{absolute timestamp} so modifications to the code were made to expose this data.
-    \item The Lightweight Distributed Metric Service (LDMS)~\cite{ldmsgithubwiki} to provide and transport live run time data feed about application I/O events.
-    \item A storage database, Distributed Scalable Object Store (DSOS)~\cite{sosgithub} to store and query large amounts of data generated on a production HPC system.
-    \item An analysis and visualization infrastructure, HPC Web Services~\cite{ClusterAV}, that use Grafana~\cite{grafana-website} and python analysis modules to present run time I/O data. The timeseries data will enable the user to identify when a variability occurs as well as create new meaningful analyses.
+    \item The I/O characterization tool, Darshan, to collect application I/O behavior and patterns. However, this tool does not report the \emph{absolute timestamp} so modifications to the code were made to expose this data.
+    \item LDMS to provide and transport live run time data feed about application I/O events.~\cite{ldmsgithubwiki}
+    \item DSOS to store and query large amounts of data generated on a production HPC system.~\cite{sosgithub}
+    \item HPC Web Services to present run time I/O data. The timeseries data will enable the user to identify when a variability occurs as well as create new meaningful analyses.~\cite{ClusterAV}
 \end{enumerate}
 
 Darshan is used to tune applications for increased scientific productivity or performance and is suitable for full time deployment for workload characterization of large systems~\cite{darshan-webpage}. It provides detailed statistics about various level file accesses made by MPI and non-MPI applications which can be enabled or disabled as desired. These levels include POSIX, STDIO, LUSTRE and MDHIM for non-MPI applications and MPI-IO, HDF5 and some PnetCDF for MPI applications~\cite{darshan-runtime}. This functionality provides users with a summary of I/O behavior and patterns from an application run but it does so post-run. Therefore, it does not allow insights into \emph{run time} I/O behavior and patterns which makes it nearly impossible to identify the root cause(s) of I/O variability and when this occurs. 
