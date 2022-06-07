@@ -35,7 +35,7 @@ The most recent version of Darshan allows for full tracing of application I/O wo
 
 The \connector functionality collects both DXT data and Darshan's original I/O data and optionally publishes a message in JSON format to the \emph{LDMS Streams} interface as seen in Figure 3. The \emph{absolute timestamp} is also included in this message with the given name "timestamp". The LDMS transport then transports the I/O event data to a \emph{DSOS} database where Grafana can access and query this data. the \connector currently uses a single unique \emph{LDMS Stream tag} for this data source. For the file level accesses that DXT does not trace or for file level access type that have different name-value pairs, a value of "N/A" or "-1" is given in the JSON message. 
 
-Darshan has a large number of metrics it uses for I/O tracing and post-processing calculations. The current stages of this framework collects a subset of these metrics to publish to \emph{LDMS Streams} as seen in Figure 3. These metrics provide the most value to the user as they will provide the ability to create new I/O behavior analyses and insights as well as identify correlations between I/O performance variability and system behavior. The metrics listed in the JSON message are defined as follows: 
+Darshan has a large number of metrics it uses for I/O tracing and post-processing calculations. The current stages of this framework collects a subset of these metrics to publish to \emph{LDMS Streams} as seen in Figure 3. These metrics provide the most value to the user as they will provide the ability to create new I/O behavior analyses and insights as well as identify correlations between I/O performance variability and system behavior. The metric names are listed in the JSON message are defined as follows: 
 
 \begin{itemize}
     \item \texttt{uuid}: The user ID of the job run.
@@ -64,7 +64,7 @@ Darshan has a large number of metrics it uses for I/O tracing and post-processin
     \item\texttt{seg:timestamp}: End time of given operation per rank (in epoch time).
 \end{itemize}
 
-Depending on the \texttt{"type"} name, the absolute directory of the Darshan file output and executable will be recorded and published to \emph{LDMS Streams}. This decision is based on the \texttt{"type"} name that is set to either \texttt{"MET"}(e.g. "meta") or \texttt{"MOD"}(e.g. "module"). This name is set to "MET" only for open I/O events as this is where Darshan records all I/O data that will not change until the application is complete (e.g. rank, file, node name, etc.). The name is set to "MOD" is for all other I/O events to reduce the message size and latency when sending the data through an HPC production system pipeline.
+Depending on the \texttt{"type"} name, the absolute directory of the Darshan file output and executable will be recorded and published to \emph{LDMS Streams}. This is set to either \texttt{"MET"}(e.g. "meta") or \texttt{"MOD"}(e.g. "module"). This name is set to "MET" only for open I/O events as this is where Darshan records all I/O data that will not change until the application is complete (e.g. rank, file, node name, etc.). The name is set to "MOD" is for all other I/O events to reduce the message size and latency when sending the data through an HPC production system pipeline.
 
 \begin{figure}
 	\centering
