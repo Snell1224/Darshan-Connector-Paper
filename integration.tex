@@ -33,15 +33,44 @@ This leads to the LDMS \emph{publish-subscribe bus} capability , \emph{LDMS Stre
 The most recent version of Darshan allows for full tracing of application I/O workloads using their DXT instrumentation module which can be enabled and disabled as desired at runtime. DXT provides high-fidelity traces for an application's I/O workload vs Darshan's traditional I/O summary data and currently traces POSIX and MPI-IO layers~\cite{darshan-runtime}. This design leverages the additional I/O tracing Darshan's DXT provides through the new \connector capability.
 
 
-The \connector functionality collects both DXT data and Darshan's original I/O data and optionally publishes the message in JSON format to the \emph{LDMS Streams} interface. The \emph{absolute timestamp} is also included in this message with the given name "timestamp". The LDMS transport then transports the I/O event data to a \emph{DSOS} database where Grafana can access and query this data. the \connector currently uses a single unique \emph{LDMS Stream tag} for this data source. For the file level accesses that DXT does not trace or for file level access type that have different name-value pairs, a value of "N/A" or "-1" is given in the JSON message in figure \RED{xxx}. 
+The \connector functionality collects both DXT data and Darshan's original I/O data and optionally publishes a message in JSON format to the \emph{LDMS Streams} interface as seen in Figure 3. The \emph{absolute timestamp} is also included in this message with the given name "timestamp". The LDMS transport then transports the I/O event data to a \emph{DSOS} database where Grafana can access and query this data. the \connector currently uses a single unique \emph{LDMS Stream tag} for this data source. For the file level accesses that DXT does not trace or for file level access type that have different name-value pairs, a value of "N/A" or "-1" is given in the JSON message. 
 
-Depending on the \texttt{"type"} name, the absolute directory of the Darshan file output and executable will be recorded and published to \emph{LDMS Streams}. This decision is based on the \texttt{"type"} name that is set to either \texttt{"MET"}(e.g. "meta") or \texttt{"MOD"}(e.g. "module"). This name is set to "MET" only for open I/O events as this is where Darshan records all I/O data that will not change until the application is complete (e.g. rank, file, node name, etc.). The name is set to "MOD" is for all other I/O events to reduce the message size and latency when sending the data through an HPC production system pipeline.
+Darshan has a large number of metrics it uses for I/O tracing and post-processing calculations. The current stages of this framework collects a subset of these metrics to publish to \emph{LDMS Streams} as seen in Figure 3. These metrics provide the most value to the user as they will provide the ability to create new I/O behavior analyses and insights as well as identify correlations between I/O performance variability and system behavior. The metric names are listed in the JSON message are defined as follows: 
+
+\begin{itemize}
+    \item \texttt{uuid}: The user ID of the job run.
+    \item \texttt{exe}: Absolute directory of application executable.
+    \item \texttt{module}: Name of the Darshan module data being collected.
+    \item \texttt{ProducerName}: Name of the compute node the application is running on.
+    \item \texttt{switches}: Number of times access alternated between read and write.
+    \item \texttt{file}: Absolute directory of the filename where the operations are performed.
+    \item \texttt{rank}: Rank of the processes at I/O.
+    \item \texttt{flushes}: Number of times the "flush" operation was performed. For H5F and H5D it is the HDF5 file flush and dataset flush operation counts, respectively.
+    \item \texttt{record\_id}: Darshan file record ID of the file the dataset belongs to.
+    \item \texttt{max\_byte}: Highest offset byte read and written per operation.
+    \item \texttt{type}: The type of JSON data being published. It is either set to \texttt{MOD} for gathering module data or \texttt{MET} for gathering static meta data.
+    \item \texttt{job\_id}: The Job ID of the application run.
+    \item \texttt{op}: Type of operation being performed (i.e. read, write, open, close).
+    \item \texttt{cnt}: The count of the operations performed per module per rank. Resets to 0 after each "close" operation.
+    \item \texttt{seg}: A list containing the following metric names per operation per rank:
+    \item \texttt{seg:pt\_sel}: HDF5 number of different access selections.
+    \item \texttt{seg:dur}: Duration of each operation performed for the given rank. (i.e. a rank takes "X" time to perform a r/w/o/c operation.)
+    \item \texttt{seg:len}: Number of bytes read/written per operation per rank. 
+    \item \texttt{seg:ndims}: HDF5 number of dimensions in dataset's dataspace.
+    \item \texttt{seg:reg\_hslab}: HDF5 number of regular hyperslabs.
+    \item \texttt{seg:irreg\_hslab}: HDF5 number of irregular hyperslabs.
+    \item \texttt{seg:data\_set}: HDF5 dataset name. 
+    \item \texttt{seg:npoints}: HDF5 number of points in dataset's dataspace.
+    \item\texttt{seg:timestamp}: End time of given operation per rank (in epoch time).
+\end{itemize}
+
+Depending on the \texttt{"type"} name, the absolute directory of the Darshan file output and executable will be recorded and published to \emph{LDMS Streams}. This is set to either \texttt{"MET"}(e.g. "meta") or \texttt{"MOD"}(e.g. "module"). This name is set to "MET" only for open I/O events as this is where Darshan records all I/O data that will not change until the application is complete (e.g. rank, file, node name, etc.). The name is set to "MOD" is for all other I/O events to reduce the message size and latency when sending the data through an HPC production system pipeline.
 
 \begin{figure}
 	\centering
 	%\includegraphics[trim=0.2cm 8.5cm 12cm 0cm ,clip,width=0.9\linewidth]{figs/fig_kokkos_ldms.pdf}
 	\includegraphics[trim={0 4cm 0 0},clip, width=1\linewidth]{figs/darshan-csv-json.png}
-	\caption{Output of a simple mpi-io test run. The JSON message is what is being published to the \emph{LDMS Streams} interface that then converts it to CSV and store to \emph{DSOS}. The \texttt{name:value} pairs in light blue indicate meta data stored. while the light purple indicates the data that does not apply to this file level access and are given the values of \texttt{"N/A"} or \texttt{"-1"}.}
+	\caption{Output of a simple mpi-io test run. The JSON message is what is being published to the \emph{LDMS Streams} interface that then converts it to CSV and store to \emph{DSOS}. The \texttt{name:value} pairs in light blue indicate meta data stored while the light purple indicates the data that does not apply to this file level access and are given the values of \texttt{"N/A"} or \texttt{"-1"}. The \texttt{"seg"} is a list containing multiple \texttt{name:value} pairs.}
 	\label{f:CSV Header and Output}
 \end{figure}
 
