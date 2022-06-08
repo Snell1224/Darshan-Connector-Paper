@@ -1,22 +1,52 @@
-\section{Use Cases}\label{AA}
-This section provides various use cases of the \Darshan timeseries data that will be used to create new meaningful analyses and insights in the I/O performance variability during an application run.
+\section{Experimental Methodology}\label{AA}
+In this section we will evaluate our framework using three applications: HACC-IO and MPI-IO benchmarks, and sw4 scientific application using a Cray HPC cluster.
 
-\RED{Explain the different scenarios we will be testing:
-	\begin{itemize}
-		\item Applications: SWFFT, sw4, sw4lite. Standard baseline: mpi-test. 
-		\item Explain what each application does, why it's being tested and how the test was performed (i.e. number of nodes, etc.)
-		\item Explain the analysis used to analyze the I/O data and how they provide further insight into the I/O behavior and can allow for correlations between I/O performance and system behavior.
-		\item show Grafana graphs, Darshan output (maybe) JSON and any tables (if applicable).
-\end{itemize}}
+\begin{table}[]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		File System	& Particles/Rank	& Runtime &	Nodes \\ \hline
+		\multirow{2}{*}{NFS}	& 1000000	& 1210.06 &	16\\ \cline{2-4} 
+		& 2000000	& 2455.60 &	16\\ \hline
+		\multirow{2}{*}{Luster}	& 1000000	&  1476.643 &16 \\ \cline{2-4} 
+		& 2000000	&  ?? &	16 \\ \hline
+	\end{tabular}
+	\caption{HACC-IO run configurations and runtime}
+	\label{table:HACC}
+\end{table}
 
 
-\subsection{Results}
-This section covers what significance of the approach to collecting runtime application I/O data and how the new analyses helped provide more insight into I/O behavior.
-\RED{
-	\begin{itemize}
-		\item Analyse the results of the use cases
-		\item What is the significance of the results?
-		\item Throw in a picture of the Grafana Dashboard for each use case
-		\item How do these results satisfy and solve the problems described in the the "Problems and Approach" section.
-	\end{itemize}
-}  
+\subsection{Applications}
+\begin{itemize}
+	\item HACC-IO is the I/O proxy for the large scientafic Hardware Accelerated Cosmology Code (HACC) an N-body framework that simulates the evolution of mass in the universe, with both short and long range interactions~\cite{habib2013hacc}. The long-range solvers implement an underlying 3D FFT. HACC-IO is an MPI code that simulate the POSIX, MPI collective and MPI independent I/O patterns of HACC and take number of particles per rank as input and filename to write out the simulation data. We ran HACC-IO with several configurations to simulate different work loads on the NFS and Luster file systesms. Table~\ref{table:HACC} shows the different run configurations. 
+	\item HMMER is an suite of applications that profiles hidden Markov model (HMM) to search similar protein sequences~\cite{eddy1992hmmer}. HMMER have a build code that uses MPI to build a database by concatinating multiple profile Stockholm aligment files. In our experment we used the Pfam-A.seed~\cite{sonnhammer1998pfam} file to generate a large size Pfam-A.hmm. We ran HMMER with 32 MPI ranks on one node and we run it in two configurations where we point the database file to NFS and then Luster respectivly. 
+	\item MPI-IO: 
+	\item sw4 is a geodynamics code that solves 3D seismc wave equations with local meshrefinement~\cite{peterssonsw4}. sw4 accept an input file specifies the 3D grid simulation size and we selected a size that uses about 50\% of the available memory to memic a reliestic run of the application.
+\end{itemize}
+%provides various use cases of the \Darshan timeseries data that will be used to create new meaningful analyses and insights in the I/O performance variability during an application run.
+
+\subsection{Evaluation System}
+We experemnet using several I/O loads on Voltrino Cray XC40 system located at Snadia National Labretories. The system have 24  diskless nodes with Dual Intel Xeon Haswell E5-2698 v3 @ 2.30GHz 16 cores, 32 threads / socket, 64 GB DDR3-1866MHz memory, and connceted with a Cray Aries DragonFly interconncet. The machine have to two file systems: network file system (NFS) and luster file system (LFS).\todo{File systems???}
+
+\subsection{Enviroment}
+Voltrino, run LDMS samplers on the compute nodes and run one LDMS agregeator on the headnode. LDMS uses UGNI interface to transfer darshan streams data along with other performance metrics from the compute nodes to the headnode. The aggregeator on the headnode transfer the data to another LDMS aggregeator on another cluster, Shirley, for analysis and storage. Shirley, host the HPC web servises Grafana application and the DSOS database. 
+
+%\RED{Explain the different scenarios we will be testing:
+%	\begin{itemize}
+%		\item Applications: SWFFT, sw4, sw4lite. Standard baseline: mpi-test. 
+%		\item Explain what each application does, why it's being tested and how the test was performed (i.e. number of nodes, etc.)
+%		\item Explain the analysis used to analyze the I/O data and how they provide further insight into the I/O behavior and can allow for correlations between I/O performance and system behavior.
+%		\item show Grafana graphs, Darshan output (maybe) JSON and any tables (if applicable).
+%\end{itemize}}
+
+
+\section{Results}
+This section covers what significance of the approach to collecting runtime application I/O data and how the new analyses helped provide more insight into I/O behavior. 
+%\RED{
+%	\begin{itemize}
+%		\item Analyse the results of the use cases
+%		\item What is the significance of the results?
+%		\item Throw in a picture of the Grafana Dashboard for each use case
+%		\item How do these results satisfy and solve the problems described in the the "Problems and Approach" section.
+%	\end{itemize}
+%}  
