@@ -1,0 +1,10 @@
+JOBID IS: 255657
+# Using mpi-io calls.
+nr_procs = 704, nr_iter = 10, blk_sz = 16777216, coll = 1
+# total_size = 118111600640
+# Write: min_t = 1243.143928, max_t = 1243.146184, mean_t = 1243.144712, var_t = 0.000000
+# Read:  min_t = 5.869832, max_t = 167.369644, mean_t = 86.747722, var_t = 2189.344447
+Write bandwidth = 95.010227 Mbytes/sec
+Read bandwidth = 705.693086 Mbytes/sec
+The DiffOfTime = 1414.876351949
+111G	/projects/ovis/tmp/mpi_io_test_nC.tmp.dat

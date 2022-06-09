@@ -1,0 +1,8 @@
+JOBID IS: 255670
+-------- Aggregate Performance --------
+ WRITE Checkpoint Perf: 452.6 BW[MB/s] 97305165824 Bytes 205.032 MaxTime[sec] 
+-------- Aggregate Performance --------
+ READ Restart Perf: 382.704 BW[MB/s] 110164901888 Bytes 274.524 MaxTime[sec] 
+ CONTENTS VERIFIED... Success 
+The DiffOfTime = 484.103408578
+91G	/lscratch/ovis/darshanTest/darshan-Part00000000-of-00000001.data
