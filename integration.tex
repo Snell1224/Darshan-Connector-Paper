@@ -64,7 +64,7 @@ Darshan has a large number of metrics it uses for I/O tracing and post-processin
     \item\texttt{seg:timestamp}: End time of given operation per rank (in epoch time).
 \end{itemize}
 
-Depending on the \texttt{"type"} name, the absolute directory of the Darshan file output and executable will be recorded and published to \emph{LDMS Streams}. This is set to either \texttt{"MET"}(e.g. "meta") or \texttt{"MOD"}(e.g. "module"). This name is set to "MET" only for open I/O events as this is where Darshan records all I/O data that will not change until the application is complete (e.g. rank, file, node name, etc.). The name is set to "MOD" is for all other I/O events to reduce the message size and latency when sending the data through an HPC production system pipeline.
+Depending on the \texttt{"type"} name, the absolute directory of the Darshan file output and executable will be recorded and published to \emph{LDMS Streams}. If \texttt{"type"} is set to \texttt{"MET"}(e.g. "meta") then the absolute directories will be recorded otherwise it will be "N/A" if set to \texttt{"MOD"}(e.g. "module"). The \texttt{"type"} is set to "MET" only for open I/O events as this is where Darshan records all I/O data that will not change until the application is complete (e.g. rank, file, node name, etc.). The name is set to "MOD" is for all other I/O events to reduce the message size and latency when sending the data through an HPC production system pipeline.
 
 \begin{figure}
 	\centering
