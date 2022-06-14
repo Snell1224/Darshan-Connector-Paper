@@ -35,8 +35,27 @@ The most recent version of Darshan allows for full tracing of application I/O wo
 
 The \connector functionality collects both DXT data and Darshan's original I/O data and optionally publishes a message in JSON format to the \emph{LDMS Streams} interface as seen in Figure 3. The \emph{absolute timestamp} is also included in this message with the given name "timestamp". The LDMS transport then transports the I/O event data to a \emph{DSOS} database where Grafana can access and query this data. the \connector currently uses a single unique \emph{LDMS Stream tag} for this data source. For the file level accesses that DXT does not trace or for file level access type that have different name-value pairs, a value of "N/A" or "-1" is given in the JSON message. 
 
-Darshan has a large number of metrics it uses for I/O tracing and post-processing calculations. The current stages of this framework collects a subset of these metrics to publish to \emph{LDMS Streams} as seen in Figure 3. These metrics provide the most value to the user as they will provide the ability to create new I/O behavior analyses and insights as well as identify correlations between I/O performance variability and system behavior. The metric names are listed in the JSON message are defined as follows: 
+Darshan has a large number of metrics it uses for I/O tracing and
+post-processing calculations. The current stages of this framework
+collects a subset of these metrics to publish to \emph{LDMS Streams},
+as presented in Figure \ref{f:CSVHeaderandOutput}. These metrics
+provide the most value to the user as they will provide the ability to
+create new I/O behavior analyses and visualizations to get further
+insights of the application I/O behavior, and reveal correlations
+between I/O performance variability and system behavior.
 
+Table \ref{table:metrics} depicts the names and definition of each
+metric in the JSON file. Depending on the \texttt{"type"} input, the
+absolute directory of the Darshan file output and executable will be
+recorded and published to \emph{LDMS Streams}. If \texttt{"type"} is
+set to \texttt{"MET"} (e.g. "meta"), the absolute directories will be
+recorded. Otherwise, it will receive the value "N/A" if set to
+\texttt{"MOD"}(e.g. "module"). The \texttt{"type"} will be set to
+"MET" for open I/O events, which are the Darshan I/O records that have
+permanent values during the application execution, such as the rank,
+file and node name. The \texttt{"type"} is set to "MOD" for all other
+I/O events to reduce the message size and latency when sending the
+data through an HPC production system pipeline.
 
 \begin{table*}[h]
   \centering
@@ -72,17 +91,23 @@ Darshan has a large number of metrics it uses for I/O tracing and post-processin
         \texttt{seg:timestamp} & End time of given operation per rank (in epoch time)\\ \hline          
 	\end{tabular}}
 	\caption{Metrics defined in the JSON file.}
-	\label{table:metadata}
+	\label{table:metrics}
       \end{table*}
       
-
-Depending on the \texttt{"type"} name, the absolute directory of the Darshan file output and executable will be recorded and published to \emph{LDMS Streams}. If \texttt{"type"} is set to \texttt{"MET"}(e.g. "meta") then the absolute directories will be recorded otherwise it will be "N/A" if set to \texttt{"MOD"}(e.g. "module"). The \texttt{"type"} is set to "MET" only for open I/O events as this is where Darshan records all I/O data that will not change until the application is complete (e.g. rank, file, node name, etc.). The name is set to "MOD" is for all other I/O events to reduce the message size and latency when sending the data through an HPC production system pipeline.
 
 \begin{figure}
 	\centering
 	%\includegraphics[trim=0.2cm 8.5cm 12cm 0cm ,clip,width=0.9\linewidth]{figs/fig_kokkos_ldms.pdf}
 	\includegraphics[trim={0 4cm 0 0},clip, width=1\linewidth]{figs/darshan-csv-json.png}
-	\caption{Output of a simple mpi-io test run. The JSON message is what is being published to the \emph{LDMS Streams} interface that then converts it to CSV and store to \emph{DSOS}. The \texttt{name:value} pairs in light blue indicate meta data stored while the light purple indicates the data that does not apply to this file level access and are given the values of \texttt{"N/A"} or \texttt{"-1"}. The \texttt{"seg"} is a list containing multiple \texttt{name:value} pairs.}
+	\caption{Output of a mpi-io test run in the JSON format (top
+          image), and the CSV file header (bottom image). The JSON
+          message is published to the \emph{LDMS Streams} interface,
+          which converts it to CSV and store to \emph{DSOS}. The
+          \texttt{name:value} pairs in light blue indicate meta data
+          stored, while the light purple indicates the data that does
+          not apply to this file level access and are given the values
+          of \texttt{"N/A"} or \texttt{"-1"}. The \texttt{"seg"} is a
+          list containing multiple \texttt{name:value} pairs.}
 	\label{f:CSV Header and Output}
 \end{figure}
 
@@ -102,7 +127,7 @@ Grafana is an open-source visualization application that provides various charts
 	%\includegraphics[trim=0.2cm 8.5cm 12cm 0cm ,clip,width=0.9\linewidth]{figs/fig_kokkos_ldms.pdf}
 	\includegraphics[trim=3cm 2cm 0cm 0cm, clip,width=1.2\linewidth]{figs/darshan-integration.png}
 	\caption{Overview of the \Darshan where the \connector is used to intercept the I/O behavior Darshan is collecting utilizes the various tools to publish, store, analyze and view runtime I/O behavior.}
-	\label{f:CSV Header and Output}
+	\label{f:CSVHeaderandOutput}
 \end{figure}
 
 Python analysis modules are used to produce meaningful visualizations on the queried data from the DSOS database. With these modules, queried data is converted into a pandas dataframe to allow for easier application of complex calculations, transformations and aggregations on the data. The type of analysis module is specified in the Grafana web interface. This is where the \Darshan will demonstrate how runtime I/O data will provide further insights and understanding into application I/O behavior, patterns, performance variability and any correlations these have with the system behavior.   
