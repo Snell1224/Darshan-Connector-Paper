@@ -37,32 +37,44 @@ The \connector functionality collects both DXT data and Darshan's original I/O d
 
 Darshan has a large number of metrics it uses for I/O tracing and post-processing calculations. The current stages of this framework collects a subset of these metrics to publish to \emph{LDMS Streams} as seen in Figure 3. These metrics provide the most value to the user as they will provide the ability to create new I/O behavior analyses and insights as well as identify correlations between I/O performance variability and system behavior. The metric names are listed in the JSON message are defined as follows: 
 
-\begin{itemize}
-    \item \texttt{uuid}: The user ID of the job run.
-    \item \texttt{exe}: Absolute directory of application executable.
-    \item \texttt{module}: Name of the Darshan module data being collected.
-    \item \texttt{ProducerName}: Name of the compute node the application is running on.
-    \item \texttt{switches}: Number of times access alternated between read and write.
-    \item \texttt{file}: Absolute directory of the filename where the operations are performed.
-    \item \texttt{rank}: Rank of the processes at I/O.
-    \item \texttt{flushes}: Number of times the "flush" operation was performed. For H5F and H5D it is the HDF5 file flush and dataset flush operation counts, respectively.
-    \item \texttt{record\_id}: Darshan file record ID of the file the dataset belongs to.
-    \item \texttt{max\_byte}: Highest offset byte read and written per operation.
-    \item \texttt{type}: The type of JSON data being published. It is either set to \texttt{MOD} for gathering module data or \texttt{MET} for gathering static meta data.
-    \item \texttt{job\_id}: The Job ID of the application run.
-    \item \texttt{op}: Type of operation being performed (i.e. read, write, open, close).
-    \item \texttt{cnt}: The count of the operations performed per module per rank. Resets to 0 after each "close" operation.
-    \item \texttt{seg}: A list containing the following metric names per operation per rank:
-    \item \texttt{seg:pt\_sel}: HDF5 number of different access selections.
-    \item \texttt{seg:dur}: Duration of each operation performed for the given rank. (i.e. a rank takes "X" time to perform a r/w/o/c operation.)
-    \item \texttt{seg:len}: Number of bytes read/written per operation per rank. 
-    \item \texttt{seg:ndims}: HDF5 number of dimensions in dataset's dataspace.
-    \item \texttt{seg:reg\_hslab}: HDF5 number of regular hyperslabs.
-    \item \texttt{seg:irreg\_hslab}: HDF5 number of irregular hyperslabs.
-    \item \texttt{seg:data\_set}: HDF5 dataset name. 
-    \item \texttt{seg:npoints}: HDF5 number of points in dataset's dataspace.
-    \item\texttt{seg:timestamp}: End time of given operation per rank (in epoch time).
-\end{itemize}
+
+\begin{table*}[h]
+  \centering
+  \resizebox{\textwidth}{!}{
+	\begin{tabular}{|l|l|}
+	\hline
+        \texttt{uuid} & User ID of the job run\\ \hline
+	\texttt{exe} & Absolute directory of the application executable\\ \hline
+	\texttt{module} & Name of the Darshan module data being collected\\ \hline
+        \texttt{ProducerName} & Name of the compute node the application is running on\\ \hline
+	\texttt{switches} & Number of times access alternated between read and write\\ \hline
+	\texttt{file} & Absolute directory of the filename where the operations are performed\\ \hline
+        \texttt{rank} & Rank of the processes at I/O\\ \hline
+	\texttt{flushes} & Number of "flush" operations. It is the HDF5 file
+                           flush operations for H5F, and the dataset flush
+                           operations for H5\\ \hline
+	\texttt{record\_id} & Darshan file record ID of the file the dataset belongs to\\ \hline
+        \texttt{max\_byte} & Highest offset byte read and written per operation\\ \hline
+	\texttt{type} & The type of JSON data being published: \texttt{MOD} for gathering module data or \texttt{MET} for gathering static meta data\\ \hline
+	\texttt{job\_id} & The Job ID of the application run\\ \hline
+	\texttt{op} & Type of operation being performed (i.e. read, write, open, close)\\ \hline
+	\texttt{cnt} & The count of the operations performed per module per rank. Resets to 0 after each "close" operation\\ \hline
+        \texttt{seg} & A list containing metrics names per operation per rank\\ \hline
+	\texttt{seg:pt\_sel} & HDF5 number of different access selections\\ \hline
+	\texttt{seg:dur} & Duration of each operation performed for
+                           the given rank (i.e. a rank takes "X" time to perform a r/w/o/c operation)\\ \hline
+        \texttt{seg:len} & Number of bytes read/written per operation per rank\\ \hline
+	\texttt{seg:ndims} & HDF5 number of dimensions in dataset's dataspace\\ \hline
+	\texttt{seg:reg\_hslab} & HDF5 number of regular hyperslabs\\ \hline
+        \texttt{seg:irreg\_hslab} & HDF5 number of irregular hyperslabs\\ \hline
+	\texttt{seg:data\_set} & HDF5 dataset name\\ \hline
+	\texttt{seg:npoints} & HDF5 number of points in dataset's dataspace\\ \hline
+        \texttt{seg:timestamp} & End time of given operation per rank (in epoch time)\\ \hline          
+	\end{tabular}}
+	\caption{Metrics defined in the JSON file.}
+	\label{table:metadata}
+      \end{table*}
+      
 
 Depending on the \texttt{"type"} name, the absolute directory of the Darshan file output and executable will be recorded and published to \emph{LDMS Streams}. If \texttt{"type"} is set to \texttt{"MET"}(e.g. "meta") then the absolute directories will be recorded otherwise it will be "N/A" if set to \texttt{"MOD"}(e.g. "module"). The \texttt{"type"} is set to "MET" only for open I/O events as this is where Darshan records all I/O data that will not change until the application is complete (e.g. rank, file, node name, etc.). The name is set to "MOD" is for all other I/O events to reduce the message size and latency when sending the data through an HPC production system pipeline.
 
