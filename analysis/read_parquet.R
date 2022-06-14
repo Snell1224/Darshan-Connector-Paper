@@ -5,7 +5,22 @@ library(dplyr)
 library(tidyverse) 
 library(arrow)
 
-# Write parquet file
-df <- read_parquet("./../data/all_csv.parquet")
+args = commandArgs(trailingOnly=TRUE)
 
+# Read parquet file
+df <- read_parquet(args)
 df
+df %>% colnames()
+
+# df %>% distinct(`#uid`)
+df %>% distinct(job_id) %>% arrange(job_id) %>% as.data.frame()
+# df %>% distinct(op)
+# df %>% distinct(rank) %>% arrange(rank) %>% as.data.frame()
+# df %>% distinct(ProducerName)
+# df %>% distinct(execution)
+
+ df %>% group_by(job_id) %>%
+    mutate(time = timestamp - min(timestamp)) -> df.new
+
+write_parquet(df.new, "./../data/hacc_io_new.parquet")
+ 
