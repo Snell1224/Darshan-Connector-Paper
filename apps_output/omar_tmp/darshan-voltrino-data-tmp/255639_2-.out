@@ -1,0 +1,10 @@
+JOBID IS: 255641
+# Using mpi-io calls.
+nr_procs = 704, nr_iter = 10, blk_sz = 16777216, coll = 0
+# total_size = 118111600640
+# Write: min_t = 23.810855, max_t = 345.206681, mean_t = 97.043609, var_t = 6713.768860
+# Read:  min_t = 0.085077, max_t = 0.121646, mean_t = 0.109915, var_t = 0.000012
+Write bandwidth = 342.147494 Mbytes/sec
+Read bandwidth = 970947.689151 Mbytes/sec
+The DiffOfTime = 439.497678092
+111G	/lscratch/spwalto/darshan-only-output/mpi_io_test.tmp.dat

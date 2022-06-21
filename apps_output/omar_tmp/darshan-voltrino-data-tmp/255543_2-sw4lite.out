@@ -1,0 +1,49 @@
+JOBID IS: 255546
+
+* Processing the grid command...
+* Setting nx to 425 to be consistent with h=0.003
+* Setting ny to 425 to be consistent with h=0.003
+* Setting nz to 6665 to be consistent with h=0.003
+* Changing x from 1.27 to 1.272 to be consistent with h=0.003
+* Changing z from 19.99 to 19.992 to be consistent with h=0.003
+* Changing y from 1.27 to 1.272 to be consistent with h=0.003
+
+Global grid sizes (without ghost points)
+Grid         h        Nx        Ny        Nz       Points
+   0     0.003       425       425      6332   1143717500
+   1     0.003       425       425       351     63399375
+Total number of grid points (without ghost points): 1.20712e+09
+
+Done reading input file 
+ no GPUs found
+----------------------------------------------------
+ Making Output Directory: gaussianHill-h0p01/
+		
+... Done!
+----------------------------------------------------
+number of grid point  sources = 216
+number of unique g.p. sources = 216
+setup of sources done
+Running on 512 MPI tasks
+Using OpenMP with 2 threads per MPI task
+starting at time 0 at cycle 1
+Time step 1 t= 0.0011751
+Time step 101 t= 0.118685
+Time step 201 t= 0.236194
+Time step 301 t= 0.353704
+Time step 401 t= 0.471213
+Writing ASCII USGS file, of size 501: gaussianHill-h0p01/sta04.txt
+Writing ASCII USGS file, of size 501: gaussianHill-h0p01/sta01.txt
+Writing ASCII USGS file, of size 501: gaussianHill-h0p01/sta03.txt
+Writing ASCII USGS file, of size 501: gaussianHill-h0p01/sta02.txt
+Time step 500 t= 0.587548
+   Execution time, solver phase 9 minutes 12.7428 seconds 
+
+----------------------------------------
+          Execution time summary 
+  Total      BC comm    BC phys    Scheme     Supergrid  Forcing 
+551.04     156.27     1.4756     312.85     60.986     19.458     Clock tick is 1e-06 seconds
+----------------------------------------
+
+ Total running time: 553.636
+The DiffOfTime = 555.098897021
