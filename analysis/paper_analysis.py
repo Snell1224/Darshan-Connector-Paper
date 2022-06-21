@@ -148,8 +148,8 @@ if __name__=="__main__":
     args = parser.parse_args()
     
     # Read data as dataframe and generate HEATMAP plots
-    # df = pd.read_csv(args.file)
-    df = pd.read_parquet(args.file, engine='pyarrow')
+    df = pd.read_csv(args.file)
+    #df = pd.read_parquet(args.file, engine='pyarrow')
     plots = generate_heatmaps(df, args.output_path)
 
     # Temporal with no normalization

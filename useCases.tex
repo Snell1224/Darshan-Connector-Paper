@@ -1,26 +1,64 @@
 \section{Experimental Methodology}\label{AA}
 In this section we will evaluate our framework using three applications: HACC-IO and MPI-IO benchmarks, and sw4 scientific application using a Cray HPC cluster.
 
+\renewcommand{\arraystretch}{1.2}
+\begin{table}[]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		Application Name & File System	&  Problem Size	& Runtime (seconds) &	Nodes \\ \hline
+		\multirow{4}{*}{HACC-IO} & \multirow{2}{*}{NFS}	& 1000000	& 1210.06 &	\multirow{4}{*}{16} \\ \cline{3-4} 
+		&& 2000000	& 2455.60 &	\\ \cline{2-4}
+		& \multirow{2}{*}{Luster}	& 1000000	&  1476.64 & \\ \cline{3-4} 
+		&& 2000000	&  ?? &	 \\ \hline
+		
+		\multirow{4}{*}{MPI-IO-TEST} & \multirow{2}{*}{NFS}	& 16	& 1210.06 &	\multirow{4}{*}{16} \\ \cline{3-4} 
+		&& 16	& 2455.60 &	\\ \cline{2-4}
+		& \multirow{2}{*}{Luster}	& 16	&  1476.64 & \\ \cline{3-4} 
+		&& 16	&  ?? &	 \\ \hline
+
+	\end{tabular}
+	\caption{Applications run configurations, targeted file system, and runtime}
+	\label{table:all-apps}
+\end{table}
+
+
 \begin{table}[]
 	\centering
 	\begin{tabular}{|c|c|c|c|}
 		\hline
-		File System	& Particles/Rank	& Runtime &	Nodes \\ \hline
+		File System	& Particles/Rank	& Runtime (seconds) &	Nodes \\ \hline
 		\multirow{2}{*}{NFS}	& 1000000	& 1210.06 &	16\\ \cline{2-4} 
 		& 2000000	& 2455.60 &	16\\ \hline
-		\multirow{2}{*}{Luster}	& 1000000	&  1476.643 &16 \\ \cline{2-4} 
+		\multirow{2}{*}{Luster}	& 1000000	&  1476.64 &16 \\ \cline{2-4} 
 		& 2000000	&  ?? &	16 \\ \hline
 	\end{tabular}
 	\caption{HACC-IO run configurations, targeted file system, and runtime}
 	\label{table:HACC}
 \end{table}
 
+\begin{table}[]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		File System	& Block Size (MB)	& Runtime (seconds) &	Nodes \\ \hline
+		\multirow{2}{*}{NFS}	& \multirow{2}{*}{16}	& 1355.35 &	22\\ \cline{3-4} 
+		& 	& ?? &	22\\ \hline
+		\multirow{2}{*}{Luster}	& \multirow{2}{*}{16}	&  270.98 & 22 \\ \cline{3-4} 
+		& 	&  414.34 &	22 \\ \hline
+	\end{tabular}
+	\renewcommand{\arraystretch}{1}
+	\caption{MPI-IO-TEST run configurations, targeted file system, and runtime}
+	\label{table:mpi-io-test}
+\end{table}
+
+
 
 \subsection{Applications}
 \begin{itemize}
-	\item HACC-IO is the I/O proxy for the large scientific Hardware Accelerated Cosmology Code (HACC), an N-body framework that simulates the evolution of mass in the universe with short and long-range interactions~\cite{habib2013hacc}. The long-range solvers implement an underlying 3D FFT. HACC-IO is an MPI code that simulates the POSIX, MPI collective, and MPI independent I/O patterns of HACC and takes a number of particles per rank as input and filename to write out the simulation data. We ran HACC-IO with several configurations to simulate different workloads on the NFS and Luster file systems. Table~\ref{table:HACC} shows the different run configurations. 
-	\item HMMER is a suite of applications that profiles are hidden Markov model (HMM) to search similar protein sequences~\cite{eddy1992hmmer}. HMMER has a building code that uses MPI to build a database by concatenating multiple profiles Stockholm alignment files. In our experiment, we used the Pfam-A.seed~\cite{sonnhammer1998pfam} file to generate a large Pfam-A.hmm. We ran HMMER with 32 MPI ranks on one node, and we ran it in two configurations where we point the database file to NFS and then Luster, respectively. 
-	\item Dashan MPI-IO-TEST benchmark is a darshan utility that exists in the code distribution to test the MPI I/O performance on HPC machines. It can produce iterations of messages with different sizes sent from various MPI ranks. It can also simulate collective and independent MPI I/O methods. We ran several configurations of the benchmark where we \todo{...}
+	\item HACC-IO is the I/O proxy for the large scientific Hardware Accelerated Cosmology Code (HACC), an N-body framework that simulates the evolution of mass in the universe with short and long-range interactions~\cite{habib2013hacc}. The long-range solvers implement an underlying 3D FFT. HACC-IO is an MPI code that simulates the POSIX, MPI collective, and MPI independent I/O patterns of fault tolerance HACC checkpoints. It takes a number of particles per rank as input then write out a simultated checkpoint information into a file and then read it for validation. We ran HACC-IO with several configurations to simulate different workloads on the NFS and Luster file systems. Table~\ref{table:HACC} shows the different run configurations. 
+	\item HMMER is a suite of applications that profiles a hidden Markov model (HMM) to search similar protein sequences~\cite{eddy1992hmmer}. HMMER has a building code called "hmmbuild" that uses MPI to build a database by concatenating multiple profiles Stockholm alignment files. In our experiment, we used the Pfam-A.seed~\cite{sonnhammer1998pfam} file to generate a large Pfam-A.hmm database. We ran HMMER with 32 MPI ranks on one node, and we ran it in two configurations where we point the database file to NFS and then Luster, respectively. 
+	\item Dashan MPI-IO-TEST benchmark is a darshan utility that exists in the code distribution to test the MPI I/O performance on HPC machines. It can produce iterations of messages with different block sizes sent from various MPI ranks. It can also simulate collective and independent MPI I/O methods. We experimented with NFS vs. Luster and collective vs. independent MPI I/O. We ran the benchmark with four configurations on 22 nodes and set the number of iterations to 10 and the block size to 16MB. Table~\ref{table:mpi-io-test} shows the different configuration used.
 	\item sw4 is a geodynamics code that solves 3D seismic wave equations with local meshrefinement~\cite{peterssonsw4}. sw4 accepts an input file that specifies the 3D grid simulation size, and we selected a size that uses about 50\% of the available memory to memic a realistic run of the application.
 \end{itemize}
 %provides various use cases of the \Darshan timeseries data that will be used to create new meaningful analyses and insights in the I/O performance variability during an application run.
@@ -29,7 +67,7 @@ In this section we will evaluate our framework using three applications: HACC-IO
 We experiment using several I/O loads on the Voltrino Cray XC40 system at Sandia National Laboratories. The system has 24  diskless nodes with Dual Intel Xeon Haswell E5-2698 v3 @ 2.30GHz 16 cores, 32 threads/socket, 64 GB DDR3-1866MHz memory, and connected with a Cray Aries DragonFly interconnect. The machine has two file systems: the network file system (NFS) and the Luster file system (LFS).\todo{File systems???}
 
 \subsection{Enviroment}
-Voltrino, run LDMS samplers on the compute nodes and one LDMS aggregator on the head node. LDMS uses the UGNI interface to transfer darshan streams data and other performance metrics from the compute nodes to the head node. The aggregator on the head node transmits the data to another LDMS aggregator on another cluster, Shirley, for analysis and storage. Shirley, host the HPC web services Grafana application and the DSOS database. Darshan can wrap the I/O function in an application by linking the executables staticky and dynamic. Our framework uses dynamic linking to collect darshan data. So we set the \code{LD\_Preload} environment variable to point the path of the darshan library shared objects which have the LDMS streams API calls to send the data through the LDMS daemons live on the compute nodes. 
+Voltrino, run LDMS samplers on the compute nodes and one LDMS aggregator on the head node. LDMS uses the UGNI interface to transfer darshan streams data and other performance metrics from the compute nodes to the head node. The aggregator on the head node transmits the data to another LDMS aggregator on another cluster, Shirley, for analysis and storage. Shirley, host the HPC web services Grafana application and the DSOS database. Darshan can wrap the I/O function in an application by linking the executables staticky and dynamic. Our framework uses dynamic linking to collect darshan data. So we set the \code{LD\_Preload} environment variable to point the path of the darshan library shared objects which have the LDMS streams API calls to send the data through the LDMS compute node daemons. 
 
 %\RED{Explain the different scenarios we will be testing:
 %	\begin{itemize}
