@@ -91,7 +91,7 @@ data through an HPC production system pipeline.
 	\texttt{seg:npoints} & HDF5 number of points in dataset's dataspace\\ \hline
         \texttt{seg:timestamp} & End time of given operation per rank (in epoch time)\\ \hline          
 	\end{tabular}}
-	\caption{Metrics defined in the JSON file.}
+	\caption{Metrics defined in the JSON file published to the \emph{Darshan LDMS Integration}.}
 	\label{table:metrics}
       \end{table*}
       
@@ -100,15 +100,16 @@ data through an HPC production system pipeline.
 	\centering
 	%\includegraphics[trim=0.2cm 8.5cm 12cm 0cm ,clip,width=0.9\linewidth]{figs/fig_kokkos_ldms.pdf}
 	\includegraphics[trim={0 4cm 0 0},clip, width=1\linewidth]{figs/darshan-csv-json.png}
-	\caption{Output of a mpi-io test run in the JSON format (top
-          image), and the CSV file header (bottom image). The JSON
-          message is published to the \emph{LDMS Streams} interface,
-          which converts it to CSV and store to \emph{DSOS}. The
-          \texttt{name:value} pairs in light blue indicate meta data
-          stored, while the light purple indicates the data that does
-          not apply to this file level access and are given the values
-          of \texttt{"N/A"} or \texttt{"-1"}. The \texttt{"seg"} is a
-          list containing multiple \texttt{name:value} pairs.}
+	\caption{Output of a MPI-IO Darshan test run in the JSON
+          format (top image), and the CSV file header (bottom). The
+          JSON message is published to the \emph{LDMS Streams}
+          interface, which converts it to CSV and store to
+          \emph{DSOS}. The \texttt{name:value} pairs in light blue
+          indicate meta data stored, while the light purple indicates
+          the data that does not apply to this file level access and
+          are given the values of \texttt{"N/A"} or \texttt{"-1"}. The
+          \texttt{"seg"} is a list containing multiple
+          \texttt{name:value} pairs.}
 	\label{f:CSV Header and Output}
 \end{figure}
 

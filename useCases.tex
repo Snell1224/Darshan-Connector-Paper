@@ -1,20 +1,23 @@
 \section{Experimental Methodology}\label{sec:methodology}
-In this section we will evaluate our framework using three applications: HACC-IO and MPI-IO benchmarks, and sw4 scientific application using a Cray HPC cluster.
+In this section we evaluate our framework using four applications with
+different I/O behavior: HACC-IO, HMMER, Darshan MPI-IO benchmarks, and
+the sw4 scientific application. We use a Cray HPC cluster and
+performed experiments on the NFS and Lustre file systems.
 
 \subsection{Applications}
 \begin{itemize}
-	\item HACC-IO is the I/O proxy for the large scientific Hardware Accelerated Cosmology Code (HACC), an N-body framework that simulates the evolution of mass in the universe with short and long-range interactions~\cite{habib2013hacc}. The long-range solvers implement an underlying 3D FFT. HACC-IO is an MPI code that simulates the POSIX, MPI collective, and MPI independent I/O patterns of fault tolerance HACC checkpoints. It takes a number of particles per rank as input then write out a simulated checkpoint information into a file and then read it for validation. We ran HACC-IO with several configurations to simulate different workloads on the NFS and Luster file systems. Table~\ref{subtable:HACC} shows the different run configurations. 
-	\item HMMER is a suite of applications that profiles a hidden Markov model (HMM) to search similar protein sequences~\cite{eddy1992hmmer}. HMMER has a building code called "hmmbuild" that uses MPI to build a database by concatenating multiple profiles Stockholm alignment files. In our experiment, we used the Pfam-A.seed~\cite{sonnhammer1998pfam} file to generate a large Pfam-A.hmm database. We ran HMMER with 32 MPI ranks on one node, and we ran it in two configurations where we point the database file to NFS and then Luster, respectively. 
-	\item Dashan MPI-IO-TEST benchmark is a darshan utility that exists in the code distribution to test the MPI I/O performance on HPC machines. It can produce iterations of messages with different block sizes sent from various MPI ranks. It can also simulate collective and independent MPI I/O methods. We experimented with NFS vs. Luster and collective vs. independent MPI I/O. We ran the benchmark with four configurations on 22 nodes and set the number of iterations to 10 and the block size to 16MB. Table~\ref{table:mpi-io-test} shows the different configuration used.
+	\item HACC-IO is the I/O proxy for the large scientific Hardware Accelerated Cosmology Code (HACC), an N-body framework that simulates the evolution of mass in the universe with short and long-range interactions~\cite{habib2013hacc}. The long-range solvers implement an underlying 3D FFT. HACC-IO is an MPI code that simulates the POSIX, MPI collective, and MPI independent I/O patterns of fault tolerance HACC checkpoints. It takes a number of particles per rank as input, writes out a simulated checkpoint information into a file, and then read it for validation. We ran HACC-IO with several configurations to simulate different workloads on the NFS and Lustre file systems. Table~\ref{subtable:HACC} shows the different run configurations. 
+	\item HMMER is a suite of applications that profiles a hidden Markov model (HMM) to search similar protein sequences~\cite{eddy1992hmmer}. HMMER has a building code called "hmmbuild" that uses MPI to build a database by concatenating multiple profiles Stockholm alignment files. In our experiment, we used the Pfam-A.seed~\cite{sonnhammer1998pfam} file to generate a large Pfam-A.hmm database. We ran HMMER with 32 MPI ranks on one node, and we ran it in two configurations where we point the database file to NFS and then Lustre, respectively. 
+	\item MPI-IO-TEST benchmark is a Darshan utility that exists in the code distribution to test the MPI I/O performance on HPC machines. It can produce iterations of messages with different block sizes sent from various MPI ranks. It can also simulate collective and independent MPI I/O methods. We experimented with NFS vs. Lustre and collective vs. independent MPI I/O. We ran the benchmark with four configurations on 22 nodes and set the number of iterations to 10 and the block size to 16MB. Table~\ref{table:mpi-io-test} shows the different configuration used.
 	\item sw4 is a geodynamics code that solves 3D seismic wave equations with local meshrefinement~\cite{peterssonsw4}. sw4 accepts an input file that specifies the 3D grid simulation size, and we selected a size that uses about 50\% of the available memory to memic a realistic run of the application.
 \end{itemize}
 %provides various use cases of the \Darshan timeseries data that will be used to create new meaningful analyses and insights in the I/O performance variability during an application run.
 
 \subsection{Evaluation System}
-We experiment using several I/O loads on the Voltrino Cray XC40 system at Sandia National Laboratories. The system has 24  diskless nodes with Dual Intel Xeon Haswell E5-2698 v3 @ 2.30GHz 16 cores, 32 threads/socket, 64 GB DDR3-1866MHz memory, and connected with a Cray Aries DragonFly interconnect. The machine has two file systems: the network file system (NFS) and the Luster file system (LFS).\todo{File systems???}
+We experiment using several I/O loads on the Voltrino Cray XC40 system at Sandia National Laboratories. The system has 24  diskless nodes with Dual Intel Xeon Haswell E5-2698 v3 @ 2.30GHz 16 cores, 32 threads/socket, 64 GB DDR3-1866MHz memory, and connected with a Cray Aries DragonFly interconnect. The machine has two file systems: the network file system (NFS) and the Lustre file system (LFS).\todo{File systems???}
 
 \subsection{Enviroment}
-Voltrino, run LDMS samplers on the compute nodes and one LDMS aggregator on the head node. LDMS uses the UGNI interface to transfer darshan streams data and other performance metrics from the compute nodes to the head node. The aggregator on the head node transmits the data to another LDMS aggregator on another cluster, Shirley, for analysis and storage. Shirley, host the HPC web services Grafana application and the DSOS database. Darshan can wrap the I/O function in an application by linking the executables staticky and dynamic. Our framework uses dynamic linking to collect darshan data. So we set the \code{LD\_Preload} environment variable to point the path of the darshan library shared objects which have the LDMS streams API calls to send the data through the LDMS compute node daemons. 
+Voltrino, run LDMS samplers on the compute nodes and one LDMS aggregator on the head node. LDMS uses the UGNI interface to transfer Darshan streams data and other performance metrics from the compute nodes to the head node. The aggregator on the head node transmits the data to another LDMS aggregator on another cluster, Shirley, for analysis and storage. Shirley, host the HPC web services Grafana application and the DSOS database. Darshan can wrap the I/O function in an application by linking the executables staticky and dynamic. Our framework uses dynamic linking to collect darshan data. So we set the \code{LD\_Preload} environment variable to point the path of the Darshan library shared objects which have the LDMS streams API calls to send the data through the LDMS compute node daemons. 
 \begin{table}[h]
     \begin{subtable}[h]{0.45\textwidth}
     \vspace{0.5cm}
@@ -23,7 +26,7 @@ Voltrino, run LDMS samplers on the compute nodes and one LDMS aggregator on the 
         \begin{tabular}{|ccccc|}
         \hline
         \multicolumn{5}{|c|}{MPI-IO-TEST}                                                                                                                                \\ \hline
-        \multicolumn{1}{|c|}{File System}      & \multicolumn{2}{c|}{NFS}                                              & \multicolumn{2}{c|}{Luster}                     \\ \hline
+        \multicolumn{1}{|c|}{File System}      & \multicolumn{2}{c|}{NFS}                                              & \multicolumn{2}{c|}{Lustre}                     \\ \hline
         \multicolumn{1}{|c|}{Block Size}       & \multicolumn{2}{c|}{16*1024*1024}                                     & \multicolumn{2}{c|}{16*1024*1024}               \\ \hline
         \multicolumn{1}{|c|}{Iterations}       & \multicolumn{2}{c|}{10}                                               & \multicolumn{2}{c|}{10}                         \\ \hline
         \multicolumn{1}{|c|}{Nodes}            & \multicolumn{2}{c|}{22}                                               & \multicolumn{2}{c|}{22}                         \\ \hline
@@ -43,7 +46,7 @@ Voltrino, run LDMS samplers on the compute nodes and one LDMS aggregator on the 
         \begin{tabular}{|ccccc|}
         \hline
         \multicolumn{5}{|c|}{HACC-IO}                                                                                                                                  \\ \hline
-        \multicolumn{1}{|c|}{File System}      & \multicolumn{2}{c|}{NFS}                                            & \multicolumn{2}{c|}{Luster}                     \\ \hline
+        \multicolumn{1}{|c|}{File System}      & \multicolumn{2}{c|}{NFS}                                            & \multicolumn{2}{c|}{Lustre}                     \\ \hline
         \multicolumn{1}{|c|}{Nodes}            & \multicolumn{2}{c|}{16}                                             & \multicolumn{2}{c|}{16}                         \\ \hline
         \multicolumn{1}{|c|}{Particles/Rank}   & \multicolumn{1}{c|}{5000000}     & \multicolumn{1}{c|}{10000000}    & \multicolumn{1}{c|}{5000000}     & 10000000     \\ \hline
         \multicolumn{5}{|c|}{Average Runtime (s)}                                                                                                                          \\ \hline
@@ -62,7 +65,7 @@ Voltrino, run LDMS samplers on the compute nodes and one LDMS aggregator on the 
         \begin{tabular}{|cclcl|}
         \hline
         \multicolumn{5}{|c|}{HMMER}                                                                                  \\ \hline
-        \multicolumn{1}{|c|}{File System}      & \multicolumn{2}{c|}{NFS}         & \multicolumn{2}{c|}{Luster}      \\ \hline
+        \multicolumn{1}{|c|}{File System}      & \multicolumn{2}{c|}{NFS}         & \multicolumn{2}{c|}{Lustre}      \\ \hline
         \multicolumn{1}{|c|}{Arguments}        & \multicolumn{4}{c|}{with mpi}                                       \\ \hline
         \multicolumn{1}{|c|}{Nodes}            & \multicolumn{2}{c|}{1}           & \multicolumn{2}{c|}{1}           \\ \hline
         \multicolumn{5}{|c|}{Average Runtime (s)}                                                                        \\ \hline
@@ -97,7 +100,7 @@ Voltrino, run LDMS samplers on the compute nodes and one LDMS aggregator on the 
 \end{table}
 
 \subsection{Experiments and Overhead}
-Each application was tested on the Luster and NFS file system with various configurations for each application run. Sw4 was not tested on Luster because....\RED{why did we not test on luster? HMMER could only run on one node because...} All application experiments were repeated 5 times for the \connector{} and Darshan only (i.e. no LDMS implemented) which summed to a total of 110 job submissions. The layout for these runs are shown in Table~\ref{table:apps}.  
+Each application was tested on the Lustre and NFS file system with various configurations for each application run. Sw4 was not tested on Lustre because....\RED{why did we not test on lustre? HMMER could only run on one node because...} All application experiments were repeated 5 times for the \connector{} and Darshan only (i.e. no LDMS implemented) which summed to a total of 110 job submissions. The layout for these runs are shown in Table~\ref{table:apps}.  
 
 
 
