@@ -22,18 +22,20 @@ Voltrino, run LDMS samplers on the compute nodes and one LDMS aggregator on the 
     \vspace{0.5cm}
         \centering
         \setlength\tabcolsep{8pt}
-        \begin{tabular}{|ccccc|}
+       \begin{tabular}{|ccccc|}
         \hline
-        \multicolumn{5}{|c|}{MPI-IO-TEST}                                                                                                       \\ \hline
-        \multicolumn{1}{|c|}{File System} & \multicolumn{2}{c|}{NFS}                                    & \multicolumn{2}{c|}{Lustre}           \\ \hline
-        \multicolumn{1}{|c|}{Nodes}       & \multicolumn{2}{c|}{22}                                     & \multicolumn{2}{c|}{22}               \\ \hline
-        \multicolumn{1}{|c|}{Block Size}  & \multicolumn{2}{c|}{16*1024*1024}                           & \multicolumn{2}{c|}{16*1024*1024}     \\ \hline
-        \multicolumn{1}{|c|}{Iterations}  & \multicolumn{2}{c|}{10}                                     & \multicolumn{2}{c|}{10}               \\ \hline
-        \multicolumn{1}{|c|}{Collective}  & \multicolumn{1}{c|}{Yes}     & \multicolumn{1}{c|}{No}      & \multicolumn{1}{c|}{Yes}    & No      \\ \hline
-        \multicolumn{5}{|c|}{Average Runtime (s)}                                                                                               \\ \hline
-        \multicolumn{1}{|c|}{Darshan}     & \multicolumn{1}{c|}{1376.67} & \multicolumn{1}{c|}{880.46}  & \multicolumn{1}{c|}{249.97} & 428.18  \\ \hline
-        \multicolumn{1}{|c|}{dC}          & \multicolumn{1}{c|}{1355.35} & \multicolumn{1}{c|}{858.68}  & \multicolumn{1}{c|}{270.98} & 414.35  \\ \hline
-        \multicolumn{1}{|c|}{\% Overhead} & \multicolumn{1}{c|}{-1.55\%} & \multicolumn{1}{c|}{-2.47\%} & \multicolumn{1}{c|}{8.41\%} & -3.23\% \\ \hline
+        \multicolumn{5}{|c|}{MPI-IO-TEST}                                                                                                              \\ \hline
+        \multicolumn{1}{|c|}{File System}        & \multicolumn{2}{c|}{NFS}                                    & \multicolumn{2}{c|}{Lustre}           \\ \hline
+        \multicolumn{1}{|c|}{Nodes}              & \multicolumn{2}{c|}{22}                                     & \multicolumn{2}{c|}{22}               \\ \hline
+        \multicolumn{1}{|c|}{Block Size}         & \multicolumn{2}{c|}{16*1024*1024}                           & \multicolumn{2}{c|}{16*1024*1024}     \\ \hline
+        \multicolumn{1}{|c|}{Iterations}         & \multicolumn{2}{c|}{10}                                     & \multicolumn{2}{c|}{10}               \\ \hline
+        \multicolumn{1}{|c|}{Collective}         & \multicolumn{1}{c|}{Yes}     & \multicolumn{1}{c|}{No}      & \multicolumn{1}{c|}{Yes}    & No      \\ \hline
+        \multicolumn{1}{|c|}{Avg. Messages}      & \multicolumn{1}{c|}{50390}   & \multicolumn{1}{c|}{6397}    & \multicolumn{1}{c|}{25770}  & 15676   \\ \hline
+        \multicolumn{1}{|c|}{Rate (msgs/sec)} & \multicolumn{1}{c|}{37}      & \multicolumn{1}{c|}{7}       & \multicolumn{1}{c|}{95}     & 38      \\ \hline
+        \multicolumn{5}{|c|}{Average Runtime (s)}                                                                                                      \\ \hline
+        \multicolumn{1}{|c|}{Darshan}            & \multicolumn{1}{c|}{1376.67} & \multicolumn{1}{c|}{880.46}  & \multicolumn{1}{c|}{249.97} & 428.18  \\ \hline
+        \multicolumn{1}{|c|}{dC}                 & \multicolumn{1}{c|}{1355.35} & \multicolumn{1}{c|}{858.68}  & \multicolumn{1}{c|}{270.98} & 414.35  \\ \hline
+        \multicolumn{1}{|c|}{\% Overhead}        & \multicolumn{1}{c|}{-1.55\%} & \multicolumn{1}{c|}{-2.47\%} & \multicolumn{1}{c|}{8.41\%} & -3.23\% \\ \hline
         \end{tabular}
     \caption{MPI-IO} 
     \label{subtable:mpi-io-test}
@@ -41,38 +43,41 @@ Voltrino, run LDMS samplers on the compute nodes and one LDMS aggregator on the 
     \end{subtable}
     \begin{subtable}[h]{0.5\textwidth}
         \centering
-        \setlength\tabcolsep{5pt}
+        \setlength\tabcolsep{5.5pt}
         \begin{tabular}{|ccccc|}
         \hline
-        \multicolumn{5}{|c|}{HACC-IO}                                                                                                                  \\ \hline
-        \multicolumn{1}{|c|}{File System}    & \multicolumn{2}{c|}{NFS}                                      & \multicolumn{2}{c|}{Lustre}             \\ \hline
-        \multicolumn{1}{|c|}{Nodes}          & \multicolumn{2}{c|}{16}                                       & \multicolumn{2}{c|}{16}                 \\ \hline
-        \multicolumn{1}{|c|}{Particles/Rank} & \multicolumn{1}{c|}{5000000}  & \multicolumn{1}{c|}{10000000} & \multicolumn{1}{c|}{5000000} & 10000000 \\ \hline
-        \multicolumn{5}{|c|}{Average Runtime (s)}                                                                                                      \\ \hline
-        \multicolumn{1}{|c|}{Darshan}        & \multicolumn{1}{c|}{882.46}   & \multicolumn{1}{c|}{1353.87}  & \multicolumn{1}{c|}{417.14}  & 1616.87  \\ \hline
-        \multicolumn{1}{|c|}{dC}             & \multicolumn{1}{c|}{775.24}   & \multicolumn{1}{c|}{1365.24}  & \multicolumn{1}{c|}{467.24}  & 1027.44  \\ \hline
-        \multicolumn{1}{|c|}{\% Overhead}    & \multicolumn{1}{c|}{-12.15\%} & \multicolumn{1}{c|}{0.84\%}   & \multicolumn{1}{c|}{12.01\%} & -36.45\% \\ \hline
+        \multicolumn{5}{|c|}{HACC-IO}                                                                                                                   \\ \hline
+        \multicolumn{1}{|c|}{File System}     & \multicolumn{2}{c|}{NFS}                                      & \multicolumn{2}{c|}{Lustre}             \\ \hline
+        \multicolumn{1}{|c|}{Nodes}           & \multicolumn{2}{c|}{16}                                       & \multicolumn{2}{c|}{16}                 \\ \hline
+        \multicolumn{1}{|c|}{Particles/Rank}  & \multicolumn{1}{c|}{5000000}  & \multicolumn{1}{c|}{10000000} & \multicolumn{1}{c|}{5000000} & 10000000 \\ \hline
+        \multicolumn{1}{|c|}{Avg. Messages}   & \multicolumn{1}{c|}{1663}     & \multicolumn{1}{c|}{1774}     & \multicolumn{1}{c|}{1995}    & 1711     \\ \hline
+        \multicolumn{1}{|c|}{Rate (msgs/sec)} & \multicolumn{1}{c|}{2}        & \multicolumn{1}{c|}{1}        & \multicolumn{1}{c|}{3}       & 2        \\ \hline
+        \multicolumn{5}{|c|}{Average Runtime (s)}                                                                                                       \\ \hline
+        \multicolumn{1}{|c|}{Darshan}         & \multicolumn{1}{c|}{882.46}   & \multicolumn{1}{c|}{1353.87}  & \multicolumn{1}{c|}{417.14}  & 1616.87  \\ \hline
+        \multicolumn{1}{|c|}{dC}              & \multicolumn{1}{c|}{775.24}   & \multicolumn{1}{c|}{1365.24}  & \multicolumn{1}{c|}{467.24}  & 1027.44  \\ \hline
+        \multicolumn{1}{|c|}{\% Overhead}     & \multicolumn{1}{c|}{-12.15\%} & \multicolumn{1}{c|}{0.84\%}   & \multicolumn{1}{c|}{12.01\%} & -36.45\% \\ \hline
         \end{tabular}
     \caption{HACC-IO} 
     \label{subtable:HACC}
     \vspace{0.5cm}
     \end{subtable}
-    
     \begin{subtable}[h]{0.5\textwidth}
         \centering
-        \setlength\tabcolsep{22pt}
-    	\begin{tabular}{|cclcl|}
+        \setlength\tabcolsep{18.5pt}
+        \begin{tabular}{|cclcl|}
         \hline
-        \multicolumn{5}{|c|}{HMMER}                                                                        \\ \hline
-        \multicolumn{1}{|c|}{File System} & \multicolumn{2}{c|}{NFS}      & \multicolumn{2}{c|}{Lustre}    \\ \hline
-        \multicolumn{1}{|c|}{Nodes}       & \multicolumn{2}{c|}{1}        & \multicolumn{2}{c|}{1}         \\ \hline
-        \multicolumn{1}{|c|}{Arguments}   & \multicolumn{4}{c|}{Pfam-A.seed}                               \\ \hline
-        \multicolumn{5}{|c|}{Average Runtime (s)}                                                          \\ \hline
-        \multicolumn{1}{|c|}{Darshan}     & \multicolumn{2}{c|}{749.88}   & \multicolumn{2}{c|}{135.40}    \\ \hline
-        \multicolumn{1}{|c|}{dC}          & \multicolumn{2}{c|}{2826.01}  & \multicolumn{2}{c|}{1863.98}   \\ \hline
-        \multicolumn{1}{|c|}{\% Overhead} & \multicolumn{2}{c|}{276.86\%} & \multicolumn{2}{c|}{1276.67\%} \\ \hline
+        \multicolumn{5}{|c|}{HMMER}                                                                            \\ \hline
+        \multicolumn{1}{|c|}{File System}     & \multicolumn{2}{c|}{NFS}      & \multicolumn{2}{c|}{Lustre}    \\ \hline
+        \multicolumn{1}{|c|}{Nodes}           & \multicolumn{2}{c|}{1}        & \multicolumn{2}{c|}{1}         \\ \hline
+        \multicolumn{1}{|c|}{Input}           & \multicolumn{4}{c|}{Pfam-A.seed}                               \\ \hline
+        \multicolumn{1}{|c|}{Avg. Messages}   & \multicolumn{2}{c|}{3117342}  & \multicolumn{2}{c|}{4461738}   \\ \hline
+        \multicolumn{1}{|c|}{Rate (msgs/sec)} & \multicolumn{2}{c|}{1483}     & \multicolumn{2}{c|}{2396}      \\ \hline
+        \multicolumn{5}{|c|}{Average Runtime (s)}                                                              \\ \hline
+        \multicolumn{1}{|c|}{Darshan}         & \multicolumn{2}{c|}{749.88}   & \multicolumn{2}{c|}{135.40}    \\ \hline
+        \multicolumn{1}{|c|}{dC}              & \multicolumn{2}{c|}{2826.01}  & \multicolumn{2}{c|}{1863.98}   \\ \hline
+        \multicolumn{1}{|c|}{\% Overhead}     & \multicolumn{2}{c|}{276.86\%} & \multicolumn{2}{c|}{1276.67\%} \\ \hline
         \end{tabular}
-	\caption{HMMER} 
+    \caption{HMMER} 
     \label{subtable:HMMER}
 %\end{table}
 \end{subtable}
@@ -163,3 +168,4 @@ The average of the 5 execution times (e.g. Average Runtime (s)) for Darshan and 
 %	\caption{MPI-IO-TEST run configurations, targeted file system, and runtime}
 %	\label{table:mpi-io-test}
 %\end{table}
+
