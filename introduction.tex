@@ -1,19 +1,74 @@
 \section{Introduction}
-As more scientific applications are developed and used, the need for improved fidelity and throughput is more pressing than ever and much design effort and investments are being put into improving not only the application but also the system components. Being able to identify, predict and analyze I/O behaviors are critical to ensuring parallel storage systems are utilized efficiently. However, I/O performance continues to show high variations on large-scale production conditions in many cases \RED{Cite NE}. %Some of these cases include running applications on clusters during the weekend, separate and disjoint time zones and read I/O's of runs within the same cluster. 
-This variation makes it difficult to determine the root cause of I/O related problems and have a thorough understanding of throughput for system-specific behaviors and I/O performance in similar applications across a system. Further, not knowing what the cause is will directly affect the user and developer as unwanted time, effort and investment will need to be put into solving the issue.
+As more scientific applications are developed and used, the need for
+improved fidelity and throughput is more pressing than ever and much
+design effort and investments are being put into improving not only
+the application but also the system components. Being able to
+identify, predict and analyze I/O behaviors are critical to ensuring
+parallel storage systems are utilized efficiently. However, I/O
+performance continues to show high variations on large-scale
+production conditions in many cases \RED{Cite
+  NE}. %Some of these cases include running applications on clusters
+       %during the weekend, separate and disjoint time zones and read
+       %I/O's of runs within the same cluster.
 
-Variations in I/O can could be caused by the system behavior such as the file system (e.g. buffering, file transfer, interrupt handling), network congestion, system resource contentions, or the access patterns of the application itself.
+Variations in I/O can be caused by the system usage (e.g. systems
+shared among users, time of the day being used), and by the system
+behavior such as the file system (e.g. buffering, file transfer,
+interrupt handling), network congestion, system resource contentions,
+or by the access patterns of the application itself. This variation
+makes it difficult to determine the root cause of I/O related problems
+and have a thorough understanding of throughput for system-specific
+behaviors and I/O performance in similar applications across a
+system. Further, not knowing the origin of such variations will
+directly affect the user and developer as unwanted time, effort and
+investment will need to be put into solving the issue.
 
-Generally, the I/O performance is analyzed post-run by application developers, researchers and users in the form of regression testing or other I/O characterization tools that capture the applications I/O behavior. An example of one of these tools is \emph{Darshan} which captures I/O information on access patterns from HPC applications~\cite{Darshan}. Detailed information will be covered in the \emph{Approach} section. In the case where an I/O performance problems are observed, efforts to identify this usually come from any identified correlation between analyses of various applications or the time in which these applications were tested. However, this approach does not provide the ability to know \emph{when} an I/O performance variability occurs during an application run and, if the developer or user wishes to, identify any correlations between the file system, network congestion or resource contentions and the I/O performance.
+Generally, the I/O performance is analyzed post-run by application
+developers, researchers and users in the form of regression testing or
+other I/O characterization tools that capture the applications I/O
+behavior. An example of one of these tools is \emph{Darshan}, which
+monitors and captures I/O information on access patterns from HPC
+applications~\cite{Darshan}.
+% Detailed information will be covered in the \emph{Approach} section.
+Efforts to identify the origin of I/O performance given by these tools
+usually come from any identified correlation between analyses of
+various applications runs or the time in which these applications were
+tested. However, this approach does not provide the ability to know
+\textbf{when} an I/O performance variability occurs during an
+application run and, if the developer or user wishes to, identify any
+correlations between the file system, network congestion or resource
+contentions and the I/O performance.
 
 %However, this analysis approach does not take into account the file system, network congestion, system resource contentions and other component's affect on the I/O performance. In order to make these associations, the \emph{absolute timestamps} is required  which the post-run approach and I/O characterization tools usually lack.
 
-The \emph{absolute timestamps} provides run time (e.g. timeseries) data that users and developers could use to better understand how these changing components affect the I/O performance variation as well as provide further insight into the application I/O pattern.
+Execution logs that provide \emph{absolute timestamps}
+(e.g. timeseries) enable users and developers to perform temporal
+performance analysis, and better understand how these changing
+components affect the I/O performance variation as well as provide
+further insight into the application I/O pattern. Therefore, we
+introduce our \Darshan approach that incorporates the \emph{absolute
+  timestamps} to provide a run time set of application I/O data. This
+is a work in progress paper and will cover the following goals:
 
-Therefore, we introduce our \Darshan approach that incorporates the \emph{absolute timestamps} to provide a run time set of application I/O data for a deeper insight into the I/O behavior and performance. This is a work in progress paper and will cover the following goals:
 \begin{itemize}
-	\item Describe the approach used to expose absolute timestamp data from an existing I/O characterization tool and utilizing this data to help identify and better understand any root cause(s) of application I/O performance variation run time.
-	\item Provide a high level overview of the implementation process and other tools used to collect application I/O data during run time.
-	\item Demonstrate use cases of the \connector for various applications on a production HPC system. 
-	\item How this new approach provides the ability to collect and assist in the detection of application I/O performance variances across multiple applications. 
+	\item Describe the approach used to expose absolute timestamp
+          data from an existing I/O characterization tool;
+       	\item Provide a high level overview of the implementation
+          process and other tools used to collect application I/O data
+          during run time;
+       	\item Demonstrate use cases of the \connector for four
+          applications with distinct I/O behavior on a production HPC
+          system;
+        \item Utilize Darshan LDMS data to identify and better
+          understand any root cause(s) of application I/O performance
+          variation run time;
+	\item Present how this new approach can be integrated with
+          other tools to benefits users to collect and assist in the
+          detection of application I/O performance variances across
+          multiple applications.
 \end{itemize}
+
+Section II presents the tools and motivation for this paper, Section
+III presents the approach to collect the absolute timestamps
+information, Section IV depitcs the Darshan LDMS Integration tool
+and. Section X presents the conclusion and future works.
