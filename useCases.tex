@@ -17,106 +17,8 @@ We experiment using several I/O loads on the Voltrino Cray XC40 system at Sandia
 
 \subsection{Enviroment}
 Voltrino, run LDMS samplers on the compute nodes and one LDMS aggregator on the head node. LDMS uses the UGNI interface to transfer Darshan streams data and other performance metrics from the compute nodes to the head node. The aggregator on the head node transmits the data to another LDMS aggregator on another cluster, Shirley, for analysis and storage. Shirley, host the HPC web services Grafana application and the DSOS database. Darshan can wrap the I/O function in an application by linking the executables staticky and dynamic. Our framework uses dynamic linking to collect darshan data. So we set the \code{LD\_Preload} environment variable to point the path of the Darshan library shared objects which have the LDMS streams API calls to send the data through the LDMS compute node daemons. 
-\begin{table}[h]
-    \begin{subtable}[h]{0.5\textwidth}
-    \vspace{0.5cm}
-        \centering
-        \setlength\tabcolsep{8pt}
-       \begin{tabular}{|ccccc|}
-        \hline
-        \multicolumn{5}{|c|}{MPI-IO-TEST}                                                                                                              \\ \hline
-        \multicolumn{1}{|c|}{File System}        & \multicolumn{2}{c|}{NFS}                                    & \multicolumn{2}{c|}{Lustre}           \\ \hline
-        \multicolumn{1}{|c|}{Nodes}              & \multicolumn{2}{c|}{22}                                     & \multicolumn{2}{c|}{22}               \\ \hline
-        \multicolumn{1}{|c|}{Block Size}         & \multicolumn{2}{c|}{16*1024*1024}                           & \multicolumn{2}{c|}{16*1024*1024}     \\ \hline
-        \multicolumn{1}{|c|}{Iterations}         & \multicolumn{2}{c|}{10}                                     & \multicolumn{2}{c|}{10}               \\ \hline
-        \multicolumn{1}{|c|}{Collective}         & \multicolumn{1}{c|}{Yes}     & \multicolumn{1}{c|}{No}      & \multicolumn{1}{c|}{Yes}    & No      \\ \hline
-        \multicolumn{1}{|c|}{Avg. Messages}      & \multicolumn{1}{c|}{50390}   & \multicolumn{1}{c|}{6397}    & \multicolumn{1}{c|}{25770}  & 15676   \\ \hline
-        \multicolumn{1}{|c|}{Rate (msgs/sec)} & \multicolumn{1}{c|}{37}      & \multicolumn{1}{c|}{7}       & \multicolumn{1}{c|}{95}     & 38      \\ \hline
-        \multicolumn{5}{|c|}{Average Runtime (s)}                                                                                                      \\ \hline
-        \multicolumn{1}{|c|}{Darshan}            & \multicolumn{1}{c|}{1376.67} & \multicolumn{1}{c|}{880.46}  & \multicolumn{1}{c|}{249.97} & 428.18  \\ \hline
-        \multicolumn{1}{|c|}{dC}                 & \multicolumn{1}{c|}{1355.35} & \multicolumn{1}{c|}{858.68}  & \multicolumn{1}{c|}{270.98} & 414.35  \\ \hline
-        \multicolumn{1}{|c|}{\% Overhead}        & \multicolumn{1}{c|}{-1.55\%} & \multicolumn{1}{c|}{-2.47\%} & \multicolumn{1}{c|}{8.41\%} & -3.23\% \\ \hline
-        \end{tabular}
-    \caption{MPI-IO} 
-    \label{subtable:mpi-io-test}
-    \vspace{0.5cm}
-    \end{subtable}
-    \begin{subtable}[h]{0.5\textwidth}
-        \centering
-        \setlength\tabcolsep{5.5pt}
-        \begin{tabular}{|ccccc|}
-        \hline
-        \multicolumn{5}{|c|}{HACC-IO}                                                                                                                   \\ \hline
-        \multicolumn{1}{|c|}{File System}     & \multicolumn{2}{c|}{NFS}                                      & \multicolumn{2}{c|}{Lustre}             \\ \hline
-        \multicolumn{1}{|c|}{Nodes}           & \multicolumn{2}{c|}{16}                                       & \multicolumn{2}{c|}{16}                 \\ \hline
-        \multicolumn{1}{|c|}{Particles/Rank}  & \multicolumn{1}{c|}{5000000}  & \multicolumn{1}{c|}{10000000} & \multicolumn{1}{c|}{5000000} & 10000000 \\ \hline
-        \multicolumn{1}{|c|}{Avg. Messages}   & \multicolumn{1}{c|}{1663}     & \multicolumn{1}{c|}{1774}     & \multicolumn{1}{c|}{1995}    & 1711     \\ \hline
-        \multicolumn{1}{|c|}{Rate (msgs/sec)} & \multicolumn{1}{c|}{2}        & \multicolumn{1}{c|}{1}        & \multicolumn{1}{c|}{3}       & 2        \\ \hline
-        \multicolumn{5}{|c|}{Average Runtime (s)}                                                                                                       \\ \hline
-        \multicolumn{1}{|c|}{Darshan}         & \multicolumn{1}{c|}{882.46}   & \multicolumn{1}{c|}{1353.87}  & \multicolumn{1}{c|}{417.14}  & 1616.87  \\ \hline
-        \multicolumn{1}{|c|}{dC}              & \multicolumn{1}{c|}{775.24}   & \multicolumn{1}{c|}{1365.24}  & \multicolumn{1}{c|}{467.24}  & 1027.44  \\ \hline
-        \multicolumn{1}{|c|}{\% Overhead}     & \multicolumn{1}{c|}{-12.15\%} & \multicolumn{1}{c|}{0.84\%}   & \multicolumn{1}{c|}{12.01\%} & -36.45\% \\ \hline
-        \end{tabular}
-    \caption{HACC-IO} 
-    \label{subtable:HACC}
-    \vspace{0.5cm}
-    \end{subtable}
-    \begin{subtable}[h]{0.5\textwidth}
-        \centering
-        \setlength\tabcolsep{18.5pt}
-        \begin{tabular}{|cclcl|}
-        \hline
-        \multicolumn{5}{|c|}{HMMER}                                                                            \\ \hline
-        \multicolumn{1}{|c|}{File System}     & \multicolumn{2}{c|}{NFS}      & \multicolumn{2}{c|}{Lustre}    \\ \hline
-        \multicolumn{1}{|c|}{Nodes}           & \multicolumn{2}{c|}{1}        & \multicolumn{2}{c|}{1}         \\ \hline
-        \multicolumn{1}{|c|}{Input}           & \multicolumn{4}{c|}{Pfam-A.seed}                               \\ \hline
-        \multicolumn{1}{|c|}{Avg. Messages}   & \multicolumn{2}{c|}{3117342}  & \multicolumn{2}{c|}{4461738}   \\ \hline
-        \multicolumn{1}{|c|}{Rate (msgs/sec)} & \multicolumn{2}{c|}{1483}     & \multicolumn{2}{c|}{2396}      \\ \hline
-        \multicolumn{5}{|c|}{Average Runtime (s)}                                                              \\ \hline
-        \multicolumn{1}{|c|}{Darshan}         & \multicolumn{2}{c|}{749.88}   & \multicolumn{2}{c|}{135.40}    \\ \hline
-        \multicolumn{1}{|c|}{dC}              & \multicolumn{2}{c|}{2826.01}  & \multicolumn{2}{c|}{1863.98}   \\ \hline
-        \multicolumn{1}{|c|}{\% Overhead}     & \multicolumn{2}{c|}{276.86\%} & \multicolumn{2}{c|}{1276.67\%} \\ \hline
-        \end{tabular}
-    \caption{HMMER} 
-    \label{subtable:HMMER}
-%\end{table}
-\end{subtable}
-%    \vspace{0.5cm}
-%    \begin{subtable}[h]{0.2\textwidth}
-%        %\centering
-%        \setlength\tabcolsep{2pt}
-%        \begin{tabular}{|ccl|}
-%        \hline
-%        \multicolumn{3}{|c|}{SW4}                                                       \\ \hline
-%        \multicolumn{1}{|c|}{File System}      & \multicolumn{2}{c|}{NFS}               \\ \hline
-%        \multicolumn{1}{|c|}{Arguments}        & \multicolumn{2}{c|}{new\_gh\_1node.in} \\ \hline
-%        \multicolumn{1}{|c|}{Nodes}            & \multicolumn{2}{c|}{16}                \\ \hline
-%        \multicolumn{3}{|c|}{Average Runtime (s)}                                           \\ \hline
-%        \multicolumn{1}{|c|}{Darshan}          & \multicolumn{2}{c|}{576.86}       \\ \hline
-%        \multicolumn{1}{|c|}{dC} & \multicolumn{2}{c|}{572.72}       \\ \hline
-%        \multicolumn{1}{|c|}{\% Overhead}      & \multicolumn{2}{c|}{0.00\%}      \\ \hline
-%        \end{tabular}
-%    \caption{SW4} 
-%    \label{subtable:SW4}
-%\end{subtable}
-\caption{Overview of each experiment configuration, target file system, average elapsed time (s) from 5 runs and calculated overhead of LDMS.}
-\label{table:apps}
-\end{table}
-
-\subsection{Experiments and Overhead}
-Each application was tested on the Lustre and NFS file system with various configurations for each application run. Sw4 was not tested on Lustre because....\RED{HMMER could only run on one node because...} All application experiments were repeated 5 times for the \connector{} and Darshan only (i.e. no LDMS implemented) which summed to a total of 110 job submissions. The layout for these runs are shown in Table~\ref{table:apps}.  
 
 
-
-The average of the 5 execution times (e.g. Average Runtime (s)) for Darshan and the \connector{} (e.g. dC) was then taken and used to calculate the percent overhead of LDMS. As seen from Table~\ref{subtable:MPI-IO-TEST}, the overhead of LDMS on Darshans' MPI-IO-TEST benchmark was \RED{briefly compare the overhead across applications}.
-
-%\RED{Explain the different scenarios we will be testing:
-%	\begin{itemize}
-%		\item Applications: SWFFT, sw4, sw4lite. Standard baseline: mpi-test. 
-%		\item Explain what each application does, why it's being tested and how the test was performed (i.e. number of nodes, etc.)
-%		\item Explain the analysis used to analyze the I/O data and how they provide further insight into the I/O behavior and can allow for correlations between I/O performance and system behavior.
-%		\item show Grafana graphs, Darshan output (maybe) JSON and any tables (if applicable).
-%\end{itemize}}
 
 %\renewcommand{\arraystretch}{1.2}
 %\begin{table}[]
@@ -169,3 +71,21 @@ The average of the 5 execution times (e.g. Average Runtime (s)) for Darshan and 
 %	\label{table:mpi-io-test}
 %\end{table}
 
+%    \vspace{0.5cm}
+%    \begin{subtable}[h]{0.2\textwidth}
+%        %\centering
+%        \setlength\tabcolsep{2pt}
+%        \begin{tabular}{|ccl|}
+%        \hline
+%        \multicolumn{3}{|c|}{SW4}                                                       \\ \hline
+%        \multicolumn{1}{|c|}{File System}      & \multicolumn{2}{c|}{NFS}               \\ \hline
+%        \multicolumn{1}{|c|}{Arguments}        & \multicolumn{2}{c|}{new\_gh\_1node.in} \\ \hline
+%        \multicolumn{1}{|c|}{Nodes}            & \multicolumn{2}{c|}{16}                \\ \hline
+%        \multicolumn{3}{|c|}{Average Runtime (s)}                                           \\ \hline
+%        \multicolumn{1}{|c|}{Darshan}          & \multicolumn{2}{c|}{576.86}       \\ \hline
+%        \multicolumn{1}{|c|}{dC} & \multicolumn{2}{c|}{572.72}       \\ \hline
+%        \multicolumn{1}{|c|}{\% Overhead}      & \multicolumn{2}{c|}{0.00\%}      \\ \hline
+%        \end{tabular}
+%    \caption{SW4} 
+%    \label{subtable:SW4}
+%\end{subtable}
