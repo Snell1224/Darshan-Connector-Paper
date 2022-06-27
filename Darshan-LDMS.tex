@@ -15,61 +15,36 @@
 \begin{document}
 
 \title{LDMS Darshan Connector: For Run Time Diagnosis of HPC Application I/O Performance}
-\author{
-    Sara Walton\\
-    Sandia National Laboratories\\
-    Albuquerque, USA \\
-    spwalto@sandia.gov
-  \and
-    Omar Aaziz\\
-    Sandia National Laboratories\\
-    Albuquerque, USA\\
-    oaaziz@sandia.gov
-    \and
-    Ana Solorzano\\
-    Northeastern University\\
-    Boston, USA\\
-    solorzano.an@northeastern.edu
-    \and
-    Ben Schwaller \\
-    Sandia National Laboratories\\
-    Albuquerque, USA\\
-    bschwal@sandia.gov
+
+\makeatletter
+\newcommand{\linebreakand}{%
+  \end{@IEEEauthorhalign}
+  \hfill\mbox{}\par
+  \mbox{}\hfill\begin{@IEEEauthorhalign}
 }
+\makeatother
 
-
-\begin{comment}
-\and
-\IEEEauthorblockN{2\textsuperscript{nd} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
-\and
-\IEEEauthorblockN{3\textsuperscript{rd} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
-\and
-\IEEEauthorblockN{4\textsuperscript{th} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
-\and
-\IEEEauthorblockN{5\textsuperscript{th} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
-\and
-\IEEEauthorblockN{6\textsuperscript{th} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
-\end{comment}
+\author{
+  \IEEEauthorblockN{1\textsuperscript{st} Sara Walton}
+  \IEEEauthorblockA{\textit{Sandia National Laboratories} \\
+    Albuquerque, USA \\
+    spwalto@sandia.gov}
+  \and
+  \IEEEauthorblockN{2\textsuperscript{nd} Omar Aaziz}
+  \IEEEauthorblockA{\textit{Sandia National Laboratories} \\
+    Albuquerque, USA \\
+    oaaziz@sandia.gov}
+  \and
+  \IEEEauthorblockN{3\textsuperscript{rd} Ana Solorzano}
+  \IEEEauthorblockA{\textit{Northeastern University} \\
+    Boston, USA \\
+    solorzano.an@northeastern.edu}
+  \linebreakand % <------------- \and with a line-break
+  \IEEEauthorblockN{4\textsuperscript{th} Ben Schwaller}
+  \IEEEauthorblockA{\textit{Sandia National Laboratories} \\
+    Albuquerque, USA \\
+    bschwal@sandia.gov}
+}
 
 \maketitle
 
@@ -84,7 +59,13 @@ email address or ORCID}
 \input{future.tex}
 
 
+
 \bibliographystyle{IEEEtran}
 \bibliography{IEEEabrv,./SNL}
+%\bibliographystyle{IEEEtran}
+%\bibliography{IEEEabrv,./SNL}
+
 
 \end{document}
+
+
