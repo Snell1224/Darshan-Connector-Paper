@@ -49,15 +49,15 @@ between I/O performance variability and system behavior.
 	%\includegraphics[trim=0.2cm 8.5cm 12cm 0cm ,clip,width=0.9\linewidth]{figs/fig_kokkos_ldms.pdf}
 	\includegraphics[trim={0 3cm 0 0},clip, width=1.01\linewidth]{figs/darshan-csv-json.pdf}
 	\caption{Output of a MPI-IO Darshan test run in the JSON
-          format (top image), and the CSV file header (bottom). The
-          JSON message is published to the \emph{LDMS Streams}
-          interface where it is then converted to CSV and stored to
-          \emph{DSOS}. The \texttt{name:value} pairs in light blue
+          format (top image), and the CSV file header (bottom). 
+          %The JSON message is published to the \emph{LDMS Streams}
+          %interface where it is then converted to CSV and stored to
+          %\emph{DSOS}. 
+          The \texttt{name:value} pairs in light blue
           indicate meta data stored, while the light purple indicates
-          the file level access data not applicable to POSIX and
-          are given the values of \texttt{"N/A"} or \texttt{"-1"}. The
-          \texttt{"seg"} is a list containing multiple
-          \texttt{name:value} pairs.}
+          the file level access data not applicable to POSIX. 
+          %and are given the values of \texttt{"N/A"} or \texttt{"-1"}. 
+          The \texttt{"seg"} is a list containing multiple \texttt{name:value} pairs.}
 	\label{f:CSV Header and Output}
 \end{figure}
 Table \ref{table:metrics} depicts the names and definition of each
