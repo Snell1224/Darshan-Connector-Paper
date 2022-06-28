@@ -54,25 +54,25 @@ Each application was tested on the Lustre and NFS file system with various confi
     \label{subtable:HACC}
     \vspace{0.5cm}
     \end{subtable}
-    \begin{subtable}[h]{0.5\textwidth}
-        \centering
-        \setlength\tabcolsep{19pt}
-        \begin{tabular}{|cclcl|}
-        \hline
-        \multicolumn{5}{|c|}{HMMER}                                                                            \\ \hline
-        \multicolumn{1}{|c|}{File System}     & \multicolumn{2}{c|}{NFS}      & \multicolumn{2}{c|}{Lustre}    \\ \hline
-        \multicolumn{1}{|c|}{Nodes}           & \multicolumn{2}{c|}{1}        & \multicolumn{2}{c|}{1}         \\ \hline
-        \multicolumn{1}{|c|}{Input}           & \multicolumn{4}{c|}{Pfam-A.seed}                               \\ \hline
-        \multicolumn{1}{|c|}{Avg. Messages}   & \multicolumn{2}{c|}{3117342}  & \multicolumn{2}{c|}{4461738}   \\ \hline
-        \multicolumn{1}{|c|}{Rate (msgs/sec)} & \multicolumn{2}{c|}{1483}     & \multicolumn{2}{c|}{2396}      \\ \hline
-        \multicolumn{5}{|c|}{Average Runtime (s)}                                                              \\ \hline
-        \multicolumn{1}{|c|}{Darshan}         & \multicolumn{2}{c|}{749.88}   & \multicolumn{2}{c|}{135.40}    \\ \hline
-        \multicolumn{1}{|c|}{dC}              & \multicolumn{2}{c|}{2826.01}  & \multicolumn{2}{c|}{1863.98}   \\ \hline
-        \multicolumn{1}{|c|}{\% Overhead}     & \multicolumn{2}{c|}{276.86\%} & \multicolumn{2}{c|}{1276.67\%} \\ \hline
-        \end{tabular}
-    \caption{HMMER} 
-    \label{subtable:HMMER}
-\end{subtable}
+%    \begin{subtable}[h]{0.5\textwidth}
+%        \centering
+%        \setlength\tabcolsep{19pt}
+%        \begin{tabular}{|cclcl|}
+%        \hline
+%        \multicolumn{5}{|c|}{HMMER}                                                                            \\ \hline
+%        \multicolumn{1}{|c|}{File System}     & \multicolumn{2}{c|}{NFS}      & \multicolumn{2}{c|}{Lustre}    \\ \hline
+%        \multicolumn{1}{|c|}{Nodes}           & \multicolumn{2}{c|}{1}        & \multicolumn{2}{c|}{1}         \\ \hline
+%        \multicolumn{1}{|c|}{Input}           & \multicolumn{4}{c|}{Pfam-A.seed}                               \\ \hline
+%        \multicolumn{1}{|c|}{Avg. Messages}   & \multicolumn{2}{c|}{3117342}  & \multicolumn{2}{c|}{4461738}   \\ \hline
+%        \multicolumn{1}{|c|}{Rate (msgs/sec)} & \multicolumn{2}{c|}{1483}     & \multicolumn{2}{c|}{2396}      \\ \hline
+%        \multicolumn{5}{|c|}{Average Runtime (s)}                                                              \\ \hline
+%        \multicolumn{1}{|c|}{Darshan}         & \multicolumn{2}{c|}{749.88}   & \multicolumn{2}{c|}{135.40}    \\ \hline
+%        \multicolumn{1}{|c|}{dC}              & \multicolumn{2}{c|}{2826.01}  & \multicolumn{2}{c|}{1863.98}   \\ \hline
+%        \multicolumn{1}{|c|}{\% Overhead}     & \multicolumn{2}{c|}{276.86\%} & \multicolumn{2}{c|}{1276.67\%} \\ \hline
+%        \end{tabular}
+%    \caption{HMMER} 
+%    \label{subtable:HMMER}
+%\end{subtable}
 
 \caption{Overview of each experiment configuration, target file system, average elapsed time (s) from 5 runs and calculated overhead of LDMS.}
 \label{table:apps}
@@ -82,7 +82,7 @@ The average of the 5 execution times (e.g. Average Runtime (s)) for Darshan and 
 
 The HACC-IO application, seen in Table~\ref{subtable:HACC} was similar to the MPI-IO-TEST bench mark in regards to a shorter runtime with the \connector for both file systems. Again, this is most likely due to the Lustre and NFS file systems as described earlier. The other two experiments, NFS with 10 million particles and Lustre with 5 million particles, show an overhead of 0.84\% and 12.01\%, respectively. The experiment with 0.84\% overhead indicates there is no significant affect to the applications runtime while the experiment with 12.01\% overhead does show a longer runtime with the \connector but it has the highest message rate of 3 messages per second.
 
-The HMMER application, seen in Table~\ref{subtable:HACC} shows a significant increase in runtime with upwards of 270\% for NFS and 12000\% for Lustre where the user has to wait ~2x-12x longer for their application to finish. This, of course, is not ideal for the average user and the result of these high overhead percentages are due to the json message formatting. Additional tests have been performed without the sprintf() function to generate the json message (i.e. only LDMS Streams API is enabled and the \connector send function is called) and the average overhead was 0.37\%. This indicates that the increase in overhead is not due to LDMS but rather the formatting of the I/O event data from integers into strings. HMMER had an average of 3-4 million messages (i.e. Darshan I/O events) during a single run with a rate of 1-2k messages per second. HACC-IO and MPI-IO-TEST, on the other hand, had an average of 1-50K messages with rates of less than 100 messages per second. These are significantly lower than HMMER which is why no significant overhead was detected in the other application runs. 
+%The HMMER application, seen in Table~\ref{subtable:HACC} shows a significant increase in runtime with upwards of 270\% for NFS and 12000\% for Lustre where the user has to wait ~2x-12x longer for their application to finish. This, of course, is not ideal for the average user and the result of these high overhead percentages are due to the json message formatting. Additional tests have been performed without the sprintf() function to generate the json message (i.e. only LDMS Streams API is enabled and the \connector send function is called) and the average overhead was 0.37\%. This indicates that the increase in overhead is not due to LDMS but rather the formatting of the I/O event data from integers into strings. HMMER had an average of 3-4 million messages (i.e. Darshan I/O events) during a single run with a rate of 1-2k messages per second. HACC-IO and MPI-IO-TEST, on the other hand, had an average of 1-50K messages with rates of less than 100 messages per second. These are significantly lower than HMMER which is why no significant overhead was detected in the other application runs. 
 
 Darshan collects all I/O events of an application run and the \connector is implemented such that when Darshan detects an I/O event, the \connector will collect and format that current set of I/O metrics into a json message. In order to send a json message, all integers must be converted to strings and this conversion comes at a performance cost. Therefore, the more I/O intensive an application is and the shorter the runtime, the overhead will increase significantly and cause the runtime performance to drop (as seen in HMMER). Since there is currently no other way to send I/O data as a json message to the LDMS Streams interface without converting the integers to strings, we must pay this performance cost. To overcome this issue, we plan to further develop the \Darshan framework to allow users to collect every \emph{n-th} I/O event detected by Darshan. This functionality will allow users to analyze a percentage of their applications I/O behavior during runtime without having to compensate runtime performance.     
 %\RED{END OF THE SECTION I'VE ADDED - 6/26}
