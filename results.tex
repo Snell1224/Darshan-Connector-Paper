@@ -159,6 +159,15 @@ with the slowest writing after 250 seconds.
           application there were faster and slower operations.}
 	\label{f:mpi_io}
 \end{figure}
+\begin{figure*}
+	\centering
+	\includegraphics[width=1\textwidth]{figs/255653_mpi_io_luster_no_coll.pdf}
+	\caption{Graphana visualization of the \texttt{job\_id 2}
+          writes (blue) and reads (green) operations and amount of bytes per
+          operation, using the absolute timestamp metric collected
+          with \emph{Darshan LDMS Integration}. }%Given the other metrics collected by the \connector, many more analyses and visualizations can be made to allow for further insights in application I/O behavior.}
+	\label{f:mpi_io_grafana}
+\end{figure*}
 
 The same job is also represented in Figure \ref{f:mpi_io_grafana}
 using the Grafana interface. This figure presents the number of I/O
@@ -173,12 +182,5 @@ facilitates the correlation of I/O performance congestion, for
 example, with system behavior monitoring, which can also be
 represented as a Grafana dashboard.
 
-\begin{figure*}
-	\centering
-	\includegraphics[width=1\textwidth]{figs/255653_mpi_io_luster_no_coll.pdf}
-	\caption{Graphana visualization of the \texttt{job\_id 2}
-          writes (blue) and reads (green) operations and amount of bytes per
-          operation, using the absolute timestamp metric collected
-          with \emph{Darshan LDMS Integration}. }%Given the other metrics collected by the \connector, many more analyses and visualizations can be made to allow for further insights in application I/O behavior.}
-	\label{f:mpi_io_grafana}
-\end{figure*}
+
+
