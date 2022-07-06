@@ -117,7 +117,9 @@ DSOS is built on the Scalable Object Store (SOS) database~\cite{sosgithub} and w
 To sort though the published \emph{LDMS Streams} data, combinations of the job ID, rank and timestamp are used to create joint indices where each index provided a different query performance. An example of this is using \texttt{job\_rank\_time} which will order the data by job, rank then timestamp and then search the data by a specific rank within a specific job over time.
 
 \subsection{Analysis and Visualization: HPC Web Services}
-The HPC Web Services~\cite{ClusterAV} is an infrastructure that consists of the analysis and visualization components of this approach. Any data queries start from a front-end application and transferred to a back-end application that are running on an HPC cluster. In this case the front-end website is Grafana~\cite{grafana-website} and the back-end consists of Python analysis modules. The HPC Web Services also provide instant analysis where data can be analyzed and viewed in real time as opposed to the traditional method of querying the results of analyzed data from a separate database.
+The HPC Web Services~\cite{ClusterAV} is an infrastructure that consists of the analysis and visualization components of this approach. 
+%Any data queries start from a front-end application and transferred to a back-end application that are running on an HPC cluster. In this case 
+The front-end for the service website is Grafana~\cite{grafana-website} and the back-end consists of Python analysis modules. The HPC Web Services also provide instant analysis where data can be analyzed and viewed in real time as opposed to the traditional method of querying the results of analyzed data from a separate database.
 
 \begin{figure}
 	\centering
