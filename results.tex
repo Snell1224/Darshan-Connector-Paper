@@ -17,18 +17,22 @@ Each application was tested on the Lustre and NFS file system with various confi
         \setlength\tabcolsep{8pt}
        \begin{tabular}{|ccccc|}
         \hline
-        \multicolumn{5}{|c|}{MPI-IO-TEST}                                                                                                              \\ \hline
-        \multicolumn{1}{|c|}{File System}        & \multicolumn{2}{c|}{NFS}                                    & \multicolumn{2}{c|}{Lustre}           \\ \hline
-        \multicolumn{1}{|c|}{Nodes}              & \multicolumn{2}{c|}{22}                                     & \multicolumn{2}{c|}{22}               \\ \hline
-        \multicolumn{1}{|c|}{Block Size}         & \multicolumn{2}{c|}{16*1024*1024}                           & \multicolumn{2}{c|}{16*1024*1024}     \\ \hline
-        \multicolumn{1}{|c|}{Iterations}         & \multicolumn{2}{c|}{10}                                     & \multicolumn{2}{c|}{10}               \\ \hline
-        \multicolumn{1}{|c|}{Collective}         & \multicolumn{1}{c|}{Yes}     & \multicolumn{1}{c|}{No}      & \multicolumn{1}{c|}{Yes}    & No      \\ \hline
-        \multicolumn{1}{|c|}{Avg. Messages}      & \multicolumn{1}{c|}{50390}   & \multicolumn{1}{c|}{6397}    & \multicolumn{1}{c|}{25770}  & 15676   \\ \hline
+        \multicolumn{5}{|c|}{MPI-IO-TEST}                                                                                                           \\ \hline
+        \multicolumn{1}{|c|}{File System}     & \multicolumn{2}{c|}{NFS}                                    & \multicolumn{2}{c|}{Lustre}           \\ \hline
+        \multicolumn{1}{|c|}{Nodes}           & \multicolumn{2}{c|}{22}                                     & \multicolumn{2}{c|}{22}               \\ \hline
+        \multicolumn{1}{|c|}{Block Size}      & \multicolumn{2}{c|}{16*1024*1024}                           & \multicolumn{2}{c|}{16*1024*1024}     \\ \hline
+        \multicolumn{1}{|c|}{Iterations}      & \multicolumn{2}{c|}{10}                                     & \multicolumn{2}{c|}{10}               \\ \hline
+        \multicolumn{1}{|c|}{Collective}      & \multicolumn{1}{c|}{Yes}     & \multicolumn{1}{c|}{No}      & \multicolumn{1}{c|}{Yes}    & No      \\ \hline
+        \multicolumn{1}{|c|}{Avg. Messages}   & \multicolumn{1}{c|}{50390}   & \multicolumn{1}{c|}{6397}    & \multicolumn{1}{c|}{25770}  & 15676   \\ \hline
         \multicolumn{1}{|c|}{Rate (msgs/sec)} & \multicolumn{1}{c|}{37}      & \multicolumn{1}{c|}{7}       & \multicolumn{1}{c|}{95}     & 38      \\ \hline
-        \multicolumn{5}{|c|}{Average Runtime (s)}                                                                                                      \\ \hline
-        \multicolumn{1}{|c|}{Darshan}            & \multicolumn{1}{c|}{1376.67} & \multicolumn{1}{c|}{880.46}  & \multicolumn{1}{c|}{249.97} & 428.18  \\ \hline
-        \multicolumn{1}{|c|}{dC}                 & \multicolumn{1}{c|}{1355.35} & \multicolumn{1}{c|}{858.68}  & \multicolumn{1}{c|}{270.98} & 414.35  \\ \hline
-        \multicolumn{1}{|c|}{\% Overhead}        & \multicolumn{1}{c|}{-1.55\%} & \multicolumn{1}{c|}{-2.47\%} & \multicolumn{1}{c|}{8.41\%} & -3.23\% \\ \hline
+        \multicolumn{5}{|c|}{Average Runtime(s)}                                                                                                    \\ \hline
+        \multicolumn{1}{|c|}{Darshan}         & \multicolumn{1}{c|}{1376.67} & \multicolumn{1}{c|}{880.46}  & \multicolumn{1}{c|}{249.97} & 428.18  \\ \hline
+        \multicolumn{1}{|c|}{dC}              & \multicolumn{1}{c|}{1355.35} & \multicolumn{1}{c|}{858.68}  & \multicolumn{1}{c|}{270.98} & 414.35  \\ \hline
+        \multicolumn{1}{|c|}{\% Overhead}     & \multicolumn{1}{c|}{-1.55\%} & \multicolumn{1}{c|}{-2.47\%} & \multicolumn{1}{c|}{8.41\%} & -3.23\% \\ \hline
+        \multicolumn{5}{|c|}{Standard Deviation(s)}                                                                                                 \\ \hline
+        \multicolumn{1}{|c|}{Darshan}         & \multicolumn{1}{c|}{48.18}   & \multicolumn{1}{c|}{29.43}   & \multicolumn{1}{c|}{2.85}   & 31.49   \\ \hline
+        \multicolumn{1}{|c|}{dC}              & \multicolumn{1}{c|}{96.63}   & \multicolumn{1}{c|}{76.58}   & \multicolumn{1}{c|}{1.07}   & 8.17    \\ \hline
+        \multicolumn{1}{|c|}{\% Variance}     & \multicolumn{1}{c|}{-5.25\%} & \multicolumn{1}{c|}{-8.10\%} & \multicolumn{1}{c|}{9.22\%} & 2.39\%  \\ \hline
         \end{tabular}
     \caption{MPI-IO} 
     \label{subtable:mpi-io-test}
@@ -39,16 +43,20 @@ Each application was tested on the Lustre and NFS file system with various confi
         \setlength\tabcolsep{5.5pt}
         \begin{tabular}{|ccccc|}
         \hline
-        \multicolumn{5}{|c|}{HACC-IO}                                                                                                                   \\ \hline
-        \multicolumn{1}{|c|}{File System}     & \multicolumn{2}{c|}{NFS}                                      & \multicolumn{2}{c|}{Lustre}             \\ \hline
-        \multicolumn{1}{|c|}{Nodes}           & \multicolumn{2}{c|}{16}                                       & \multicolumn{2}{c|}{16}                 \\ \hline
-        \multicolumn{1}{|c|}{Particles/Rank}  & \multicolumn{1}{c|}{5000000}  & \multicolumn{1}{c|}{10000000} & \multicolumn{1}{c|}{5000000} & 10000000 \\ \hline
-        \multicolumn{1}{|c|}{Avg. Messages}   & \multicolumn{1}{c|}{1663}     & \multicolumn{1}{c|}{1774}     & \multicolumn{1}{c|}{1995}    & 1711     \\ \hline
-        \multicolumn{1}{|c|}{Rate (msgs/sec)} & \multicolumn{1}{c|}{2}        & \multicolumn{1}{c|}{1}        & \multicolumn{1}{c|}{3}       & 2        \\ \hline
-        \multicolumn{5}{|c|}{Average Runtime (s)}                                                                                                       \\ \hline
-        \multicolumn{1}{|c|}{Darshan}         & \multicolumn{1}{c|}{882.46}   & \multicolumn{1}{c|}{1353.87}  & \multicolumn{1}{c|}{417.14}  & 1616.87  \\ \hline
-        \multicolumn{1}{|c|}{dC}              & \multicolumn{1}{c|}{775.24}   & \multicolumn{1}{c|}{1365.24}  & \multicolumn{1}{c|}{467.24}  & 1027.44  \\ \hline
-        \multicolumn{1}{|c|}{\% Overhead}     & \multicolumn{1}{c|}{-12.15\%} & \multicolumn{1}{c|}{0.84\%}   & \multicolumn{1}{c|}{12.01\%} & -36.45\% \\ \hline
+        \multicolumn{5}{|c|}{HACC-IO}                                                                                                                    \\ \hline
+        \multicolumn{1}{|c|}{File System}     & \multicolumn{2}{c|}{NFS}                                      & \multicolumn{2}{c|}{Lustre}              \\ \hline
+        \multicolumn{1}{|c|}{Nodes}           & \multicolumn{2}{c|}{16}                                       & \multicolumn{2}{c|}{16}                  \\ \hline
+        \multicolumn{1}{|c|}{Particles/Rank}  & \multicolumn{1}{c|}{5000000}  & \multicolumn{1}{c|}{10000000} & \multicolumn{1}{c|}{5000000}  & 10000000 \\ \hline
+        \multicolumn{1}{|c|}{Avg. Messages}   & \multicolumn{1}{c|}{1663}     & \multicolumn{1}{c|}{1774}     & \multicolumn{1}{c|}{1995}     & 1711     \\ \hline
+        \multicolumn{1}{|c|}{Rate (msgs/sec)} & \multicolumn{1}{c|}{2}        & \multicolumn{1}{c|}{1}        & \multicolumn{1}{c|}{3}        & 2        \\ \hline
+        \multicolumn{5}{|c|}{Average Runtime(s)}                                                                                                        \\ \hline
+        \multicolumn{1}{|c|}{Darshan}         & \multicolumn{1}{c|}{882.46}   & \multicolumn{1}{c|}{1353.87}  & \multicolumn{1}{c|}{417.14}   & 1616.87  \\ \hline
+        \multicolumn{1}{|c|}{dC}              & \multicolumn{1}{c|}{775.24}   & \multicolumn{1}{c|}{1365.24}  & \multicolumn{1}{c|}{467.24}   & 1027.44  \\ \hline
+        \multicolumn{1}{|c|}{\% Overhead}     & \multicolumn{1}{c|}{-12.15\%} & \multicolumn{1}{c|}{0.84\%}   & \multicolumn{1}{c|}{12.01\%}  & -36.45\% \\ \hline
+        \multicolumn{5}{|c|}{Standard Deviation(s)}                                                                                                         \\ \hline
+        \multicolumn{1}{|c|}{Darshan}         & \multicolumn{1}{c|}{37.08}    & \multicolumn{1}{c|}{87.24}    & \multicolumn{1}{c|}{25.03}    & 154.53   \\ \hline
+        \multicolumn{1}{|c|}{dC}              & \multicolumn{1}{c|}{53.68}    & \multicolumn{1}{c|}{46.97}    & \multicolumn{1}{c|}{142.77}   & 256.62   \\ \hline
+        \multicolumn{1}{|c|}{\% Variance}     & \multicolumn{1}{c|}{-14.65\%} & \multicolumn{1}{c|}{4.08\%}   & \multicolumn{1}{c|}{-17.25\%} & -47.36\% \\ \hline
         \end{tabular}
     \caption{HACC-IO} 
     \label{subtable:HACC}
@@ -74,17 +82,21 @@ Each application was tested on the Lustre and NFS file system with various confi
 %    \label{subtable:HMMER}
 %\end{subtable}
 
-\caption{Overview of each experiment configuration, target file system, average elapsed time (s) from 5 runs and calculated overhead of LDMS.}
+\caption{Overview of each experiment configuration, target file system, average elapsed time(s) and standard deviation(s) from 5 runs, calculated overhead of LDMS and variance of the runs.}
 \label{table:apps}
 \end{table}
 %\RED{Took another stab at this. FIX ANYTHING THAT DOESN'T MAKE SENSE. OR REMOVE IT ALL TOGETHER}.
-The average of the 5 execution times (e.g., Average Runtime (s)) for Darshan and the \connector{} (e.g., dC) was then taken and used to calculate the percent overhead of LDMS. Because of the system availability, the runtimes with Darshan were only performed and recorded 1-2 weeks before the experiments with the \connector{}. As seen from Table~\ref{subtable:mpi-io-test}, the overhead of LDMS on Darshans' MPI-IO-TEST benchmark for three experiments shows a decrease in overall runtime with the \connector{}. Since this is not feasible, the runtime improvement seen with the \connector{} is most likely due to the NFS and Lustre file systems performance variation where these experiments were performed. Since the applications for Darshan and the \connector{} were run at different times, the file systems could have performed worse during the Darshan experiments and better during the \connector{} experiments creating an increase and decrease in overhead, respectively. We have not been able to test on a different cluster or have had the opportunity to interleave the Darshan, and \connector{} runs to mitigate any file system performance changes. These experiments will be part of further research for this framework. The other experiment on the Lustre file system with Collective enabled shows an overhead of less than 8.41\%, which is a minor overhead as this experiment has the highest rate of messages being sent per second to the LDMS Streams interface. 
+The average of the 5 execution times (e.g., Average Runtime (s)) for Darshan and the \connector{} (e.g., dC) was then taken and used to calculate the percent overhead of LDMS. Because of the system availability, the runtimes with Darshan were only performed and recorded 1-2 weeks before the experiments with the \connector{}. As seen from Table~\ref{subtable:mpi-io-test}, the overhead of LDMS on Darshans' MPI-IO-TEST benchmark for three experiments shows a decrease in overall runtime with the \connector{}. Since this is not feasible, the runtime improvement seen with the \connector{} is most likely due to the NFS and Lustre file systems performance variation where (and when) these experiments were performed. We have not been able to test on a different cluster or have had the opportunity to interleave the Darshan, and \connector{} runs to mitigate any file system performance changes.
 
-The HACC-IO application, seen in Table~\ref{subtable:HACC} was similar to the MPI-IO-TEST benchmark regarding a shorter runtime with the \connector{} for both file systems. Again, this is most likely due to the Lustre and NFS file systems as described earlier. The other two experiments, NFS with 10 million particles and Lustre with 5 million particles, show an overhead of 0.84\% and 12.01\%, respectively. The experiment with 0.84\% overhead indicates no significant effect on the application's runtime. In contrast, the experiment with 12.01\% overhead shows a longer runtime with the \connector{}, and it is because of the performance variation in both file systems which we will invistigate in the near future.
+%Since the applications for Darshan and the \connector{} were run at different times, the file systems could have performed worse during the Darshan experiments and better during the \connector{} experiments creating an increase and decrease in overhead, respectively.  
+
+%The other experiment on the Lustre file system with Collective enabled shows an overhead of less than 8.41\%, which is a minor overhead as this experiment has the highest rate of messages being sent per second to the LDMS Streams interface. 
+
+The HACC-IO application, seen in Table~\ref{subtable:HACC} was similar to the MPI-IO-TEST benchmark regarding a shorter runtime with the \connector{} for both file systems. Again, this is most likely due to the Lustre and NFS file systems as described earlier. The other two experiments, NFS with 10 million particles and Lustre with 5 million particles, show an overhead of 0.84\% and 12.01\%, respectively. The experiment with 0.84\% overhead indicates no significant effect on the applications runtime. In contrast, the experiment with 12.01\% overhead shows a longer runtime with the \connector{} which is most likely due to performance variation in both file systems which we will investigate in the near future. The calculated variance for each of the experiments are statistically significant to assume that the overhead of LDMS is likely due to factors outside of LDMS and therefore are inconclusive.
 
 %The HMMER application, seen in Table~\ref{subtable:HACC} shows a significant increase in runtime with upwards of 270\% for NFS and 12000\% for Lustre where the user has to wait ~2x-12x longer for their application to finish. This, of course, is not ideal for the average user and the result of these high overhead percentages are due to the json message formatting. Additional tests have been performed without the sprintf() function to generate the json message (i.e. only LDMS Streams API is enabled and the \connector send function is called) and the average overhead was 0.37\%. This indicates that the increase in overhead is not due to LDMS but rather the formatting of the I/O event data from integers into strings. HMMER had an average of 3-4 million messages (i.e. Darshan I/O events) during a single run with a rate of 1-2k messages per second. HACC-IO and MPI-IO-TEST, on the other hand, had an average of 1-50K messages with rates of less than 100 messages per second. These are significantly lower than HMMER which is why no significant overhead was detected in the other application runs. 
 
-Darshan collects all I/O events of an application run and the \connector{} is implemented such that when Darshan detects an I/O event, the \connector{} will collect and format that current set of I/O metrics into a json message. In order to send a json message, all integers must be converted to strings and this conversion comes at a performance cost. Therefore, the more I/O intensive an application is and the shorter the runtime, the overhead will increase significantly and cause the runtime performance to drop (as seen in MPI-IO collective using luster). Since there is currently no other way to send I/O data as a json message to the LDMS Streams interface without converting the integers to strings, we must pay this performance cost. To overcome this issue, we plan to further develop the \Darshan{} framework to allow users to collect every \emph{n-th} I/O event detected by Darshan. This functionality will allow users to analyze a percentage of their applications I/O behavior during runtime without having to compensate runtime performance.     
+For the experiments that show a significant increase in overhead, this is due to the json message formamting. Darshan collects all I/O events of an application run and the \connector{} is implemented such that when Darshan detects an I/O event, the \connector{} will collect and format that current set of I/O metrics into a json message. In order to send a json message, all integers must be converted to strings and this conversion comes at a performance cost. Therefore, the more I/O intensive an application is and the shorter the runtime, the overhead will increase significantly and cause the runtime performance to drop (as seen in MPI-IO collective using luster). Since there is currently no other way to send I/O data as a json message to the LDMS Streams interface without converting the integers to strings, we must pay this performance cost. To overcome this issue, we plan to further develop the \Darshan{} framework to allow users to collect every \emph{n-th} I/O event detected by Darshan. This functionality will allow users to analyze a percentage of their applications I/O behavior during runtime without having to sacrifice runtime performance.     
 %\RED{END OF THE SECTION I'VE ADDED - 6/26}
 
 
@@ -163,10 +175,10 @@ with the slowest writing after 250 seconds.
 	\centering
 	\includegraphics[width=1\textwidth]{figs/255653_mpi_io_luster_no_coll.pdf}
 	\caption{Graphana visualization of the \texttt{job\_id 2}
-          writes (blue) and reads (green) operations and amount of bytes per
+          writes (blue) and reads (green) operations and number of bytes per
           operation, using the absolute timestamp metric collected
-	  with \Darshan{}. }%Given the other metrics collected by the \connector, many more analyses and visualizations can be made to allow for further insights in application I/O behavior.}
-	\label{f:mpi_io_grafana}
+	  with \Darshan{}. With this runtime data, additional analyses and visualizations can be made to allow for further insights in application I/O behavior.}
+	  \label{f:mpi_io_grafana}
 \end{figure*}
 
 The same job is also represented in Figure \ref{f:mpi_io_grafana}
@@ -181,6 +193,4 @@ metrics intervals. Such representation using the absolute timestamps
 facilitates the correlation of I/O performance congestion, for
 example, with system behavior monitoring, which can also be
 represented as a Grafana dashboard.
-
-
 
