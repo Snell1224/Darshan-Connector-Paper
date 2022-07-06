@@ -108,10 +108,7 @@ same system and with the same configuration, the applications
 presented different I/O behavior. In fact, a single HPC application
 can have multiple unique I/O behavior that can degradate the
 performance of the application \cite{costa2021}. This I/O variation
-can also happen between allocated devices. Figure \ref{f:hacc2} shows
-the number of I/O requests per node for close and open operations for
-two jobs for the HACC-IO application on Lustre for 10 millions
-particles per rank.
+can also happen between allocated devices. Figure \ref{f:hacc2} shows the number of I/O requests per node for close and open operations for two jobs using the same input for the HACC-IO application on Lustre for 10 million particles per rank. This variation is under investigation to understand the core cause of such behavior.
 
 \begin{figure}
 	\centering
@@ -127,7 +124,7 @@ particles per rank.
 \begin{figure}
 	\centering
         \includegraphics[width=\linewidth]{figs/hacc_nfs_10.pdf}
-	\caption{The same application can perform different amount of
+	\caption{The same application perform different amount of
           I/O operations per node.}
 	\label{f:hacc2}
 \end{figure}
@@ -155,10 +152,10 @@ per nodes and ranks.
 
 Using the absolute timestamps collected we can temporarily view
 wherein the application execution the variability of a job
-occurred. Figure \ref{f:mpi_io} presents the duration and occurrence of
+occurred and undestand the I/O behavior. Figure \ref{f:mpi_io} presents the duration and occurrence of
 I/O operations throughout the MPI-IO benchmark for \texttt{job\_id
   2}. We can identify the application I/O pattern of performing
-writings during ten phases, and then reads at the end. Also, this
+writings during ten phases, and then read at the end, corresponding to the HACC-IO simulation purpose to write the checkpoint filesystem and then read for validation. Also, this
 application run faster writes at the beginning and slower at the end,
 with the slowest writing after 250 seconds.
       
