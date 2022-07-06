@@ -1,7 +1,7 @@
 \section{Integration Tools}
 \label{sec:integration}
 \subsection{Darshan}
-Darshan is divided into two main parts: 1) \emph{darshan-runtime} which contains the instrumentation of the characterization tool and produces a single log file a the end of each execution summarizing the I/O access patterns used by the application~\cite{darshan-doc}. 2) \emph{darshan-util} which is intended for analyzing log files produced by darshan-runtime~\cite{darshan-doc}. The \Darshan focuses on the \emph{darshan-runtime}~\cite{darshan-runtime} as this is where the source code of I/O event data is recorded by Darshan.
+Darshan is divided into two main parts: 1) \emph{darshan-runtime} which contains the instrumentation of the characterization tool and produces a single log file a the end of each execution summarizing the I/O access patterns used by the application~\cite{darshan-doc}. 2) \emph{darshan-util} which is intended for analyzing log files produced by darshan-runtime~\cite{darshan-doc}. The \Darshan{} focuses on the \emph{darshan-runtime}~\cite{darshan-runtime} as this is where the source code of I/O event data is recorded by Darshan.
 
 Darshan tracks the start, duration and end time of an application run via the C function \emph{clock\_gettime()} and converts the result into seconds and passes the result to a struct that is then used to report the summary log files~\cite{darshangithub}. Therefore, in order to retrieve the \emph{absolute timestamp} and include it into the I/O event data during run time, a time struct pointer was added to the function call that used \emph{clock\_gettime()} in \emph{darshan-runtime}. This pointer was passed through all of Darshan's modules and the \emph{absolute timestamp} was collected. This was the preferred method as it required minimal changes to Darshan's source code and no additional overhead and latency between the function call and recording of the \emph{absolute timestamp}. 
 
@@ -21,20 +21,20 @@ The word, \emph{LDMSD}, refers to an LDMS daemon that provides the capability of
 	%\includegraphics[trim=0.2cm 8.5cm 12cm 0cm ,clip,width=0.9\linewidth]{figs/fig_kokkos_ldms.pdf}
 	\includegraphics[trim={3.5cm 0 0 0},clip,
 	width=1.15\linewidth]{figs/darshan-connector.pdf}
-	\caption{Overview of the \connector design and how it collects I/O data for each read, write, open and close events per rank from Darshan. The LDMS library must be linked against the Darshan build in order to utilize the \emph{LDMS Streams} functionality and store plugins.}
+	\caption{Overview of the \connector{} design and how it collects I/O data for each read, write, open and close events per rank from Darshan. The LDMS library must be linked against the Darshan build in order to utilize the \emph{LDMS Streams} functionality and store plugins.}
 	\label{f:Darshan Connector}
 \end{figure}
 
-The \Darshan leverages the LDMS transport to support the injection and transport of application I/O data which requires a \emph{push-based} method to reduce the amount of memory consumed and data loss on the node as well as reduce the latency between the time in which the event occurs and when it is recorded. A \emph{pull-based} method would require a buffering to hold an unknown number of events between pulls. Also, the transported data format needs to support  \emph{variable-length} events because the I/O data may will most likely vary in size. 
+The \Darshan{} leverages the LDMS transport to support the injection and transport of application I/O data which requires a \emph{push-based} method to reduce the amount of memory consumed and data loss on the node as well as reduce the latency between the time in which the event occurs and when it is recorded. A \emph{pull-based} method would require a buffering to hold an unknown number of events between pulls. Also, the transported data format needs to support  \emph{variable-length} events because the I/O data may will most likely vary in size. 
 
 This leads to the LDMS \emph{publish-subscribe bus} capability , \emph{LDMS Streams}, which has been enhanced to support I/O event data. This capability is intended for publishing and subscribing to an \emph{LDMS streams tag}. The tag needs to be specified in LDMS daemons and \emph{plugins} in order to publish event data to \emph{LDMS Streams} and receive this published \emph{LDMS Streams} data that match the tag.This process and the \emph{push-based} method can be seen in Figure~\ref{f:LDMS Overview}. Event data can be specified as either \texttt{string} or \texttt{JSON} format. The \emph{LDMS Streams} API was modified to support long application connections and message injections. \emph{LDMS Streams} uses best effort without a reconnect or resend for delivery and does not cache it's data so the published data can only be received after subscription. The \emph{LDMS Streams} allows the ability for any data source to be injected into the LDMS transport.
 
 \subsection{Darshan Connector}
 
-The most recent version of Darshan allows for full tracing of application I/O workloads using their DXT instrumentation module which can be enabled and disabled as desired at runtime. DXT provides high-fidelity traces for an application's I/O workload vs Darshan's traditional I/O summary data and currently traces POSIX and MPI-IO layers~\cite{darshan-runtime}. This design leverages the additional I/O tracing Darshan's DXT provides through the new \connector capability.
+The most recent version of Darshan allows for full tracing of application I/O workloads using their DXT instrumentation module which can be enabled and disabled as desired at runtime. DXT provides high-fidelity traces for an application's I/O workload vs Darshan's traditional I/O summary data and currently traces POSIX and MPI-IO layers~\cite{darshan-runtime}. This design leverages the additional I/O tracing Darshan's DXT provides through the new \connector{} capability.
 
 
-The \connector functionality collects both DXT data and Darshan's original I/O data and optionally publishes a message in JSON format to the \emph{LDMS Streams} interface as seen in Figure 3. The \emph{absolute timestamp} is also included in this message with the given name "timestamp". The LDMS transport then transports the I/O event data to a \emph{DSOS} database where Grafana can access and query this data. the \connector currently uses a single unique \emph{LDMS Stream tag} for this data source. For the file level accesses that DXT does not trace or for file level access type that have different name-value pairs, a value of "N/A" or "-1" is given in the JSON message. 
+The \connector{} functionality collects both DXT data and Darshan's original I/O data and optionally publishes a message in JSON format to the \emph{LDMS Streams} interface as seen in Figure 3. The \emph{absolute timestamp} is also included in this message with the given name "timestamp". The LDMS transport then transports the I/O event data to a \emph{DSOS} database where Grafana can access and query this data. the \connector{} currently uses a single unique \emph{LDMS Stream tag} for this data source. For the file level accesses that DXT does not trace or for file level access type that have different name-value pairs, a value of "N/A" or "-1" is given in the JSON message. 
 
 Darshan has a large number of metrics it uses for I/O tracing and
 post-processing calculations. The current stages of this framework
@@ -123,17 +123,17 @@ The HPC Web Services~\cite{ClusterAV} is an infrastructure that consists of the 
 	\centering
 	%\includegraphics[trim=0.2cm 8.5cm 12cm 0cm ,clip,width=0.9\linewidth]{figs/fig_kokkos_ldms.pdf}
 	\includegraphics[trim=3cm 2cm 0cm 0cm, clip,width=1.2\linewidth]{figs/darshan-integration.pdf}
-	\caption{Overview of the \Darshan where the \connector is used to intercept the I/O behavior Darshan is collecting utilizes the various tools to publish, store, analyze and view runtime I/O behavior.}
+	\caption{Overview of the \Darshan{} where the \connector{} is used to intercept the I/O behavior Darshan is collecting utilizes the various tools to publish, store, analyze and view runtime I/O behavior.}
 	\label{f:FrameworkOverview}
 \end{figure}
 
-Grafana is an open-source visualization application that provides various charts, graphs and alerts for supported data sources. It can support multiple data formats but is best suited for timeseries data. It has storage plugins for many database technologies in order to query and render data from multiple data sources. The \Darshan implemented a storage plugin for the DSOS database in order to query this data and visualize it on the Grafana web interface~\cite{grafana-website}. An overview of the this integration can be seen in Figure~\ref{f:FrameworkOverview}.
+Grafana is an open-source visualization application that provides various charts, graphs and alerts for supported data sources. It can support multiple data formats but is best suited for timeseries data. It has storage plugins for many database technologies in order to query and render data from multiple data sources. The \Darshan{} implemented a storage plugin for the DSOS database in order to query this data and visualize it on the Grafana web interface~\cite{grafana-website}. An overview of the this integration can be seen in Figure~\ref{f:FrameworkOverview}.
 
-Python analysis modules are used to produce meaningful visualizations on the queried data from the DSOS database. With these modules, queried data is converted into a pandas dataframe to allow for easier application of complex calculations, transformations and aggregations on the data. The type of analysis module is specified in the Grafana web interface. This is where the \Darshan will demonstrate how runtime I/O data will provide further insights and understanding into application I/O behavior, patterns, performance variability and any correlations these have with the system behavior.   
+Python analysis modules are used to produce meaningful visualizations on the queried data from the DSOS database. With these modules, queried data is converted into a pandas dataframe to allow for easier application of complex calculations, transformations and aggregations on the data. The type of analysis module is specified in the Grafana web interface. This is where the \Darshan{} will demonstrate how runtime I/O data will provide further insights and understanding into application I/O behavior, patterns, performance variability and any correlations these have with the system behavior.   
 
 %\RED{
 	%\begin{itemize}
 	%\item Explain how LDMS is integrated into Darshan. Give an overview on how we implement LDMS Streams into the Darshan DXT section to collect run time I/O data and push to a JSON file that then gets aggregated by LDMS and stored to SOS. Then explain how this stored data is then queried and displayed in a Grafana dashboard.
 	%\item Add a pic of current Darshan LDMS integration setup (.png) 
 	%\end{itemize}
-	%}
+	%e\IEEEauthorblockN{3\textsuperscript{rd} Ana Luisa V. Solórzano}
