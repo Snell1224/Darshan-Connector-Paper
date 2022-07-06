@@ -177,7 +177,7 @@ with the slowest writing after 250 seconds.
 	\caption{Graphana visualization of the \texttt{job\_id 2}
           writes (blue) and reads (green) operations and number of bytes per
           operation, using the absolute timestamp metric collected
-	  with \Darshan{}. With this runtime data, additional analyses and visualizations can be made to allow for further insights in application I/O behavior.}
+	  with \Darshan{}.}
 	  \label{f:mpi_io_grafana}
 \end{figure*}
 
@@ -193,4 +193,6 @@ metrics intervals. Such representation using the absolute timestamps
 facilitates the correlation of I/O performance congestion, for
 example, with system behavior monitoring, which can also be
 represented as a Grafana dashboard.
+
+Without the \connector{}, it would not be possible to create the meaningful analyses and visualizations shown in Figures 7-9. In contract, Figures 5 and 6 show the aggregate I/O behavior which can be created with Darshan alone. These figures do not provide the timeseries data and thus in-depth insights into I/O behavior like the \Darshan{} does.
 
