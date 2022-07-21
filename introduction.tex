@@ -11,11 +11,9 @@ production conditions in many cases~\cite{costa2021}
        %during the weekend, separate and disjoint time zones and read
        %I/O's of runs within the same cluster.
 
-Variations in I/O can be caused by the system usage (e.g. systems
-shared among users, time of the day being used), and by the system
-behavior such as the file system (e.g. buffering, file transfer,
+Variations in I/O can be caused by the system usage and behavior such as the file system (e.g. buffering, file transfer,
 interrupt handling), network congestion, system resource contentions,
-or by the access patterns of the application itself. 
+or by the access patterns of the application itself.\RED{reference this}
 %Providing users, developerd, and system administratior with visual insight about the I/O behavior combined with other resources information during the runtime of the application will assest them in determining the root cause of I/O related problems. 
 This variation
 makes it difficult to determine the root cause of I/O related problems
@@ -36,7 +34,7 @@ Efforts to identify the origin of I/O performance given by these tools
 usually come from any identified correlation between analyses of
 various applications runs or the time in which these applications were
 tested. However, this approach does not provide the ability to know
-\textbf{when} an I/O performance variability occurs during an
+\textbf{when} an I/O performance variation occurs during an
 application run and, if the developer or user wishes to, identify any
 correlations between the file system, network congestion or resource
 contentions and the I/O performance.
