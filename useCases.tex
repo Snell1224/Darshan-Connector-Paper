@@ -18,9 +18,9 @@ We experiment using several I/O loads on the Voltrino Cray XC40 system at Sandia
 %\todo{File systems???}
 
 \subsection{Enviroment}
-Voltrino, run LDMS samplers on the compute nodes and one LDMS aggregator on the head node. LDMS uses the UGNI interface to transfer Darshan streams data, and other performance metrics from the compute nodes to the head node. The aggregator on the head node transmits the data to another LDMS aggregator on another cluster, Shirley, for analysis and storage. Shirley, host the HPC web services Grafana application and the DSOS database. 
+The HPC cluster, Voltrino, was used to run LDMS samplers on the compute nodes and one LDMS aggregator on the head node. LDMS uses the UGNI interface to transfer Darshan streams data, and other performance metrics from the compute nodes to the head node. The aggregator on the head node transmits the data to another LDMS aggregator on another cluster, Shirley, for analysis and storage. Shirley hosts the HPC web services consisting of the Grafana application and DSOS database. 
 
-We run the applications with our enhanced Darshan library that wraps the I/O functions dynamically, for each MPI rank, to sample I/O data and send it using streams to the LDMS local node sampler daemon. We set the \code{LD\_Preload} environment variable to point to the Darshan library shared objects which contain the sampling wrappers before we run the applications.
+We ran the applications with our enhanced Darshan library that wraps the I/O functions dynamically, for each MPI rank, to sample I/O data and send it using streams to the LDMS local node sampler daemon. We set the \code{LD\_Preload} environment variable to point to the Darshan library shared objects which contain the sampling wrappers before we run the applications.
 
 
 
@@ -93,4 +93,3 @@ We run the applications with our enhanced Darshan library that wraps the I/O fun
 %    \caption{SW4} 
 %    \label{subtable:SW4}
 %\end{subtable}
-

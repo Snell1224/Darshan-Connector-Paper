@@ -3,14 +3,14 @@
 This paper covered the \Darshan{} design and implementation of the \connector{} which collected I/O data from an I/O characterization tool to create a new timeseries that allows for further insights into I/O behavior and patterns. Five key components were used to develop this design which were the I/O event data (Darshan), data collection (LDMS Streams), storage (DSOS), analysis (Python modules) and visualization (Grafana).
 These results of this design proved to enhance both LDMS and Darshan tools as well as create new insights and provide a better understanding to application I/O performance and behavior. 
 
-The next steps are to further expand the \connector{} and it's capabilities by including more I/O event data and demonstrating advanced insights into correlations between I/O performance and system behavior.However, an issue with increased overhead does arise when collecting data from short but intensive I/O applications. 
+The next steps are to further expand the \connector{} and it's capabilities by including more I/O event data and demonstrating advanced insights into correlations between I/O performance and system behavior. However, an issue with increased overhead does arise when collecting data from short but intensive I/O applications. 
 %This is because the I/O event data consists of multiple integers that must be formatted into a json message and this integer to string conversion comes at a performance cost. The \connector is currently implemented to collect and format the I/O data whenever Darshan detects an I/O event. Darshan collects every I/O event that occurs during an application run so as the rate of I/O events increase, the number of json messages formatted will increase which will decrease the applications runtime performance. 
-To address this issue, we will include an option for users to decide the rate of I/O events that the \connector{} will collect and format into a json message to be sent to the LDMS Streams interface. Having this option will allow users who are running intensive I/O applications to still be able to analysis runtime timeseries data of their application without concern of the runtime performance. 
+To address this issue, we will include an option for users to decide the rate of I/O events that the \connector{} will collect and format into a json message. Having this option will allow users who are running intensive I/O applications to still be able to analysis runtime timeseries data of their application without concern of the runtime performance. 
 
-We hope the \Darshan{} will be available as an optional "module" plugin in Darshan so their users may use this tool to better understand their applications I/O performance across HPC systems and clusters. 
+The \Darshan{} will be available as an optional "module" plugin to the Darshan tool so their users can collect timeseries data without increasing memory impact on compute nodes and better understand their applications I/O performance across HPC systems and clusters. 
 
 \section{Acknowledgment}
-The authors would like to thank Jim Brandt (SNL) and Devesh Tiwari (Northeastern Univerity), for useful discussions and suggestions in this work and Darshan contributors, Phil Carns (ANL) and Shane Snider (ANL), for insights about Darshan architecture.
+The authors would like to thank Jim Brandt (SNL), for useful discussions and suggestions in this work and Darshan contributors, Phil Carns (ANL) and Shane Snider (ANL), for insights about Darshan architecture.
 
 %\RED{
 	%\begin{itemize}
