@@ -1,27 +1,30 @@
 \section{Introduction}
-As more scientific applications are developed and used, the need for
-improved fidelity and throughput is more pressing than ever and much
-design effort and investments are being put into improving not only
-the application but also the system components. Being able to
+As more scientific I/O applications are developed and used, the need for
+improved fidelity and throughput of these applications is more pressing than ever. 
+Much design effort and investments are being put into improving not only
+I/O applications but also the system components. Being able to
 identify, predict and analyze I/O behaviors are critical to ensuring
-parallel storage systems are utilized efficiently. However, I/O
-performance continues to show high variations on large-scale
-production conditions in many cases~\cite{costa2021}
+parallel storage systems are utilized efficiently~\cite{costa2021}. 
+
+%However, I/O
+%performance continues to show high variations on large-scale
+%production conditions in many cases~\cite{costa2021}.
 %\RED{Cite  NE}. %Some of these cases include running applications on clusters
        %during the weekend, separate and disjoint time zones and read
        %I/O's of runs within the same cluster.
 
 Variations in I/O can be caused by the system usage and behavior such as the file system (e.g. buffering, file transfer,
-interrupt handling), network congestion, system resource contentions,
-or by the access patterns of the application itself.\RED{reference this}
+interrupt handling), network congestion, data set size and storage, system resource contentions,
+or by the access patterns of the application itself~\cite{I/O-performance-variation}.
 %Providing users, developerd, and system administratior with visual insight about the I/O behavior combined with other resources information during the runtime of the application will assest them in determining the root cause of I/O related problems. 
 This variation
 makes it difficult to determine the root cause of I/O related problems
 and have a thorough understanding of throughput for system-specific
 behaviors and I/O performance in similar applications across a
-system. Further, not knowing the origin of such variations will
-directly affect the user and developer as unwanted time, effort and
-investment will need to be put into solving the issue.
+system. 
+%Further, not knowing the origin of such variations will
+%irectly affect the user and developer as unwanted time, effort and
+%investment will need to be put into solving the issue.
 
 Generally, the I/O performance is analyzed post-run by application
 developers, researchers and users in the form of regression testing or

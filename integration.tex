@@ -34,7 +34,7 @@ This leads to the LDMS \emph{publish-subscribe bus} capability , \emph{LDMS Stre
 The most recent version of Darshan allows for full tracing of application I/O workloads using their DXT instrumentation module which can be enabled and disabled as desired at runtime. DXT provides high-fidelity traces for an application's I/O workload vs Darshan's traditional I/O summary data and currently traces POSIX and MPI-IO layers~\cite{darshan-runtime}. This design leverages the additional I/O tracing Darshan's DXT provides through the new \connector{} capability.
 
 
-The \connector{} functionality collects both DXT data and Darshan's original I/O data and optionally publishes a message in JSON format to the \emph{LDMS Streams} interface as seen in Figure 3. The \emph{absolute timestamp} is also included in this message with the given name "timestamp". The LDMS transport then transports the I/O event data to a \emph{DSOS} database where Grafana can access and query this data. the \connector{} currently uses a single unique \emph{LDMS Stream tag} for this data source. For the file level accesses that DXT does not trace or for file level access type that have different name-value pairs, a value of "N/A" or "-1" is given in the JSON message. 
+The \connector{} functionality collects both DXT data and Darshan's original I/O data and optionally publishes a message in JSON format to the \emph{LDMS Streams} interface as seen in Figure 3. The \emph{absolute timestamp} is also included in this message with the given name "timestamp". The LDMS transport then transports the I/O event data to a \emph{DSOS} database where Grafana can access and query this data. the \connector{} currently uses a single unique \emph{LDMS Stream tag} for this data source. For the file level access types that DXT does not trace or that have different name-value pairs, a value of "N/A" or "-1" is given in the JSON message. For example, Darshan's POSIX module (IEE standard that establishes a set of guidelines for compatibility and portability between operating systems) traces the number of bytes read and written per operation (e.g. \texttt{"max\_byte"}) and number of times access alternated between reads and writes (e.g. \texttt{"switches"}). The I/O operations shown in Figure~\ref{f:CSV Header and Output} are \emph{"open"} and \emph{"close"} which are not applicable to these traces. Therefore, \texttt{"max\_byte"} and \texttt{"switches"} are not present in Darshan and their corresponding JSON message names are set to \texttt{"-1"} by the \connector{}.    
 
 Darshan has a large number of metrics it uses for I/O tracing and
 post-processing calculations. The current stages of this framework
@@ -55,12 +55,12 @@ between I/O performance variability and system behavior.
           %\emph{DSOS}. 
           The \texttt{name:value} pairs in light blue
           indicate meta data stored, while the light purple indicates
-          the file level access data not applicable to POSIX. 
+          the file level access data not applicable to POSIX.
           %and are given the values of \texttt{"N/A"} or \texttt{"-1"}. 
           The \texttt{"seg"} is a list containing multiple \texttt{name:value} pairs.}
 	\label{f:CSV Header and Output}
 \end{figure}
-Table \ref{table:metrics} depicts the names and definition of each
+Table \ref{table:metrics} depicts the names and definitions of each
 metric in the JSON file. Depending on the \texttt{"type"} input, the
 absolute directory of the Darshan file output and executable will be
 recorded and published to \emph{LDMS Streams}. If \texttt{"type"} is
