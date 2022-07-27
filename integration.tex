@@ -14,7 +14,7 @@ Darshan tracks the start, duration and end time of an application run via the C 
 \end{figure}
 
 \subsection{LDMS Streams}
-The word, \emph{LDMSD}, refers to an LDMS daemon that provides the capability of data collection, transport and storage and their \emph{plugins} determine the functionality of these capabilities~\cite{ldmsgithubwiki}. Daemons on the compute nodes run sampler plugins and transport is achieved through multi-hop \emph{aggregation}. LDMS had two levels of aggregator daemons~\cite{ldmsgithubwiki}which can utilize storage plugins to store any sets of data into various formats so long as it's specified beforehand.
+The word \emph{LDMSD} refers to an LDMS daemon that provides the capability of data collection, transport and storage and their \emph{plugins} determine the functionality of these capabilities~\cite{ldmsgithubwiki}. Daemons on the compute nodes run sampler plugins and transport is achieved through multi-hop \emph{aggregation}. LDMS had two levels of aggregator daemons~\cite{ldmsgithubwiki}which can utilize storage plugins to store any sets of data into various formats so long as it's specified beforehand.
 
 \begin{figure}
 	\centering
@@ -25,13 +25,15 @@ The word, \emph{LDMSD}, refers to an LDMS daemon that provides the capability of
 	\label{f:Darshan Connector}
 \end{figure}
 
-The \Darshan{} leverages the LDMS transport to support the injection and transport of application I/O data which requires a \emph{push-based} method to reduce the amount of memory consumed and data loss on the node as well as reduce the latency between the time in which the event occurs and when it is recorded. A \emph{pull-based} method would require a buffering to hold an unknown number of events between pulls. Also, the transported data format needs to support  \emph{variable-length} events because the I/O data may will most likely vary in size. 
+The \Darshan{} leverages the LDMS transport to support the injection and transport of application I/O data which requires a \emph{push-based} method to reduce the amount of memory consumed and data loss on the node as well as reduce the latency between the time in which the event occurs and when it is recorded. A \emph{pull-based} method would require a buffering to hold an unknown number of events between pulls. Also, the transported data format needs to support \emph{variable-length} events because the I/O data will most likely vary in size. 
 
-This leads to the LDMS \emph{publish-subscribe bus} capability , \emph{LDMS Streams}, which has been enhanced to support I/O event data. This capability is intended for publishing and subscribing to an \emph{LDMS streams tag}. The tag needs to be specified in LDMS daemons and \emph{plugins} in order to publish event data to \emph{LDMS Streams} and receive this published \emph{LDMS Streams} data that match the tag. This process and the \emph{push-based} method can be seen in Figure~\ref{f:LDMS Overview}. Event data can be specified as either \texttt{string} or \texttt{JSON} format. The \emph{LDMS Streams} API was modified to support long application connections and message injections. \emph{LDMS Streams} uses best effort without a reconnect or resend for delivery and does not cache it's data so the published data can only be received after subscription. The \emph{LDMS Streams} allows the ability for any data source to be injected into the LDMS transport.
+We created an I/O targeted LDMS streams store that utilizes the LDMS publish-subscribe bus capability, \emph{LDMS Streams}, to publish I/O event data. \emph{LDMS Streams} is intended for publishing and subscribing to an \emph{LDMS streams tag}. 
+%This leads to the LDMS \emph{publish-subscribe bus} capability, \emph{LDMS Streams}, which has been enhanced to support I/O event data. This capability is intended for publishing and subscribing to an \emph{LDMS streams tag}. 
+This tag needs to be specified in LDMS daemons and \emph{plugins} in order to publish event data to \emph{LDMS Streams} and receive this published \emph{LDMS Streams} data that match the tag. This process and the \emph{push-based} method can be seen in Figure~\ref{f:LDMS Overview}. Event data can be specified as either \texttt{string} or \texttt{JSON} format. The \emph{LDMS Streams} API was modified to support long application connections and message injections. \emph{LDMS Streams} uses best effort without a reconnect or resend for delivery and does not cache it's data so the published data can only be received after subscription. The \emph{LDMS Streams} allows the ability for any data source to be injected into the LDMS transport.
 
 \subsection{Darshan Connector}
 
-The most recent version of Darshan allows for full tracing of application I/O workloads using their DXT instrumentation module which can be enabled and disabled as desired at runtime. DXT provides high-fidelity traces for an application's I/O workload vs Darshan's traditional I/O summary data and currently traces POSIX and MPI-IO layers~\cite{darshan-runtime}. This design leverages the additional I/O tracing Darshan's DXT provides through the new \connector{} capability.
+The most recent version of Darshan allows for full tracing of application I/O workloads using their DXT instrumentation module which can be enabled and disabled as desired at runtime. DXT provides high-fidelity traces for an application's I/O workload vs Darshan's traditional I/O summary data and currently traces POSIX and MPI-IO layers~\cite{darshan-runtime}. Our design leverages the additional I/O tracing Darshan's DXT module plugin provides through the new \connector{} capability.
 
 
 The \connector{} functionality collects both DXT data and Darshan's original I/O data and optionally publishes a message in JSON format to the \emph{LDMS Streams} interface as seen in Figure 3. The \emph{absolute timestamp} is also included in this message with the given name "timestamp". The LDMS transport then transports the I/O event data to a \emph{DSOS} database where Grafana can access and query this data. the \connector{} currently uses a single unique \emph{LDMS Stream tag} for this data source. For the file level access types that DXT does not trace or that have different name-value pairs, a value of "N/A" or "-1" is given in the JSON message. For example, Darshan's POSIX module (IEE standard that establishes a set of guidelines for compatibility and portability between operating systems) traces the number of bytes read and written per operation (e.g. \texttt{"max\_byte"}) and number of times access alternated between reads and writes (e.g. \texttt{"switches"}). The I/O operations shown in Figure~\ref{f:CSV Header and Output} are \emph{"open"} and \emph{"close"} which are not applicable to these traces. Therefore, \texttt{"max\_byte"} and \texttt{"switches"} are not present in Darshan and their corresponding JSON message names are set to \texttt{"-1"} by the \connector{}.    
@@ -40,8 +42,7 @@ Darshan has a large number of metrics it uses for I/O tracing and
 post-processing calculations. The current stages of this framework
 collects a subset of these metrics to publish to \emph{LDMS Streams},
 as presented in Figure \ref{f:CSV Header and Output}. These metrics
-provide the most value to the user as they will provide the ability to
-create new I/O behavior analyses and visualizations to get further
+will provide the ability to create new I/O behavior analyses and visualizations to get further
 insights of the application I/O behavior, and reveal correlations
 between I/O performance variability and system behavior.
 \begin{figure}
@@ -113,7 +114,7 @@ data through an HPC production system pipeline.
 %\section{Additional Components}
 %This section will provide a high level overview on how and why the \Darshan approach implemented the DSOS and Grafana tools for storage, analysis and visualization. 
 \subsection{Storage: DSOS Database}
-DSOS is built on the Scalable Object Store (SOS) database~\cite{sosgithub} and was intended to address the domain-specific needs of large-scale HPC monitoring. It was chosen as the preferred database because it allows for interaction via a command line interface which allows for fast query testing and data examination. DSOS also provides scalable data ingest and the ability to query large volumes of data which is required for the large amounts of data to be ingested and stored. %However, a different storage that had similar capabilities could be used instead. 
+DSOS is built on the Scalable Object Store (SOS) database~\cite{sosgithub} and was intended to address the domain-specific needs of large-scale HPC monitoring. It was chosen as the preferred monitoring database at Sandia because it allows for interaction via a command line interface which allows for fast query testing and data examination. DSOS also provides scalable data ingest and the ability to query large volumes of data which is required for the large amounts of data to be ingested and stored. %However, a different storage that had similar capabilities could be used instead. 
 To sort though the published \emph{LDMS Streams} data, combinations of the job ID, rank and timestamp are used to create joint indices where each index provided a different query performance. An example of this is using \texttt{job\_rank\_time} which will order the data by job, rank then timestamp and then search the data by a specific rank within a specific job over time.
 
 \subsection{Analysis and Visualization: HPC Web Services}
@@ -131,7 +132,7 @@ The front-end for the service website is Grafana~\cite{grafana-website} and the 
 
 Grafana is an open-source visualization application that provides various charts, graphs and alerts for supported data sources. It can support multiple data formats but is best suited for timeseries data. It has storage plugins for many database technologies in order to query and render data from multiple data sources. The \Darshan{} implemented a storage plugin for the DSOS database in order to query this data and visualize it on the Grafana web interface~\cite{grafana-website}. An overview of the this integration can be seen in Figure~\ref{f:FrameworkOverview}.
 
-Python analysis modules are used to produce meaningful visualizations on the queried data from the DSOS database. With these modules, queried data is converted into a pandas dataframe to allow for easier application of complex calculations, transformations and aggregations on the data. The type of analysis module is specified in the Grafana web interface. This is where the \Darshan{} will demonstrate how runtime I/O data will provide further insights and understanding into application I/O behavior, patterns, performance variability and any correlations these have with the system behavior.   
+Python analysis modules are used to produce meaningful visualizations on the queried data from the DSOS database. With these modules, queried data is converted into a pandas dataframe to allow for easier application of complex calculations, transformations and aggregations on the data. The type of analysis module is specified in the Grafana web interface. These python modules that \Darshan{} will demonstrate how runtime I/O data will provide further insights and understanding into application I/O behavior, patterns, performance variability and any correlations these have with the system behavior.   
 
 %\RED{
 	%\begin{itemize}
@@ -139,3 +140,4 @@ Python analysis modules are used to produce meaningful visualizations on the que
 	%\item Add a pic of current Darshan LDMS integration setup (.png) 
 	%\end{itemize}
 	%e\IEEEauthorblockN{3\textsuperscript{rd} Ana Luisa V. Solórzano}
+
