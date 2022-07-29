@@ -1,11 +1,36 @@
 \section{Related Work}
 \label{sec:rw}
-Extensive research has already been proposed in literature to improve I/O performance and behavior. The PASSION Runtime Library for parallel I/O proposed by Syracuse University~\cite{RuntimeLibrary-ParallelI/O} that optimizes I/O intensive applications through Data Prefetching and Data Sieving, the IOPin: Runtime Profiling of Parallel I/O in HPC
-Systems proposes a dynamic instrumentation to show the interactions between a parallel I/O application and the file system~\cite{HPC-IO-Runtime}, Design and Implementation of a Parallel I/O Runtime System for Irregular Applications~\cite{RuntimeLibrary-IrregularApps} that proposes two different collective I/O techniques for improving I/O performance. 
+Extensive work has been performed to improve I/O performance and behavior. 
+The PASSION Runtime Library for parallel I/O proposed by Syracuse 
+University~\cite{RuntimeLibrary-ParallelI/O} works to optimize I/O intensive 
+applications through Data Prefetching and Data Sieving. The authors of "IOPin: Runtime 
+Profiling of Parallel I/O in HPC Systems" propose dynamic instrumentation to 
+show the interactions between a parallel I/O application and the file 
+system~\cite{HPC-IO-Runtime}. "Design and Implementation of a Parallel I/O 
+Runtime System for Irregular Applications"~\cite{RuntimeLibrary-IrregularApps} 
+presents two different collective I/O techniques for improving I/O performance. 
 
-Darshan was the preferred I/O characterization tool because the Darshan's eXtended Tracing (DXT)~\cite{darshan-runtime} instrumentation module provides high-fidelity traces for an application's I/O workload vs Darshan's traditional I/O summary data~\cite{darshan-runtime}. It also collects timestamped data which made it possible to expose the \emph{absolute timestamp} for collecting runtime timeseries data. 
+Darshan was our preferred I/O characterization tool because the Darshan's eXtended 
+Tracing (DXT)~\cite{darshan-runtime} instrumentation module provides high-fidelity 
+traces for an application's I/O workload vs Darshan's traditional I/O summary 
+data~\cite{darshan-runtime}. It also collects timestamped data which made it 
+possible to expose the \emph{absolute timestamp} for collecting runtime timeseries data. 
 
-Other open-source I/O tools that collect runtime timeseries data do exist. Some of which are the linux command, iostat~\cite{iostat}, which collects system I/O device statistics and generates reports about the I/O loads between physical disks and ioprof~\cite{ioprof} which provides insights into I/O workloads. However, these tools do not provide the extensive I/O tracing capability (e.g. detailed statistics of individual I/O operations) that is utilized in this framework. 
+Other open-source I/O tools that collect runtime timeseries data do exist. 
+The linux command, iostat~\cite{iostat} collects system I/O device statistics 
+and generates reports about the I/O loads between physical disks. The ioprof~\cite{ioprof} 
+tool provides insights into I/O workloads. However, these tools do not provide the 
+extensive I/O tracing capability (e.g. detailed statistics of individual I/O operations) 
+that is provided by this framework. 
 
-This work differs from these approaches because we \emph{leverage and enhance} existing applications and tools to design an infrastructure that creates runtime analyses and visualizations from detailed traces of application I/O events during execution time. The \Darshan{} integrates LDMS's \emph{timestamped} data collection and storage capabilities~\cite{ldmsgithub} with Darshan~\cite{darshan-webpage} to collect runtime application I/O data. Further, a database is implemented to allow for efficient queries of large volumes of data as well as python analysis modules and an open-source web application for runtime analyses and visualizations.
+This work differs from these approaches because we \emph{leverage and enhance} 
+existing applications and tools to design an infrastructure that creates runtime 
+analyses and visualizations from detailed traces of application I/O events during 
+execution time. The \Darshan{} integrates LDMS's \emph{
+absolute timestamped} data collection and storage capabilities~\cite{ldmsgithub} 
+with Darshan~\cite{darshan-webpage} to collect runtime application I/O data. 
+Further, our choice of the DSOS database for storage of our event-based application
+I/O data enables efficient queries of large volumes of data as well as python 
+analysis modules and an open-source web application for runtime analyses and 
+visualizations.
 

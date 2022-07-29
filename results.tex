@@ -1,27 +1,46 @@
 \section{Results}
 \label{sec:results}
 
-This section covers what significance of the approach to collect
-runtime application I/O data using \Darshan{}. We present performance
-analysis that shows how the new metrics helped provide more insight
-results into I/O behavior and how this information represented
-metrics intervals. Such representation using the absolute timestamps
-facilitates the correlation of I/O performance congestion, for
-example, with system behavior monitoring, which can also be
-represented as a Grafana dashboard.
+This section describes the significance of collecting
+run time application I/O event data using our \Darshan{} approach. We present 
+performance analyses that show how the new metrics, captured in a time series
+along with \emph{absolute timestamps}, can provide more insight
+into I/O behavior than summary statistics alone. 
+%and how this information represented metrics intervals. 
+Additionally, such representation
+% using the absolute timestamps
+can facilitate the correlation of I/O performance with system component
+behaviors
+(e.g., network and filesystem congestion)
+% for example, with system behavior monitoring, 
+which can also be represented in a Grafana dashboard.
 
-Without the \connector{}, it would not be possible to create the meaningful analyses and visualizations shown in Figures\ref{f:mpi_io_all}-\ref{f:mpi_io_grafana}. In contrast, Figure~\ref{f:hacc2} shows the aggregate I/O behavior which can be created with Darshan alone. This figure does not provide the timeseries data and thus in-depth insights into I/O behavior like the \Darshan{} does.
-\section{Results}
-\label{sec:results}
+Without the \connector{}, it would not be possible to create the meaningful analyses 
+and visualizations shown in Figures\ref{f:mpi_io_all}-\ref{f:mpi_io_grafana}. 
+In contrast, Figure~\ref{f:hacc2} shows the aggregate I/O behavior which can be 
+created with Darshan alone. This figure does not provide the timeseries data and 
+thus in-depth insights into I/O behavior like the \Darshan{} does. Note that
+the Darshan eXtended Trace (DXT) plugin that we leverage in this work does provide
+time series capture capability. However, due to memory constraints it will not 
+typically be able to capture these time series for a whole job run. Additionally
+the timestamps in the DXT time series are relative to the job start rather than
+absolute.
+%\section{Results}
+%\label{sec:results}
 
-This section covers what significance of the approach to collect
-runtime application I/O data using \Darshan{}. We present performance
-analysis that shows how the new metrics helped provide more insight
-results into I/O behavior and how this information represented
-in Grafana.
+%This section prsents the significance of our approach to collect
+%runtime application I/O data using \Darshan{}. We present performance
+%analysis that shows how the new metrics helped provide more insight
+%results into I/O behavior and how this information represented
+%in Grafana.
 
 \subsection{Experiments and Overhead}
-Each application was tested on the Lustre and NFS file system with various configurations for each application run. All application experiments were repeated 5 times for the \connector{} and Darshan only (i.e. no LDMS implementation) which summed to a total of 40 job submissions. The layout for these runs are shown in Table~\ref{table:apps}.  
+Each application was tested on both the Lustre and the NFS file system with 
+several configurations for each application run. All application experiments 
+were repeated 5 times for both the \connector{} and Darshan 
+only (i.e. no LDMS implementation) scenarios. In total there were 40 experiments
+run with a separate job submission for each. The details of these runs are shown 
+in Table~\ref{table:apps}.  
 
 \begin{table}[h]
     \begin{subtable}[h]{0.5\textwidth}
@@ -99,13 +118,38 @@ Each application was tested on the Lustre and NFS file system with various confi
 \label{table:apps}
 \end{table}
 %\RED{Took another stab at this. FIX ANYTHING THAT DOESN'T MAKE SENSE. OR REMOVE IT ALL TOGETHER}.
-The average of the 5 execution times (e.g., Average Runtime (s)) for Darshan and the \connector{} (e.g., dC) was then taken and used to calculate the percent overhead of LDMS. Because of the system availability, the runtimes with Darshan were only performed and recorded 1-2 weeks before the experiments with the \connector{}. As seen from Table~\ref{subtable:mpi-io-test}, the overhead of LDMS on Darshans' MPI-IO-TEST benchmark for three experiments shows a decrease in overall runtime with the \connector{}. Since this is not feasible, the runtime improvement seen with the \connector{} is most likely due to the NFS and Lustre file systems performance variation where (and when) these experiments were performed. We have not been able to test on a different cluster or have had the opportunity to interleave the Darshan, and \connector{} runs to mitigate any file system performance changes.
+The average of the 5 execution times (e.g., Average Runtime (s)) for Darshan and 
+the \connector{} (dC in the table) was used to calculate the percent overhead of LDMS. 
+Because of the system availability, the runtimes with Darshan were only performed 
+and recorded 1-2 weeks before the experiments with the \connector{}. As seen from 
+Table~\ref{subtable:mpi-io-test}, the overhead of LDMS on Darshans' MPI-IO-TEST 
+benchmark for three experiments shows a decrease in overall runtime with the \connector{}. 
+Since this is not feasible, the runtime improvement seen with the \connector{} is most 
+likely due to the NFS and Lustre file systems performance variation where (and when) 
+these experiments were performed. This behavior will be further investigated by conducting
+a new set of randomized experiments during dedicated time on a system to minimize variability
+due to competing applications and the effects of resource performance variations.
+%As of this publication We have not re-run these tests 
+%on a different 
+%cluster or have had the opportunity to interleave the Darshan, and \connector{} 
+%runs to mitigate any file system performance changes.
 
 %Since the applications for Darshan and the \connector{} were run at different times, the file systems could have performed worse during the Darshan experiments and better during the \connector{} experiments creating an increase and decrease in overhead, respectively.  
 
 %The other experiment on the Lustre file system with Collective enabled shows an overhead of less than 8.41\%, which is a minor overhead as this experiment has the highest rate of messages being sent per second to the LDMS Streams interface. 
 
-The HACC-IO application, seen in Table~\ref{subtable:HACC} was similar to the MPI-IO-TEST benchmark regarding a shorter runtime with the \connector{} for both file systems. Again, this is most likely due to the Lustre and NFS file systems as described earlier. The other two experiments, NFS with 10 million particles and Lustre with 5 million particles, show an overhead of 0.84\% and 12.01\%, respectively. The experiment with 0.84\% overhead indicates no significant effect on the applications runtime. In contrast, the experiment with 12.01\% overhead shows a longer runtime with the \connector{} which is most likely due to performance variation in both file systems which we will investigate in the near future. The variance across all experiments is so large that the performance overhead calculations are inconclusive. %inconclusive for each of the experiments are statistically significant to assume that the overhead of LDMS is likely due to factors outside of LDMS and therefore are inconclusive. Based on the current data we can't quantify the overhead but plan to investigate this further. we can not make any assumptions about the significant increases in overhead (e.g. MPI-IO collective using luster).
+The HACC-IO application, seen in Table~\ref{subtable:HACC} was similar to the MPI-IO-TEST 
+benchmark regarding a shorter runtime with the \connector{} for both file systems. Again, 
+this is most likely due to differences in Lustre and NFS file system loading during different
+experimens. The other two experiments, NFS with 10 million particles and Lustre with 
+5 million particles, show an overhead of 0.84\% and 12.01\%, respectively. The experiment 
+with 0.84\% overhead indicates no significant effect on the applications runtime. 
+In contrast, the experiment with 12.01\% overhead shows a longer runtime with the 
+\connector{} which is most likely due to performance variation in both file systems 
+which we will investigate in the near future. The variance across all experiments is 
+so large that the performance overhead calculations are inconclusive. 
+
+%inconclusive for each of the experiments are statistically significant to assume that the overhead of LDMS is likely due to factors outside of LDMS and therefore are inconclusive. Based on the current data we can't quantify the overhead but plan to investigate this further. we can not make any assumptions about the significant increases in overhead (e.g. MPI-IO collective using luster).
 
 %The HMMER application, seen in Table~\ref{subtable:HACC} shows a significant increase in runtime with upwards of 270\% for NFS and 12000\% for Lustre where the user has to wait ~2x-12x longer for their application to finish. This, of course, is not ideal for the average user and the result of these high overhead percentages are due to the json message formatting. Additional tests have been performed without the sprintf() function to generate the json message (i.e. only LDMS Streams API is enabled and the \connector send function is called) and the average overhead was 0.37\%. This indicates that the increase in overhead is not due to LDMS but rather the formatting of the I/O event data from integers into strings. HMMER had an average of 3-4 million messages (i.e. Darshan I/O events) during a single run with a rate of 1-2k messages per second. HACC-IO and MPI-IO-TEST, on the other hand, had an average of 1-50K messages with rates of less than 100 messages per second. These are significantly lower than HMMER which is why no significant overhead was detected in the other application runs. 
 %\RED{explain this in future work section: We observed a significant increase in total runtime from the \connector{} for short I/O applications with an approximate rate of 500,000 messages sent per second. This large volume of data being collected and sent causes an increase in runtime because of the json message formatting we added in the Darshan code. We ran experiments with and without the json formatting and the runtime will significantly increase.
@@ -125,7 +169,11 @@ The HACC-IO application, seen in Table~\ref{subtable:HACC} was similar to the MP
 %can have multiple unique I/O behavior that can degradate the
 %performance of the application \cite{costa2021}. This I/O variation
 %can also happen between allocated devices.
-Figure \ref{f:hacc2} shows the number of I/O requests per node for close and open operations for two jobs using the same input for the HACC-IO application on Lustre for 10 million particles per rank. This variation is under investigation to understand the root cause of such behavior such as the data loss.
+Figure \ref{f:hacc2} shows the number of I/O requests per node for close and 
+open operations for two jobs using the same input for the HACC-IO application 
+on Lustre using 10 million particles per rank. The root cause of this variation 
+is under investigation as we would expect identical runs to have identical
+behavior with respect to location and number of open and close events.
 
 %\begin{figure}
 %	\centering
@@ -154,7 +202,7 @@ seconds for reads and 78s for writes, while the other jobs had a mean
 duration of 0.05s for reads and 54s for writes. With the collected
 logs, we can perform a spatial performance analysis to understand the
 variability in the I/O behavior per system component, in this case,
-per nodes and ranks.
+per node and rank.
       
 \begin{figure}
 	\centering
@@ -166,27 +214,32 @@ per nodes and ranks.
 \end{figure}
 
 Using the absolute timestamps collected we can temporally view
-wherein the application execution the variability of a job
-occurred and better understand the I/O behavior. Figure \ref{f:mpi_io} presents the duration and occurrence of
+where, in the application execution, the variability of a job
+occurred and better understand the I/O behavior. 
+Figure \ref{f:mpi_io} presents the duration and occurrence of
 I/O operations throughout the MPI-IO benchmark for \texttt{job\_id
   2}. We can identify the application I/O pattern of performing
-writes during ten phases, and then read at the end, corresponding to the HACC-IO simulation purpose to write the checkpoint file system and then read for validation. Also, this
-application run faster writes at the beginning and slower at the end,
-with the slowest writing after 250 seconds.
+writes during the ten iterations, and the likewise the ten read iterations at the end
+though these are smaller and less distinct than the writes. 
+It can also be seen that in general writes became progressively slower over
+the application execution time.
+%application run faster writes at the beginning and slower at the end,
+%with the slowest writing after 250 seconds.
       
 \begin{figure}
 	\centering
 	\includegraphics[width=\linewidth]{figs/255653_mpi_io_luster_no_coll_execution2.pdf}
 	\caption{Distribution of read and write operations
-          throughout the execution time for the \texttt{job\_id 2},
-          can reveal the application I/O pattern, and wherein the
-          application there were faster and slower operations.}
+          throughout the execution time for MPI-IO \texttt{job\_id 2},
+          can reveal the application I/O pattern, and where in time, relative to the beginning
+of the application execution,
+          there were faster and slower operations.}
 	\label{f:mpi_io}
 \end{figure}
 \begin{figure*}
 	\centering
 	\includegraphics[width=\textwidth]{figs/255653_mpi_io_luster_no_coll.pdf}
-	\caption{Graphana visualization of the \texttt{job\_id 2}
+	\caption{Graphana visualization of MPI-IO \texttt{job\_id 2}
           writes (blue) and reads (green) operations and number of bytes per
           operation, using the absolute timestamp metric collected
 	  with \Darshan{}.}
@@ -194,15 +247,26 @@ with the slowest writing after 250 seconds.
 \end{figure*}
 
 The same job is also represented in Figure \ref{f:mpi_io_grafana}
-using the Grafana interface. This figure presents the number of I/O
-writes (blues) and reads (green) and the number of bytes sent
-aggregated across ranks. This timeseries shows the read and write behaviors throughout execution time which provides further insights into I/O occurrences and size. For example, we can identify the two instances in which a write above 20GB occurs and the single instance in which a read above 10GB occurs. A developer or user can then use this information to create new and meaningful analyses about their applications I/O operations and patterns. Grafana offers an interactive front-end
-view where users can easily filter to visualize specific time and
-metrics intervals. Such representation using the absolute timestamps
-facilitates the correlation of I/O performance congestion, for
-example, with system behavior monitoring, which can also be
-represented as a Grafana dashboard.
+using the Grafana interface. This figure presents an aggregate time
+series across all ranks of the number of I/O
+writes (blues), reads (green), and bytes sent.
+This time series shows the read and write behaviors throughout execution 
+time which provides further insights into I/O occurrences and size. For 
+example, we can identify the two instances in which a write above 20GB 
+occurs and the single instance in which a read above 10GB occurs. A developer 
+or user can then use this information to create new and meaningful analyses 
+about their applications I/O operations and patterns. Grafana offers an 
+interactive front-end view where users can easily filter to visualize 
+specific time intevals and metrics. Such representation using the absolute timestamps
+facilitates the correlation of I/O performance with system component state
+and behavioral characteristics (e.g., congestion in networks and filesystems)
+which can also be represented in Grafana dashboards.
 
-Without the \connector{}, it would not be possible to create the meaningful analyses and visualizations shown in Figures\ref{f:mpi_io_all}-\ref{f:mpi_io_grafana}. In contrast, Figure~\ref{f:hacc2} shows the aggregate I/O behavior which can be created with Darshan alone. This figure does not provide the timeseries data and thus in-depth insights into I/O behavior like the \Darshan{} does.
+Without the kind of data provided by the \connector{}, it would not be possible 
+to create the meaningful analyses and visualizations shown in 
+Figures\ref{f:mpi_io_all}-\ref{f:mpi_io_grafana}. In contrast, 
+Figure~\ref{f:hacc2} shows the aggregate I/O behavior which can be created 
+with Darshan alone without the DXT plugin. This figure does not provide the 
+timeseries data and thus in-depth insights into I/O behavior like the \Darshan{} does.
 
 
