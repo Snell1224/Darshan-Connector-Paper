@@ -26,11 +26,11 @@ System state insights are achieved by LDMS's synchronous sampling with
 \emph{absolute timestamps}. This provides a snapshot-like view of system conditions.
 % through multi-hop aggregator support with multiple levels. 
 %This support is in 
-Transport is performed in a tree structure where the \emph{samplers} (e.g leaves) 
+Transport is performed in a tree structure where the \emph{samplers} (e.g. leaves) 
 determine the kind of data sampled, the intermediate aggregators are used for data 
 transport, and the last level aggregators are used for storage. There are a variety 
 of sampler plugins that can be used to collect different system metrics 
-(e.g., memory, CPU, network).
+(e.g. memory, CPU, network).
 Additional functionalities exist in LDMS, such as the \emph{Streams} publish-subscribe
 functionality, that enable the aggregation of event-based application data. Our framework 
 utilizes this publish-subscribe functionality and the \emph{LDMS Streams API} to 
