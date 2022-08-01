@@ -1,9 +1,0 @@
-JOBID IS: 255638
-# Using mpi-io calls.
-nr_procs = 704, nr_iter = 10, blk_sz = 16777216, coll = 1
-# total_size = 118111600640
-# Write: min_t = 151.291508, max_t = 151.305189, mean_t = 151.292255, var_t = 0.000006
-# Read:  min_t = 1.641510, max_t = 97.198263, mean_t = 51.117228, var_t = 734.425134
-Write bandwidth = 780.618309 Mbytes/sec
-Read bandwidth = 1215.161638 Mbytes/sec
-The DiffOfTime = 252.763147590
