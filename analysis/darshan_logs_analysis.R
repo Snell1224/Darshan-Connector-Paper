@@ -7,22 +7,31 @@
 options(crayon.enabled=FALSE)
 library(dplyr)
 library(tidyverse)  
-library(arrow)
 options(scipen = 999)
 
 ###########################################################################
 # READ INFO ABOUT HACC IO
 df.hacc <- read_csv("./logs_csv_output/hacc-io/all_darshan_ldms_hacc.csv")
 
+# Getting total execution time
+df.hacc %>% 
+    group_by(job_id, `#module`) %>%
+    summarize(mintime=min(`seg:timestamp`), maxtime=max(`seg:timestamp`)) %>%
+    mutate(total_dur = maxtime - mintime) %>%
+    select(job_id, mintime, maxtime, total_dur, `#module`) %>%
+    arrange(job_id) %>%
+    as.data.frame()
+
 # Getting number of operations and bytes processed
 df.hacc %>% 
     # Not getting close operations because Darshan does not return it
     filter(op != "close") %>%
+    filter(`#module` == "POSIX") %>%
     group_by(job_id, op, `#module`) %>%
     summarize(n=n(), 
         mintime=min(`seg:timestamp`), 
         maxtime=max(`seg:timestamp`),
-        tbytes=sum(`seg:len`),
+        tbytes=sum(abs(`seg:len`)),
         tmaxbytes=max(max_byte)) %>%
     mutate(total_dur = maxtime - mintime) %>%
     select(job_id, op, n, `#module`, total_dur, tbytes, tmaxbytes) %>%
@@ -40,6 +49,8 @@ df.hacc %>%
     arrange(job_id) %>%
     as.data.frame()
 
+# # Getting fastest and slowest rank per job
+# # just for the jobs analysed
 df.hacc %>% 
     filter(`#module` == "POSIX") %>%
     filter(job_id == "256542") %>%
