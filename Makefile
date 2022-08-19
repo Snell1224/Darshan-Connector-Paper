@@ -1,4 +1,4 @@
-#Anthony M. Agelastos, 2016/08/24. Revised for CUG2018 by Ann Gentile 01/05/2018
+#Anthony M. Agelastos, 2016/08/24. Revised for HPCMASPA by Sara Walton 07/05/2022
 # Revised for CUG2021 by Jim Brandt 06-16-2021
 #amagela's Standard GNU Make Makefile, version 2.0
 #This Makefile builds: LongAbstract
