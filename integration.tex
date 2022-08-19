@@ -7,8 +7,8 @@ Darshan tracks the start, duration and end time of an application run via the C 
 
 \begin{figure}
 	\centering
-	%\includegraphics[trim=0.2cm 8.5cm 12cm 0cm ,clip,width=0.9\linewidth]{figs/fig_kokkos_ldms.pdf}
-	\includegraphics[trim=0 1cm 1 1.5cm ,clip,width=1.2\linewidth]{figs/ldms-overview.pdf}
+	%\includegraphics[trim=0.2cm 8.5cm 12cm 0cm ,clip,width=0.9\linewidth]{figs/fig_kokkos_ldms.png}
+	\includegraphics[trim=0 1cm 1 1.5cm ,clip,width=1.2\linewidth]{figs/ldms-overview.png}
 	\caption{Overview of the LDMS event data collection. Application data is \emph{pushed} by publishing data to the \emph{LDMS Streams} which is then \emph{pushed} through the LDMS transport to the \emph{LDMS Streams} LDMS aggregator (right) where the data is \emph{pushed} to the streams subscriber (Tag A) and stored to a database.}
 	\label{f:LDMS Overview}
 \end{figure}
@@ -26,9 +26,9 @@ the DSOS storage plugin to store the I/O event data.
 
 \begin{figure}
 	\centering
-	%\includegraphics[trim=0.2cm 8.5cm 12cm 0cm ,clip,width=0.9\linewidth]{figs/fig_kokkos_ldms.pdf}
+	%\includegraphics[trim=0.2cm 8.5cm 12cm 0cm ,clip,width=0.9\linewidth]{figs/fig_kokkos_ldms.png}
 	\includegraphics[trim={3.5cm 0 0 0},clip,
-	width=1.15\linewidth]{figs/darshan-connector.pdf}
+	width=1.15\linewidth]{figs/darshan-connector.png}
 	\caption{Overview of the \connector{} design and how it collects I/O data for each read, write, open and close events per rank from Darshan. The LDMS library must be linked against the Darshan build in order to utilize the \emph{LDMS Streams} functionality and store plugins.}
 	\label{f:Darshan Connector}
 \end{figure}
@@ -80,8 +80,8 @@ visualizations to get further insights of the application I/O behavior,
 and reveal correlations between I/O performance variability and system behavior.
 \begin{figure}
 	\centering
-	%\includegraphics[trim=0.2cm 8.5cm 12cm 0cm ,clip,width=0.9\linewidth]{figs/fig_kokkos_ldms.pdf}
-	\includegraphics[trim={0 3cm 0 0},clip, width=1.01\linewidth]{figs/darshan-csv-json.pdf}
+	%\includegraphics[trim=0.2cm 8.5cm 12cm 0cm ,clip,width=0.9\linewidth]{figs/fig_kokkos_ldms.png}
+	\includegraphics[trim={0 3cm 0 0},clip, width=1.01\linewidth]{figs/darshan-csv-json.png}
 	\caption{Output of a MPI-IO Darshan test run in the JSON
           format (top image), and the CSV file header (bottom). 
           %The JSON message is published to the \emph{LDMS Streams}
@@ -171,8 +171,8 @@ to the traditional method of querying the results of analyzed data from a separa
 
 \begin{figure}
 	\centering
-	%\includegraphics[trim=0.2cm 8.5cm 12cm 0cm ,clip,width=0.9\linewidth]{figs/fig_kokkos_ldms.pdf}
-	\includegraphics[trim=3cm 2cm 0cm 0cm, clip,width=1.2\linewidth]{figs/darshan-integration.pdf}
+	%\includegraphics[trim=0.2cm 8.5cm 12cm 0cm ,clip,width=0.9\linewidth]{figs/fig_kokkos_ldms.png}
+	\includegraphics[trim=3cm 2cm 0cm 0cm, clip,width=1.2\linewidth]{figs/darshan-integration.png}
 	\caption{Overview of the \Darshan{} where the \connector{} is used to intercept the I/O behavior Darshan is collecting utilizes the various tools to publish, store, analyze and view runtime I/O behavior.}
 	\label{f:FrameworkOverview}
 \end{figure}
