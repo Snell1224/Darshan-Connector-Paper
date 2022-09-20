@@ -1,0 +1,10 @@
+# Using mpi-io calls.
+# total closes: 704
+# total opens: 704
+nr_procs = 704, nr_iter = 10, blk_sz = 16777216, coll = 0
+# total_size = 118111600640
+# Write: min_t = 311.215405, max_t = 924.192401, mean_t = 577.683346, var_t = 11191.174750
+# Read:  min_t = 49.890976, max_t = 231.414912, mean_t = 104.528052, var_t = 2647.139804
+Write bandwidth = 127.799796 Mbytes/sec
+Read bandwidth = 510.388893 Mbytes/sec
+The DiffOfTime = 1464.754544554
